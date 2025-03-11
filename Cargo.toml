@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "c02_hello",
+    "c02_actix-gcd",
+]
+
+[workspace.dependencies]
+c02_hello = { path = "c02_hello" }
