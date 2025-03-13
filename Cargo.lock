@@ -316,6 +316,10 @@ name = "c02_hello"
 version = "0.1.0"
 
 [[package]]
+name = "c02_mandelbrot"
+version = "0.1.0"
+
+[[package]]
 name = "cc"
 version = "1.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
