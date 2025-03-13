@@ -2,6 +2,7 @@
 members = [
     "c02_hello",
     "c02_actix-gcd",
+    "c02_mandelbrot",
 ]
 
 [workspace.dependencies]
