@@ -1,4 +1,8 @@
+use image::codecs::png::PngEncoder;
+use image::{ExtendedColorType, ImageEncoder};
 use num::Complex;
+use std::error::Error;
+use std::fs::File;
 use std::str::FromStr;
 
 fn main() {
@@ -100,6 +104,7 @@ fn test_pixel_to_point() {
     );
 }
 
+#[allow(dead_code)]
 fn render(
     pixels: &mut [u8],
     bounds: (usize, usize),
@@ -116,4 +121,24 @@ fn render(
             };
         }
     }
+}
+
+#[allow(dead_code)]
+fn write_image(
+    filename: &str,
+    pixels: &[u8],
+    bounds: (usize, usize),
+) -> Result<(), Box<dyn Error>> {
+    let output = File::create(filename)?;
+
+    let encoder = PngEncoder::new(output);
+    encoder
+        .write_image(
+            pixels,
+            bounds.0 as u32,
+            bounds.1 as u32,
+            ExtendedColorType::L8,
+        )
+        .map_err(|e| Box::new(e) as Box<dyn Error>)?;
+    Ok(())
 }
