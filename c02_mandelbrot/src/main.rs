@@ -99,3 +99,21 @@ fn test_pixel_to_point() {
         }
     );
 }
+
+fn render(
+    pixels: &mut [u8],
+    bounds: (usize, usize),
+    upper_left: Complex<f64>,
+    lower_right: Complex<f64>,
+) {
+    assert_eq!(pixels.len(), bounds.0 * bounds.1);
+    for row in 0..bounds.1 {
+        for col in 0..bounds.0 {
+            let point = pixel_to_point(bounds, (col, row), upper_left, lower_right);
+            pixels[row * bounds.0 + col] = match escape_time(point, 255) {
+                None => 0,
+                Some(i) => 255 - i as u8,
+            };
+        }
+    }
+}
