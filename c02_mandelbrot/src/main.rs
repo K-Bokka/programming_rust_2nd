@@ -1,12 +1,29 @@
 use image::codecs::png::PngEncoder;
 use image::{ExtendedColorType, ImageEncoder};
 use num::Complex;
+use std::env;
 use std::error::Error;
 use std::fs::File;
 use std::str::FromStr;
 
 fn main() {
-    println!("Hello, world!");
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 5 {
+        eprintln!("Usage: {} FILE PIXELS UPPER_LEFT LOWER_RIGHT", args[0]);
+        eprintln!(
+            "Example: {} mandel.png 1000x750 -1.20,0.35 -1,0.20",
+            args[0]
+        );
+        std::process::exit(1);
+    }
+
+    let bounds = parse_pair(&args[2], 'x').expect("error parsing image dimensions");
+    let upper_left = parse_complex(&args[3]).expect("error parsing upper left corner point");
+    let lower_right = parse_complex(&args[4]).expect("error parsing lower right corner point");
+
+    let mut pixels = vec![0; bounds.0 * bounds.1];
+    render(&mut pixels, bounds, upper_left, lower_right);
+    write_image(&args[1], &pixels, bounds).expect("error writing PNG file");
 }
 
 #[allow(dead_code)]
@@ -17,7 +34,6 @@ fn complex_square_add_loop(c: Complex<f64>) {
     }
 }
 
-#[allow(dead_code)]
 fn escape_time(c: Complex<f64>, limit: usize) -> Option<usize> {
     let mut z = Complex { re: 0.0, im: 0.0 };
     for i in 0..limit {
@@ -29,7 +45,6 @@ fn escape_time(c: Complex<f64>, limit: usize) -> Option<usize> {
     None
 }
 
-#[allow(dead_code)]
 fn parse_pair<T: FromStr>(s: &str, separator: char) -> Option<(T, T)> {
     match s.find(separator) {
         None => None,
@@ -51,7 +66,6 @@ fn test_parse_pair() {
     assert_eq!(parse_pair::<f64>("0.5x1.5", 'x'), Some((0.5, 1.5)));
 }
 
-#[allow(dead_code)]
 fn parse_complex(s: &str) -> Option<Complex<f64>> {
     match parse_pair::<f64>(s, ',') {
         None => None,
@@ -71,7 +85,6 @@ fn test_parse_complex() {
     assert_eq!(parse_complex(",-0.0625"), None);
 }
 
-#[allow(dead_code)]
 fn pixel_to_point(
     bounds: (usize, usize),
     pixel: (usize, usize),
@@ -104,7 +117,6 @@ fn test_pixel_to_point() {
     );
 }
 
-#[allow(dead_code)]
 fn render(
     pixels: &mut [u8],
     bounds: (usize, usize),
@@ -123,7 +135,6 @@ fn render(
     }
 }
 
-#[allow(dead_code)]
 fn write_image(
     filename: &str,
     pixels: &[u8],
