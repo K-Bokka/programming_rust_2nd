@@ -2,7 +2,7 @@
 members = [
     "c02_hello",
     "c02_actix-gcd",
-    "c02_mandelbrot",
+    "c02_mandelbrot", "c02_quickreplace",
 ]
 
 [workspace.dependencies]
