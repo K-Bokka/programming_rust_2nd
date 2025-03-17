@@ -1,6 +1,6 @@
 use actix_web::{App, HttpResponse, HttpServer, Responder, get, post, web};
 use serde::Deserialize;
-use c02_hello::gcd;
+use hello::gcd;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

@@ -1,6 +1,6 @@
 use std::env;
 use std::str::FromStr;
-use c02_hello::gcd;
+use hello::gcd;
 
 fn main() {
     // println!("Hello, world!");

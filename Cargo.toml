@@ -2,8 +2,9 @@
 members = [
     "c02_hello",
     "c02_actix-gcd",
-    "c02_mandelbrot", "c02_quickreplace",
+    "c02_mandelbrot",
+    "c02_quickreplace",
 ]
 
 [workspace.dependencies]
-c02_hello = { path = "c02_hello" }
+hello = { path = "c02_hello" }

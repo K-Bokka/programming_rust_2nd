@@ -20,6 +20,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "actix-gcd"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "hello",
+ "serde",
+]
+
+[[package]]
 name = "actix-http"
 version = "3.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -400,36 +409,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e465647ae23b2823b0753f50decb2d5a86d2bb2cac04788fafd1f80e45378e5f"
 dependencies = [
  "bytes",
-]
-
-[[package]]
-name = "c02_actix-gcd"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "c02_hello",
- "serde",
-]
-
-[[package]]
-name = "c02_hello"
-version = "0.1.0"
-
-[[package]]
-name = "c02_mandelbrot"
-version = "0.1.0"
-dependencies = [
- "crossbeam",
- "image",
- "num",
-]
-
-[[package]]
-name = "c02_quickreplace"
-version = "0.1.0"
-dependencies = [
- "regex",
- "text-colorizer",
 ]
 
 [[package]]
@@ -824,6 +803,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
+name = "hello"
+version = "0.1.0"
+
+[[package]]
 name = "http"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1164,6 +1147,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "mandelbrot"
+version = "0.1.0"
+dependencies = [
+ "crossbeam",
+ "image",
+ "num",
+]
+
+[[package]]
 name = "maybe-rayon"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1463,6 +1455,14 @@ name = "quick-error"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a993555f31e5a609f617c12db6250dedcac1b0a85076912c436e6fc9b2c8e6a3"
+
+[[package]]
+name = "quickreplace"
+version = "0.1.0"
+dependencies = [
+ "regex",
+ "text-colorizer",
+]
 
 [[package]]
 name = "quote"
