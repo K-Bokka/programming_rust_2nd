@@ -5,6 +5,7 @@ members = [
     "c02_mandelbrot",
     "c02_quickreplace",
 ]
+resolver = "3"
 
 [workspace.dependencies]
 hello = { path = "c02_hello" }
