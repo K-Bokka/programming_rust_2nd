@@ -4,6 +4,7 @@ members = [
     "c02_actix-gcd",
     "c02_mandelbrot",
     "c02_quickreplace",
+    "c03_example",
 ]
 resolver = "3"
 
