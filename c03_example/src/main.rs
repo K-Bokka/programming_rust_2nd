@@ -24,6 +24,36 @@ fn main() {
     // println!("{}", -4.abs()); // error[E0689]: can't call method `abs` on ambiguous numeric type `{integer}`
     println!(" (-4_i32).abs() -> {}", (-4_i32).abs());
     println!("i32::abs(-4) -> {}", i32::abs(-4));
+
+    // let mut i = 1;
+    // loop {
+    //     i *= 10; // thread 'main' panicked at c03_example/src/main.rs:30:9:
+    // }
+
+    // let mut i: i32 = 1;
+    // loop {
+    //     i = i.checked_mul(10).expect("multiplication overflowed");
+    // }
+
+    // チェック付き演算（範囲を超えたらNoneになる）
+    assert_eq!(10_u8.checked_add(20), Some(30));
+    assert_eq!(100_u8.checked_add(200), None);
+    assert_eq!((-128_i8).checked_div(-1), None);
+
+    // ラップ演算（範囲を超えたらもう一周）
+    assert_eq!(100_u16.wrapping_mul(200), 20_000);
+    assert_eq!(500_u16.wrapping_mul(500), 53_392); // 65_536 * 3 + 53_392 = 250_000
+    assert_eq!(500_i16.wrapping_mul(500), -12_144); // 53_392 = 0b1101_0000_1001_0000
+    assert_eq!(5_i16.wrapping_shl(17), 10); // (17 - 16) bit shift
+
+    // 飽和演算（上限と下限がある）
+    assert_eq!(32767_i16.saturating_add(10), 32767);
+    assert_eq!((-32767_i16).saturating_sub(10), -32767);
+
+    // オーバーフロー演算
+    assert_eq!(255_u8.overflowing_sub(2), (253, false));
+    assert_eq!(255_u8.overflowing_add(2), (1, true));
+    assert_eq!(5_i16.overflowing_shr(17), (10, true));
 }
 
 fn build_vector1() -> Vec<i16> {
