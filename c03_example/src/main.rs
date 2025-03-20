@@ -48,12 +48,18 @@ fn main() {
 
     // 飽和演算（上限と下限がある）
     assert_eq!(32767_i16.saturating_add(10), 32767);
-    assert_eq!((-32767_i16).saturating_sub(10), -32767);
+    assert_eq!((-32768_i16).saturating_sub(10), -32768);
 
     // オーバーフロー演算
     assert_eq!(255_u8.overflowing_sub(2), (253, false));
     assert_eq!(255_u8.overflowing_add(2), (1, true));
-    assert_eq!(5_i16.overflowing_shr(17), (10, true));
+    assert_eq!(5_u16.overflowing_shl(17), (10, true));
+
+    // 浮動小数点数
+    assert!((-1. / f32::INFINITY).is_sign_negative());
+    assert_eq!(-f32::MIN, f32::MAX);
+    assert_eq!(5f32.sqrt() * 5f32.sqrt(), 5.);
+    assert_eq!((-1.01f64).floor(), -2.0);
 }
 
 fn build_vector1() -> Vec<i16> {
