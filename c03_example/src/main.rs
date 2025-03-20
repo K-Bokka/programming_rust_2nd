@@ -74,6 +74,12 @@ fn main() {
     assert_eq!('8'.to_digit(10), Some(8));
     assert_eq!('ಠ'.len_utf8(), 3);
     assert_eq!(std::char::from_digit(2, 10), Some('2'));
+
+    // タプル
+    let text = "I see the eigenvalue in thine eye";
+    let (head, tail) = text.split_at(21);
+    assert_eq!(head, "I see the eigenvalue ");
+    assert_eq!(tail, "in thine eye");
 }
 
 fn build_vector1() -> Vec<i16> {
