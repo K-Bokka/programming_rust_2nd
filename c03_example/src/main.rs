@@ -80,6 +80,12 @@ fn main() {
     let (head, tail) = text.split_at(21);
     assert_eq!(head, "I see the eigenvalue ");
     assert_eq!(tail, "in thine eye");
+
+    // Box
+    let t = (12, "eggs");
+    let b = Box::new(t);
+    assert_eq!(b.0, 12);
+    assert_eq!(b.1, "eggs");
 }
 
 fn build_vector1() -> Vec<i16> {
