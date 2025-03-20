@@ -64,6 +64,16 @@ fn main() {
     // 真偽値
     assert_eq!(false as i32, 0);
     assert_eq!(true as i32, 1);
+
+    // 文字
+    assert_eq!('*' as i32, 42);
+    assert_eq!('ಠ' as u16, 0xca0);
+    assert_eq!('ಠ' as i8, -0x60);
+    assert_eq!('*'.is_alphanumeric(), false);
+    assert_eq!('β'.is_alphanumeric(), true);
+    assert_eq!('8'.to_digit(10), Some(8));
+    assert_eq!('ಠ'.len_utf8(), 3);
+    assert_eq!(std::char::from_digit(2, 10), Some('2'));
 }
 
 fn build_vector1() -> Vec<i16> {
