@@ -1,3 +1,5 @@
+use regex::Regex;
+
 fn main() {
     let v1 = build_vector1();
     let v2 = build_vector2();
@@ -48,12 +50,196 @@ fn main() {
 
     // 飽和演算（上限と下限がある）
     assert_eq!(32767_i16.saturating_add(10), 32767);
-    assert_eq!((-32767_i16).saturating_sub(10), -32767);
+    assert_eq!((-32768_i16).saturating_sub(10), -32768);
 
     // オーバーフロー演算
     assert_eq!(255_u8.overflowing_sub(2), (253, false));
     assert_eq!(255_u8.overflowing_add(2), (1, true));
-    assert_eq!(5_i16.overflowing_shr(17), (10, true));
+    assert_eq!(5_u16.overflowing_shl(17), (10, true));
+
+    // 浮動小数点数
+    assert!((-1. / f32::INFINITY).is_sign_negative());
+    assert_eq!(-f32::MIN, f32::MAX);
+    assert_eq!(5f32.sqrt() * 5f32.sqrt(), 5.);
+    assert_eq!((-1.01f64).floor(), -2.0);
+
+    // 真偽値
+    assert_eq!(false as i32, 0);
+    assert_eq!(true as i32, 1);
+
+    // 文字
+    assert_eq!('*' as i32, 42);
+    assert_eq!('ಠ' as u16, 0xca0);
+    assert_eq!('ಠ' as i8, -0x60);
+    assert_eq!('*'.is_alphanumeric(), false);
+    assert_eq!('β'.is_alphanumeric(), true);
+    assert_eq!('8'.to_digit(10), Some(8));
+    assert_eq!('ಠ'.len_utf8(), 3);
+    assert_eq!(std::char::from_digit(2, 10), Some('2'));
+
+    // タプル
+    let text = "I see the eigenvalue in thine eye";
+    let (head, tail) = text.split_at(21);
+    assert_eq!(head, "I see the eigenvalue ");
+    assert_eq!(tail, "in thine eye");
+
+    // Box
+    let t = (12, "eggs");
+    let b = Box::new(t);
+    assert_eq!(b.0, 12);
+    assert_eq!(b.1, "eggs");
+
+    // 配列
+    let lazy_caterer: [u32; 6] = [1, 2, 4, 7, 11, 16];
+    let taxonomy = ["Animalia", "Arthropoda", "Insecta"];
+    assert_eq!(lazy_caterer[3], 7);
+    assert_eq!(taxonomy.len(), 3);
+
+    let mut sieve = [true; 10_000];
+    for i in 2..100 {
+        if sieve[i] {
+            let mut j = i * i;
+            while j < 10_000 {
+                sieve[j] = false;
+                j += i;
+            }
+        }
+    }
+    assert!(sieve[211]);
+    assert!(!sieve[9876]);
+
+    let mut chaos = [3, 5, 4, 1, 2];
+    chaos.sort();
+    assert_eq!(chaos, [1, 2, 3, 4, 5]);
+
+    // ベクタ（可変長配列
+    let mut primes = vec![2, 3, 5, 7];
+    assert_eq!(primes.iter().product::<i32>(), 210);
+
+    primes.push(11);
+    primes.push(13);
+    assert_eq!(primes.iter().product::<i32>(), 30030);
+
+    let mut pal = Vec::new();
+    pal.push("step");
+    pal.push("on");
+    pal.push("no");
+    pal.push("pets");
+    assert_eq!(pal, vec!["step", "on", "no", "pets"]);
+
+    let v: Vec<i32> = (0..5).collect();
+    assert_eq!(v, vec![0, 1, 2, 3, 4]);
+
+    let mut palinddome = vec!["a man", "a plan", "a canal", "panama"];
+    palinddome.reverse();
+    assert_eq!(palinddome, vec!["panama", "a canal", "a plan", "a man"]);
+
+    let mut v = Vec::with_capacity(2);
+    assert_eq!(v.len(), 0);
+    assert_eq!(v.capacity(), 2);
+
+    v.push(1);
+    v.push(2);
+
+    assert_eq!(v.len(), 2);
+    assert_eq!(v.capacity(), 2);
+
+    v.push(3);
+    assert_eq!(v.len(), 3);
+    println!("capacity is now {}", v.capacity());
+
+    let mut v = vec![10, 20, 30, 40, 50];
+    v.insert(3, 35);
+    assert_eq!(v, vec![10, 20, 30, 35, 40, 50]);
+    v.remove(1);
+    assert_eq!(v, vec![10, 30, 35, 40, 50]);
+
+    let mut v = vec!["Snow Puff", "Grass Gem"];
+    assert_eq!(v.pop(), Some("Grass Gem"));
+    assert_eq!(v.pop(), Some("Snow Puff"));
+    assert_eq!(v.pop(), None);
+
+    // スライス
+    let v: Vec<f64> = vec![0.0, 0.707, 1.0, 0.797];
+    let a: [f64; 4] = [0.0, -0.707, -1.0, -0.797];
+
+    let sv: &[f64] = &v;
+    let sa: &[f64] = &a;
+
+    print(sv);
+    print(sa);
+    print(&v[0..2]);
+    print(&a[2..]);
+    print(&sv[1..3]);
+
+    // 文字列
+    let speech = "\"Ouch!\" said the well.\n";
+    println!("{}", speech);
+    println!(
+        "In the room the women come and go,
+        Singing of Mount Abora"
+    );
+    println!(
+        "It was a bright, cold day in April, and \
+    there were fours of us-\
+    more or less."
+    );
+
+    #[allow(unused_variables)]
+    let default_win_install_path = r"C:\Program Files\Gorillas";
+    #[allow(unused_variables)]
+    let pattern = Regex::new(r"\d+(\.\d+)*");
+    println!(r##"---"---"##);
+
+    let method = b"GET";
+    assert_eq!(method, &[b'G', b'E', b'T']);
+
+    let noodles = "noodles".to_string();
+    #[allow(unused_variables)]
+    let oodles = &noodles[1..];
+    let poodles = "ಠ_ಠ";
+    assert_eq!(poodles.len(), 7);
+    assert_eq!(poodles.chars().count(), 3);
+
+    #[allow(unused_variables)]
+    let error_message = "too many pets".to_string();
+    assert_eq!(
+        format!("{}° {:02}′ {:02}″ N", 24, 5, 23),
+        "24° 05′ 23″ N".to_string()
+    );
+
+    let bits = vec!["veni", "vidi", "vici"];
+    assert_eq!(bits.concat(), "venividivici");
+    assert_eq!(bits.join(", "), "veni, vidi, vici");
+
+    assert_eq!("ONE".to_lowercase(), "one");
+    assert!("peanut".contains("nut"));
+    assert_eq!("ಠ_ಠ".replace("ಠ", "▪"), "▪_▪");
+    assert_eq!("    clean\n".trim(), "clean");
+    for word in "veni, vidi, vici".split(", ") {
+        assert!(word.starts_with("v"));
+    }
+
+    // 型エイリアス
+    type Bytes = Vec<u8>;
+
+    let buf: Bytes = vec![0; 8];
+    let buf2: Vec<u8> = vec![0; 8];
+    assert_eq!(buf, buf2);
+
+    // 関数型言語の定義！
+    let languages: Vec<String> = std::env::args().skip(1).collect();
+    for l in languages {
+        println!(
+            "{}: {}",
+            l,
+            if l.len() % 2 == 0 {
+                "functional"
+            } else {
+                "imperative"
+            }
+        );
+    }
 }
 
 fn build_vector1() -> Vec<i16> {
@@ -68,4 +254,15 @@ fn build_vector2() -> Vec<i16> {
     v.push(10);
     v.push(20);
     v
+}
+
+#[allow(dead_code)]
+fn new_pixel_buffer(rows: usize, cols: usize) -> Vec<u8> {
+    vec![0; rows * cols]
+}
+
+fn print(n: &[f64]) {
+    for elm in n {
+        println!("{}, ", elm);
+    }
 }
