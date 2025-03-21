@@ -1,3 +1,5 @@
+use regex::Regex;
+
 fn main() {
     let v1 = build_vector1();
     let v2 = build_vector2();
@@ -169,6 +171,61 @@ fn main() {
     print(&v[0..2]);
     print(&a[2..]);
     print(&sv[1..3]);
+
+    // 文字列
+    let speech = "\"Ouch!\" said the well.\n";
+    println!("{}", speech);
+    println!(
+        "In the room the women come and go,
+        Singing of Mount Abora"
+    );
+    println!(
+        "It was a bright, cold day in April, and \
+    there were fours of us-\
+    more or less."
+    );
+
+    #[allow(unused_variables)]
+    let default_win_install_path = r"C:\Program Files\Gorillas";
+    #[allow(unused_variables)]
+    let pattern = Regex::new(r"\d+(\.\d+)*");
+    println!(r##"---"---"##);
+
+    let method = b"GET";
+    assert_eq!(method, &[b'G', b'E', b'T']);
+
+    let noodles = "noodles".to_string();
+    #[allow(unused_variables)]
+    let oodles = &noodles[1..];
+    let poodles = "ಠ_ಠ";
+    assert_eq!(poodles.len(), 7);
+    assert_eq!(poodles.chars().count(), 3);
+
+    #[allow(unused_variables)]
+    let error_message = "too many pets".to_string();
+    assert_eq!(
+        format!("{}° {:02}′ {:02}″ N", 24, 5, 23),
+        "24° 05′ 23″ N".to_string()
+    );
+
+    let bits = vec!["veni", "vidi", "vici"];
+    assert_eq!(bits.concat(), "venividivici");
+    assert_eq!(bits.join(", "), "veni, vidi, vici");
+
+    assert_eq!("ONE".to_lowercase(), "one");
+    assert!("peanut".contains("nut"));
+    assert_eq!("ಠ_ಠ".replace("ಠ", "▪"), "▪_▪");
+    assert_eq!("    clean\n".trim(), "clean");
+    for word in "veni, vidi, vici".split(", ") {
+        assert!(word.starts_with("v"));
+    }
+
+    // 型エイリアス
+    type Bytes = Vec<u8>;
+
+    let buf: Bytes = vec![0; 8];
+    let buf2: Vec<u8> = vec![0; 8];
+    assert_eq!(buf, buf2);
 
     // 関数型言語の定義！
     let languages: Vec<String> = std::env::args().skip(1).collect();
