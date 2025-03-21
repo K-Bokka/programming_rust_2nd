@@ -157,9 +157,31 @@ fn main() {
     assert_eq!(v.pop(), Some("Snow Puff"));
     assert_eq!(v.pop(), None);
 
+    // スライス
+    let v: Vec<f64> = vec![0.0, 0.707, 1.0, 0.797];
+    let a: [f64; 4] = [0.0, -0.707, -1.0, -0.797];
+
+    let sv: &[f64] = &v;
+    let sa: &[f64] = &a;
+
+    print(sv);
+    print(sa);
+    print(&v[0..2]);
+    print(&a[2..]);
+    print(&sv[1..3]);
+
+    // 関数型言語の定義！
     let languages: Vec<String> = std::env::args().skip(1).collect();
     for l in languages {
-        println!("{}: {}", l, if l.len() % 2 == 0 { "functional" } else { "imperative" });
+        println!(
+            "{}: {}",
+            l,
+            if l.len() % 2 == 0 {
+                "functional"
+            } else {
+                "imperative"
+            }
+        );
     }
 }
 
@@ -180,4 +202,10 @@ fn build_vector2() -> Vec<i16> {
 #[allow(dead_code)]
 fn new_pixel_buffer(rows: usize, cols: usize) -> Vec<u8> {
     vec![0; rows * cols]
+}
+
+fn print(n: &[f64]) {
+    for elm in n {
+        println!("{}, ", elm);
+    }
 }
