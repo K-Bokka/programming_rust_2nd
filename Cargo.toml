@@ -1,10 +1,11 @@
 [workspace]
 members = [
-    "c02_hello",
-    "c02_actix-gcd",
-    "c02_mandelbrot",
-    "c02_quickreplace",
-    "c03_example",
+    "c02/hello",
+    "c02/actix-gcd",
+    "c02/mandelbrot",
+    "c02/quickreplace",
+    "c03/example",
+    "c04/example",
 ]
 resolver = "3"
 
@@ -12,4 +13,4 @@ resolver = "3"
 edition = "2024"
 
 [workspace.dependencies]
-hello = { path = "c02_hello" }
+hello = { path = "c02/hello" }
