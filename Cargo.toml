@@ -7,6 +7,8 @@ members = [
     "c03/example",
     "c04/ownership",
     "c04/os-move",
+    "c04/copy-type",
+    "c04/rc-arc",
 ]
 resolver = "3"
 
