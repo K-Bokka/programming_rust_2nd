@@ -5,7 +5,8 @@ members = [
     "c02/mandelbrot",
     "c02/quickreplace",
     "c03/example",
-    "c04/example",
+    "c04/ownership",
+    "c04/os-move",
 ]
 resolver = "3"
 

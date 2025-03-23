@@ -419,10 +419,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "c04_example"
-version = "0.1.0"
-
-[[package]]
 name = "cc"
 version = "1.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1342,6 +1338,17 @@ name = "once_cell"
 version = "1.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cde51589ab56b20a6f686b2c68f7a0bd6add753d697abf720d63f8db3ab7b1ad"
+
+[[package]]
+name = "os-move"
+version = "0.1.0"
+dependencies = [
+ "rand 0.9.0",
+]
+
+[[package]]
+name = "ownership"
+version = "0.1.0"
 
 [[package]]
 name = "parking_lot"
