@@ -9,6 +9,7 @@ members = [
     "c04/os-move",
     "c04/copy-type",
     "c04/rc-arc",
+    "c05/example",
 ]
 resolver = "3"
 
