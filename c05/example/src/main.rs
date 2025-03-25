@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 // for Chapter 5
 fn main() {
+    // 5.1
     let mut table = Table::new();
     table.insert(
         "Alice".to_string(),
@@ -28,6 +29,29 @@ fn main() {
     assert_eq!(table["Alice"][0], "The Wonderful Wizard of Oz");
     sort_works(&mut table);
     assert_eq!(table["Alice"][0], "Harry Potter");
+
+    // 5.2
+    let x = 10;
+    let r = &x;
+    assert_eq!(*r, 10);
+
+    let mut y = 32;
+    let m = &mut y;
+    *m += 32;
+    assert_eq!(*m, 64);
+
+    let aria = Anime {
+        name: "Aria: The Animation",
+        bechdel_pass: true,
+    };
+    let anime_ref = &aria;
+    assert_eq!(anime_ref.name, "Aria: The Animation");
+    assert_eq!((*anime_ref).name, "Aria: The Animation");
+
+    let mut v = vec![1973, 1968];
+    // v.sort();
+    (&mut v).sort();
+    assert_eq!(v, vec![1968, 1973]);
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -55,4 +79,10 @@ fn sort_works(table: &mut Table) {
     for (_artist, works) in table {
         works.sort();
     }
+}
+
+struct Anime {
+    name: &'static str,
+    #[allow(dead_code)]
+    bechdel_pass: bool,
 }
