@@ -91,6 +91,117 @@ fn main() {
     // 5.2.6
     let r = &factorial(6);
     assert_eq!(r + &1009, 1729);
+
+    // 5.3.1
+    {
+        let r;
+        {
+            let x = 1;
+            r = &x;
+            assert_eq!(*r, 1);
+        }
+        // assert_eq!(*r, 1); // error[E0597]: `x` does not live long enough
+    }
+
+    // 5.3.2
+    static mut STASH: &i32 = &128;
+    fn f(p: &'static i32) {
+        unsafe {
+            STASH = p;
+        }
+    }
+    // error: lifetime may not live long enough
+    //    --> c05/example/src/main.rs:110:13
+    //     |
+    // 108 |     fn f(p: &i32) {
+    //     |             - let's call the lifetime of this reference `'1`
+    // 109 |         unsafe {
+    // 110 |             STASH =p;
+    //     |             ^^^^^^^^ assignment requires that `'1` must outlive `'static`
+    static WORTH_POINTING_AT: i32 = 1000;
+    f(&WORTH_POINTING_AT);
+
+    // 5.3.4
+    let s;
+    {
+        let parabola = [9, 4, 1, 0, 1, 4, 9];
+        s = smallest(&parabola);
+        assert_eq!(*s, 0);
+    }
+    // assert_eq!(*s, 0);
+    // error[E0597]: `parabola` does not live long enough
+    //    --> c05/example/src/main.rs:128:22
+    //     |
+    // 127 |         let parabola = [9, 4, 1, 0, 1, 4, 9];
+    //     |             -------- binding `parabola` declared here
+    // 128 |         s = smallest(&parabola);
+    //     |                      ^^^^^^^^^ borrowed value does not live long enough
+    // 129 |     }
+    //     |     - `parabola` dropped here while still borrowed
+    // 130 |     assert_eq!(*s, 0);
+    //     |     ----------------- borrow later used here
+
+    // 5.3.5
+    struct S<'a> {
+        r: &'a i32,
+    }
+    let s;
+    {
+        let x = 10;
+        s = S { r: &x };
+        assert_eq!(*s.r, 10);
+    }
+    // assert_eq!(*s.r, 10);
+
+    #[allow(dead_code)]
+    struct D<'a> {
+        s: S<'a>,
+    }
+
+    // 5.3.6
+    struct S2<'a, 'b> {
+        x: &'a i32,
+        #[allow(dead_code)]
+        y: &'b i32,
+    }
+
+    let x = 10;
+    let r;
+    {
+        let y = 20;
+        {
+            let s = S2 { x: &x, y: &y };
+            r = s.x;
+        }
+    }
+    println!("r: {}", r);
+
+    // 5.3.7
+    #[allow(dead_code)]
+    fn sum_r_xy(r: &i32, s2: S2) -> i32 {
+        r + s2.x + s2.y
+    }
+
+    #[allow(dead_code)]
+    fn first_third(point: &[i32; 3]) -> (&i32, &i32) {
+        (&point[0], &point[1])
+    }
+
+    #[allow(dead_code)]
+    struct StringTable {
+        elements: Vec<String>,
+    }
+    impl StringTable {
+        #[allow(dead_code)]
+        fn find_by_prefix(&self, prefix: &str) -> Option<&String> {
+            for i in 0..self.elements.len() {
+                if self.elements[i].starts_with(prefix) {
+                    return Some(&self.elements[i]);
+                }
+            }
+            None
+        }
+    }
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -140,4 +251,14 @@ struct Point {
 
 fn factorial(n: usize) -> usize {
     (1..n + 1).product()
+}
+
+fn smallest(v: &[i32]) -> &i32 {
+    let mut s = &v[0];
+    for i in &v[1..] {
+        if *i < *s {
+            s = i;
+        }
+    }
+    s
 }
