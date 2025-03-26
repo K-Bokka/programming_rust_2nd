@@ -1,3 +1,4 @@
+use rand::Rng;
 use std::collections::HashMap;
 
 // for Chapter 5
@@ -52,6 +53,15 @@ fn main() {
     // v.sort();
     (&mut v).sort();
     assert_eq!(v, vec![1968, 1973]);
+
+    let x = 10;
+    let y = 20;
+    let mut r = &x;
+
+    if random_bool() {
+        r = &y;
+    }
+    assert!(*r == 20 || *r == 10);
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -85,4 +95,10 @@ struct Anime {
     name: &'static str,
     #[allow(dead_code)]
     bechdel_pass: bool,
+}
+
+fn random_bool() -> bool {
+    let mut rng = rand::rng();
+    let r = rng.random::<u8>();
+    r % 2 == 0
 }
