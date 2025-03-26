@@ -157,6 +157,23 @@ fn main() {
     struct D<'a> {
         s: S<'a>,
     }
+
+    struct S2<'a, 'b> {
+        x: &'a i32,
+        #[allow(dead_code)]
+        y: &'b i32,
+    }
+
+    let x = 10;
+    let r;
+    {
+        let y = 20;
+        {
+            let s = S2 { x: &x, y: &y };
+            r = s.x;
+        }
+    }
+    println!("r: {}", r);
 }
 
 type Table = HashMap<String, Vec<String>>;
