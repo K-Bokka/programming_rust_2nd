@@ -158,6 +158,7 @@ fn main() {
         s: S<'a>,
     }
 
+    // 5.3.6
     struct S2<'a, 'b> {
         x: &'a i32,
         #[allow(dead_code)]
@@ -174,6 +175,33 @@ fn main() {
         }
     }
     println!("r: {}", r);
+
+    // 5.3.7
+    #[allow(dead_code)]
+    fn sum_r_xy(r: &i32, s2: S2) -> i32 {
+        r + s2.x + s2.y
+    }
+
+    #[allow(dead_code)]
+    fn first_third(point: &[i32; 3]) -> (&i32, &i32) {
+        (&point[0], &point[1])
+    }
+
+    #[allow(dead_code)]
+    struct StringTable {
+        elements: Vec<String>,
+    }
+    impl StringTable {
+        #[allow(dead_code)]
+        fn find_by_prefix(&self, prefix: &str) -> Option<&String> {
+            for i in 0..self.elements.len() {
+                if self.elements[i].starts_with(prefix) {
+                    return Some(&self.elements[i]);
+                }
+            }
+            None
+        }
+    }
 }
 
 type Table = HashMap<String, Vec<String>>;
