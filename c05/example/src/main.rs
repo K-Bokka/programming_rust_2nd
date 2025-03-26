@@ -1,3 +1,4 @@
+use rand::Rng;
 use std::collections::HashMap;
 
 // for Chapter 5
@@ -30,7 +31,7 @@ fn main() {
     sort_works(&mut table);
     assert_eq!(table["Alice"][0], "Harry Potter");
 
-    // 5.2
+    // 5.2.1
     let x = 10;
     let r = &x;
     assert_eq!(*r, 10);
@@ -52,6 +53,44 @@ fn main() {
     // v.sort();
     (&mut v).sort();
     assert_eq!(v, vec![1968, 1973]);
+
+    // 5.2.2
+    let x = 10;
+    let y = 20;
+    let mut r = &x;
+
+    if random_bool() {
+        r = &y;
+    }
+    assert!(*r == 20 || *r == 10);
+
+    // 5.2.3
+    let point = Point { x: 1000, y: 729 };
+    let r: &Point = &point;
+    let rr: &&Point = &r;
+    let rrr: &&&Point = &rr;
+    assert_eq!((*rrr).x, 1000);
+
+    // 5.2.4
+    let x = 10;
+    let y = 10;
+    let rx = &x;
+    let ry = &y;
+    let rrx = &rx;
+    let rry = &ry;
+
+    assert!(rrx <= rry);
+    assert_eq!(rry, rrx);
+
+    assert_eq!(ry, rx);
+    assert!(!std::ptr::eq(rx, ry));
+
+    // assert_eq!(rx, rrx); // error[E0277]: can't compare `{integer}` with `&{integer}`
+    assert_eq!(rx, *rrx);
+
+    // 5.2.6
+    let r = &factorial(6);
+    assert_eq!(r + &1009, 1729);
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -85,4 +124,20 @@ struct Anime {
     name: &'static str,
     #[allow(dead_code)]
     bechdel_pass: bool,
+}
+
+fn random_bool() -> bool {
+    let mut rng = rand::rng();
+    let r = rng.random::<u8>();
+    r % 2 == 0
+}
+
+struct Point {
+    x: i32,
+    #[allow(dead_code)]
+    y: i32,
+}
+
+fn factorial(n: usize) -> usize {
+    (1..n + 1).product()
 }
