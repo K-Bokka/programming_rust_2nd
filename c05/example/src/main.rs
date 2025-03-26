@@ -107,9 +107,9 @@ fn main() {
     static mut STASH: &i32 = &128;
     fn f(p: &'static i32) {
         unsafe {
-            STASH =p;
+            STASH = p;
         }
-    };
+    }
     // error: lifetime may not live long enough
     //    --> c05/example/src/main.rs:110:13
     //     |
@@ -119,8 +119,44 @@ fn main() {
     // 110 |             STASH =p;
     //     |             ^^^^^^^^ assignment requires that `'1` must outlive `'static`
     static WORTH_POINTING_AT: i32 = 1000;
-    f(&WORTH_POINTING_AT)
+    f(&WORTH_POINTING_AT);
 
+    // 5.3.4
+    let s;
+    {
+        let parabola = [9, 4, 1, 0, 1, 4, 9];
+        s = smallest(&parabola);
+        assert_eq!(*s, 0);
+    }
+    // assert_eq!(*s, 0);
+    // error[E0597]: `parabola` does not live long enough
+    //    --> c05/example/src/main.rs:128:22
+    //     |
+    // 127 |         let parabola = [9, 4, 1, 0, 1, 4, 9];
+    //     |             -------- binding `parabola` declared here
+    // 128 |         s = smallest(&parabola);
+    //     |                      ^^^^^^^^^ borrowed value does not live long enough
+    // 129 |     }
+    //     |     - `parabola` dropped here while still borrowed
+    // 130 |     assert_eq!(*s, 0);
+    //     |     ----------------- borrow later used here
+
+    // 5.3.5
+    struct S<'a> {
+        r: &'a i32,
+    }
+    let s;
+    {
+        let x = 10;
+        s = S { r: &x };
+        assert_eq!(*s.r, 10);
+    }
+    // assert_eq!(*s.r, 10);
+
+    #[allow(dead_code)]
+    struct D<'a> {
+        s: S<'a>,
+    }
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -170,4 +206,14 @@ struct Point {
 
 fn factorial(n: usize) -> usize {
     (1..n + 1).product()
+}
+
+fn smallest(v: &[i32]) -> &i32 {
+    let mut s = &v[0];
+    for i in &v[1..] {
+        if *i < *s {
+            s = i;
+        }
+    }
+    s
 }
