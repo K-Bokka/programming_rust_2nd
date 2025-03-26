@@ -91,6 +91,36 @@ fn main() {
     // 5.2.6
     let r = &factorial(6);
     assert_eq!(r + &1009, 1729);
+
+    // 5.3.1
+    {
+        let r;
+        {
+            let x = 1;
+            r = &x;
+            assert_eq!(*r, 1);
+        }
+        // assert_eq!(*r, 1); // error[E0597]: `x` does not live long enough
+    }
+
+    // 5.3.2
+    static mut STASH: &i32 = &128;
+    fn f(p: &'static i32) {
+        unsafe {
+            STASH =p;
+        }
+    };
+    // error: lifetime may not live long enough
+    //    --> c05/example/src/main.rs:110:13
+    //     |
+    // 108 |     fn f(p: &i32) {
+    //     |             - let's call the lifetime of this reference `'1`
+    // 109 |         unsafe {
+    // 110 |             STASH =p;
+    //     |             ^^^^^^^^ assignment requires that `'1` must outlive `'static`
+    static WORTH_POINTING_AT: i32 = 1000;
+    f(&WORTH_POINTING_AT)
+
 }
 
 type Table = HashMap<String, Vec<String>>;
