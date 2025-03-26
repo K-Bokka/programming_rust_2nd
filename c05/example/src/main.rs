@@ -62,6 +62,12 @@ fn main() {
         r = &y;
     }
     assert!(*r == 20 || *r == 10);
+
+    let point = Point { x: 1000, y: 729 };
+    let r: &Point = &point;
+    let rr: &&Point = &r;
+    let rrr: &&&Point = &rr;
+    assert_eq!((*rrr).x, 1000);
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -101,4 +107,10 @@ fn random_bool() -> bool {
     let mut rng = rand::rng();
     let r = rng.random::<u8>();
     r % 2 == 0
+}
+
+struct Point {
+    x: i32,
+    #[allow(dead_code)]
+    y: i32,
 }
