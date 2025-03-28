@@ -202,6 +202,82 @@ fn main() {
             None
         }
     }
+
+    // 5.4
+    let v = vec![4, 8, 19, 27, 34, 10];
+    // let r =&v;
+    // let aside = v;
+    // r[0];
+    // error[E0505]: cannot move out of `v` because it is borrowed
+    //    --> c05/example/src/main.rs:209:17
+    //     |
+    // 207 |     let v = vec![4, 8, 19, 27, 34, 10];
+    //     |         - binding `v` declared here
+    // 208 |     let r =&v;
+    //     |            -- borrow of `v` occurs here
+    // 209 |     let aside = v;
+    //     |                 ^ move out of `v` occurs here
+    // 210 |     r[0];
+    //     |     - borrow later used here
+
+    {
+        let r = &v;
+        r[0];
+    }
+    let _aside = v;
+
+    let mut wave = Vec::new();
+    let head = vec![0.0, 1.0];
+    let tail = [0.0, -1.0];
+    extend(&mut wave, &head);
+    extend(&mut wave, &tail);
+
+    assert_eq!(wave, vec![0.0, 1.0, 0.0, -1.0]);
+
+    // extend(&mut wave, &wave);
+    // assert_eq!(wave, vec![0.0, 1.0, 0.0, -1.0, 0.0, 1.0, 0.0, -1.0]);
+    // error[E0502]: cannot borrow `wave` as immutable because it is also borrowed as mutable
+    //    --> c05/example/src/main.rs:237:23
+    //     |
+    // 237 |     extend(&mut wave, &wave);
+    //     |     ------ ---------  ^^^^^ immutable borrow occurs here
+    //     |     |      |
+    //     |     |      mutable borrow occurs here
+    //     |     mutable borrow later used by call
+
+    #[allow(unused_mut)]
+    let mut x = 10;
+    let r1 = &x;
+    let r2 = &x;
+    // x += 10; // `x` is assigned to here but it was already borrowed
+    // let m = &mut x; // mutable borrow occurs here
+    let m = &x;
+    println!("r1: {}, r2: {}, m: {}", r1, r2, m);
+
+    // let mut y = 20;
+    // let m1 = &mut y;
+    // let m2 = &mut y; // second mutable borrow occurs here
+    // let z = y; // use of borrowed `y`
+    // println!("m1: {}, m2: {}, z: {}", m1, m2, z);
+
+    #[allow(unused_mut)]
+    let mut w = (107, 109);
+    let r = &w;
+    let r0 = &r.0;
+    // let m1 = &mut r.1; // `r` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+    println!("r0: {}", r0);
+
+    let mut v = (136, 139);
+    let m = &mut v;
+    let m0 = &mut m.0;
+    *m0 = 137;
+    let r1 = &m.1;
+    println!("m0: {}, r1: {}", m0, r1);
+
+    #[allow(unused_variables)]
+    #[allow(unused_mut)]
+    let mut f = new_file(open("test"));
+    // clone_from(&mut f, &f);
 }
 
 type Table = HashMap<String, Vec<String>>;
@@ -261,4 +337,34 @@ fn smallest(v: &[i32]) -> &i32 {
         }
     }
     s
+}
+
+fn extend(vec: &mut Vec<f64>, slice: &[f64]) {
+    for elt in slice {
+        vec.push(*elt);
+    }
+}
+
+struct File {
+    descriptor: i32,
+}
+
+fn new_file(d: i32) -> File {
+    File { descriptor: d }
+}
+
+#[allow(dead_code)]
+fn clone_from(this: &mut File, rhs: &File) {
+    close(this.descriptor);
+    this.descriptor = dup(rhs.descriptor);
+}
+
+fn open(_path: &str) -> i32 {
+    10
+}
+
+fn close(_d: i32) {}
+
+fn dup(d: i32) -> i32 {
+    d
 }
