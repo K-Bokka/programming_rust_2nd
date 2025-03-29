@@ -10,6 +10,7 @@ members = [
     "c04/copy-type",
     "c04/rc-arc",
     "c05/example",
+    "c06/example",
 ]
 resolver = "3"
 
