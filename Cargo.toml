@@ -11,6 +11,7 @@ members = [
     "c04/rc-arc",
     "c05/example",
     "c06/example",
+    "c07/example",
 ]
 resolver = "3"
 
