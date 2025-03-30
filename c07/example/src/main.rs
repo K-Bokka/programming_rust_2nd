@@ -1,7 +1,7 @@
 use std::error::Error;
-use std::io::{stderr, Write};
-use std::io;
 use std::fs;
+use std::io;
+use std::io::{BufRead, Write, stderr};
 use std::path::Path;
 
 fn main() {
@@ -56,7 +56,6 @@ fn print_error(mut err: &dyn Error) {
     }
 }
 
-
 #[allow(dead_code)]
 fn move_all(src: &Path, dst: &Path) -> io::Result<()> {
     for entry_result in src.read_dir()? {
@@ -66,3 +65,17 @@ fn move_all(src: &Path, dst: &Path) -> io::Result<()> {
     }
     Ok(())
 }
+
+#[allow(dead_code)]
+// fn read_numbers(file: &mut dyn BufRead) -> Result<Vec<i64>, io::Error> {
+fn read_numbers(file: &mut dyn BufRead) -> GeneticResult<Vec<i64>> {
+    let mut numbers = vec![];
+    for line_results in file.lines() {
+        let line = line_results?;
+        numbers.push(line.parse()?); // the trait `From<ParseIntError>` is not implemented for `std::io::Error`
+    }
+    Ok(numbers)
+}
+
+type GenericError = Box<dyn Error + Send + Sync + 'static>;
+type GeneticResult<T> = Result<T, GenericError>;
