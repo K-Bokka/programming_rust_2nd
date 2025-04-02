@@ -1,8 +1,8 @@
 use std::error::Error;
-use std::fs;
 use std::io;
-use std::io::{BufRead, Write, stderr};
+use std::io::{stderr, BufRead, Write};
 use std::path::Path;
+use std::fs;
 
 fn main() {
     println!("Chapter 7");
@@ -79,3 +79,13 @@ fn read_numbers(file: &mut dyn BufRead) -> GeneticResult<Vec<i64>> {
 
 type GenericError = Box<dyn Error + Send + Sync + 'static>;
 type GeneticResult<T> = Result<T, GenericError>;
+
+use thiserror::Error;
+#[allow(dead_code)]
+#[derive(Error, Debug)]
+#[error("{message:} {line:}, {column:}")]
+struct JsonError {
+    message: String,
+    line: usize,
+    column: usize,
+}
