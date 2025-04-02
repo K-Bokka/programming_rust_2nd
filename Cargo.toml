@@ -13,6 +13,7 @@ members = [
     "c06/example",
     "c07/example",
     "c07/tidecalc",
+    "c08/example",
 ]
 resolver = "3"
 
