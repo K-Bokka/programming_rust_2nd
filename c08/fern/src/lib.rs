@@ -1,6 +1,6 @@
 pub struct Fern {
-    size: f64,
-    growth_rate: f64,
+    pub size: f64,
+    pub growth_rate: f64,
 }
 
 impl Fern {
