@@ -17,6 +17,7 @@ members = [
     "c08/fern_sim",
     "c08/fern",
     "c08/ranges",
+    "c09/example",
 ]
 resolver = "3"
 
