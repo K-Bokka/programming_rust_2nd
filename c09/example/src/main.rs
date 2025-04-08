@@ -1,4 +1,5 @@
 fn main() {
+    // 9.1 named field
     let width = 1024;
     let height = 576;
     let image = GrayscaleMap {
@@ -7,7 +8,7 @@ fn main() {
     };
 
     assert_eq!(image.size, (1024, 576));
-    assert_eq!(image.pixels.len(), 1024 * 765);
+    assert_eq!(image.pixels.len(), 1024 * 576);
 
     let image2 = new_map((1024, 576), vec![0; 1024 * 576]);
 
@@ -31,6 +32,17 @@ fn main() {
     assert_eq!(hokey2.name, "Hokey II");
     assert_eq!(hokey2.height, 30);
     assert_eq!(hokey2.health, 100);
+
+    // 9.2 tuple
+    let image_bounds = Bounds(1024, 576);
+    assert_eq!(image_bounds.0 * image_bounds.1, 1024 * 576);
+
+    let ascii = Ascii(vec![65, 115, 99, 105, 105]);
+    assert_eq!(ascii.0, "Ascii".as_bytes().to_vec());
+
+    // 9.3 unit
+    #[allow(unused_variables)]
+    let o = OneSuch;
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -73,3 +85,9 @@ fn chop(b: Broom) -> (Broom, Broom) {
     broom2.name.push_str(" II");
     (broom1, broom2)
 }
+
+struct Bounds(usize, usize);
+
+struct Ascii(Vec<u8>);
+
+struct OneSuch;
