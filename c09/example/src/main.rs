@@ -41,8 +41,7 @@ fn main() {
     assert_eq!(ascii.0, "Ascii".as_bytes().to_vec());
 
     // 9.3 unit
-    #[allow(unused_variables)]
-    let o = OneSuch;
+    #[allow(unused_variables)] let o = OneSuch;
 
     // 9.5 method define
     let mut q = Queue {
@@ -71,6 +70,11 @@ fn main() {
     // println!("q is {:?}", q); // value borrowed here after move
     assert_eq!(older, vec!['D']);
     assert_eq!(younger, vec!['X']);
+
+    // 9.5.1 self in Box Rc Arc
+    let mut bq = Box::new(Queue::new());
+    bq.push(' ');
+    println!("bq is {:?}", bq);
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -119,12 +123,20 @@ struct Bounds(usize, usize);
 struct Ascii(Vec<u8>);
 
 struct OneSuch;
+#[derive(Debug)]
 pub struct Queue {
     older: Vec<char>,
     younger: Vec<char>,
 }
 
 impl Queue {
+    pub fn new() -> Queue {
+        Queue {
+            older: Vec::new(),
+            younger: Vec::new(),
+        }
+    }
+
     pub fn push(&mut self, c: char) {
         self.younger.push(c);
     }
