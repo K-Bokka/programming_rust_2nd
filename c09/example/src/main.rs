@@ -41,7 +41,8 @@ fn main() {
     assert_eq!(ascii.0, "Ascii".as_bytes().to_vec());
 
     // 9.3 unit
-    #[allow(unused_variables)] let o = OneSuch;
+    #[allow(unused_variables)]
+    let o = OneSuch;
 
     // 9.5 method define
     let mut q = Queue {
@@ -75,6 +76,31 @@ fn main() {
     let mut bq = Box::new(Queue::new());
     bq.push(' ');
     println!("bq is {:?}", bq);
+
+    // 9.6 Associated constants
+    println!(
+        "{} id: {}, zero is {:?}",
+        Vector2::NAME,
+        Vector2::ID,
+        Vector2::ZERO
+    );
+    let scaled = Vector2::UNIT.scaled_by(2.0);
+    println!(
+        "{} id: {}, scaled is {:?}",
+        Vector2::NAME,
+        Vector2::ID,
+        scaled
+    );
+
+    // 9.7 generics structure
+    let mut q = QueueG::new();
+    let mut r = QueueG::new();
+    q.push("CAD");
+    r.push(0.74);
+    q.push("BTC");
+    r.push(13764.0);
+    println!("q is {:?}", q);
+    println!("r is {:?}", r)
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -156,6 +182,63 @@ impl Queue {
     }
 
     pub fn split(self) -> (Vec<char>, Vec<char>) {
+        (self.older, self.younger)
+    }
+}
+
+#[derive(Debug)]
+pub struct Vector2 {
+    x: f32,
+    y: f32,
+}
+
+impl Vector2 {
+    const ZERO: Vector2 = Vector2 { x: 0.0, y: 0.0 };
+    const UNIT: Vector2 = Vector2 { x: 1.0, y: 0.0 };
+    const NAME: &'static str = "Vector2";
+    const ID: u32 = 18;
+
+    fn scaled_by(&self, s: f32) -> Vector2 {
+        Vector2 {
+            x: self.x * s,
+            y: self.y * s,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct QueueG<T> {
+    older: Vec<T>,
+    younger: Vec<T>,
+}
+
+impl<T> QueueG<T> {
+    pub fn new() -> Self {
+        QueueG {
+            older: Vec::new(),
+            younger: Vec::new(),
+        }
+    }
+
+    pub fn push(&mut self, c: T) {
+        self.younger.push(c);
+    }
+    pub fn pop(&mut self) -> Option<T> {
+        if self.older.is_empty() {
+            if self.younger.is_empty() {
+                return None;
+            }
+            use std::mem::swap;
+            swap(&mut self.older, &mut self.younger);
+            self.older.reverse();
+        }
+        self.older.pop()
+    }
+    pub fn is_empty(&self) -> bool {
+        self.older.is_empty() && self.younger.is_empty()
+    }
+
+    pub fn split(self) -> (Vec<T>, Vec<T>) {
         (self.older, self.younger)
     }
 }
