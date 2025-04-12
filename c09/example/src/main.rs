@@ -100,7 +100,13 @@ fn main() {
     q.push("BTC");
     r.push(13764.0);
     println!("q is {:?}", q);
-    println!("r is {:?}", r)
+    println!("r is {:?}", r);
+
+    // 9.8 lifecycle parameter
+    let a = [0, -3, 0, 15, 48];
+    let e = find_extrema(&a);
+    assert_eq!(*e.greatest, 48);
+    assert_eq!(*e.least, -3);
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -241,4 +247,23 @@ impl<T> QueueG<T> {
     pub fn split(self) -> (Vec<T>, Vec<T>) {
         (self.older, self.younger)
     }
+}
+
+struct Extrema<'elt> {
+    greatest: &'elt i32,
+    least: &'elt i32,
+}
+
+fn find_extrema(slice: &[i32]) -> Extrema {
+    let mut greatest = &slice[0];
+    let mut least = &slice[0];
+
+    for i in 1..slice.len() {
+        if slice[i] < *least {
+            least = &slice[i];
+        } else if slice[i] > *greatest {
+            greatest = &slice[i];
+        }
+    }
+    Extrema { greatest, least }
 }
