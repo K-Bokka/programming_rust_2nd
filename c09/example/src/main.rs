@@ -107,6 +107,13 @@ fn main() {
     let e = find_extrema(&a);
     assert_eq!(*e.greatest, 48);
     assert_eq!(*e.least, -3);
+
+    // 9.9 generics structure with const
+    use std::f64::consts::FRAC_PI_2;
+    // sin x =~ x - 1.6x^3 + 1/120x^5
+    let sin_poly = Polynomial::new([0.0, 1.0, 0.0, -1.0 / 6.0, 0.0, 1.0 / 120.0]);
+    assert_eq!(sin_poly.eval(0.0), 0.0);
+    assert!((sin_poly.eval(FRAC_PI_2) - 1.0).abs() < 0.005);
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -266,4 +273,26 @@ fn find_extrema(slice: &[i32]) -> Extrema {
         }
     }
     Extrema { greatest, least }
+}
+
+struct Polynomial<const N: usize> {
+    coefficients: [f64; N],
+}
+
+impl<const N: usize> Polynomial<N> {
+    fn new(coefficients: [f64; N]) -> Self {
+        Polynomial { coefficients }
+    }
+    fn eval(&self, x: f64) -> f64 {
+        let mut sum = 0.0;
+        for i in (0..N).rev() {
+            sum = sum * x + self.coefficients[i];
+        }
+        sum
+    }
+}
+
+#[allow(dead_code)]
+struct LumpOfReferences<'a, T, const N: usize> {
+    the_lump: [&'a T; N],
 }
