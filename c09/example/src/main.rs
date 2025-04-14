@@ -114,6 +114,14 @@ fn main() {
     let sin_poly = Polynomial::new([0.0, 1.0, 0.0, -1.0 / 6.0, 0.0, 1.0 / 120.0]);
     assert_eq!(sin_poly.eval(0.0), 0.0);
     assert!((sin_poly.eval(FRAC_PI_2) - 1.0).abs() < 0.005);
+
+    // 9.10 generic traits
+    let a = Point { x: 1.0, y: 2.0 };
+    let b = a.clone(); // Clone
+    let c = a; // Copy
+
+    assert_eq!(b, c); // PartialEq
+    println!("a is {:?}", a); // Debug
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -295,4 +303,10 @@ impl<const N: usize> Polynomial<N> {
 #[allow(dead_code)]
 struct LumpOfReferences<'a, T, const N: usize> {
     the_lump: [&'a T; N],
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    x: f64,
+    y: f64,
 }
