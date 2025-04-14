@@ -1,3 +1,8 @@
+use std::cell::{Cell, RefCell};
+use std::fs::File;
+use std::io::Write;
+use std::rc::Rc;
+
 fn main() {
     // 9.1 named field
     let width = 1024;
@@ -122,6 +127,17 @@ fn main() {
 
     assert_eq!(b, c); // PartialEq
     println!("a is {:?}", a); // Debug
+
+    // 9.11 Interior mutability
+    let ref_cell = RefCell::new("hello".to_string());
+    {
+        let r = ref_cell.borrow();
+        let count = r.len();
+        assert_eq!(count, 5);
+    }
+    let mut w = ref_cell.borrow_mut();
+    w.push_str(" world");
+    println!("w is {:?}", w);
 }
 #[derive(Debug)]
 struct GrayscaleMap {
@@ -309,4 +325,31 @@ struct LumpOfReferences<'a, T, const N: usize> {
 struct Point {
     x: f64,
     y: f64,
+}
+#[allow(dead_code)]
+struct SpiderRoot {
+    species: String,
+    web_enabled: bool,
+    hardware_error_count: Cell<u32>,
+    log_file: RefCell<File>,
+}
+
+#[allow(dead_code)]
+impl SpiderRoot {
+    pub fn add_hardware_error(&self) {
+        let n = self.hardware_error_count.get();
+        self.hardware_error_count.set(n + 1);
+    }
+    pub fn has_hardware_errors(&self) -> bool {
+        self.hardware_error_count.get() > 0
+    }
+    pub fn log(&self, msg: &str) {
+        let mut log_file = self.log_file.borrow_mut();
+        writeln!(log_file, "{}", msg).unwrap();
+    }
+}
+
+#[allow(dead_code)]
+pub struct SpiderSenses {
+    robot: Rc<SpiderRoot>,
 }
