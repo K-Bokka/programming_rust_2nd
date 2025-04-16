@@ -18,6 +18,7 @@ members = [
     "c08/fern",
     "c08/ranges",
     "c09/example",
+    "c10/example",
 ]
 resolver = "3"
 
