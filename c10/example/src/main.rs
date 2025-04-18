@@ -115,3 +115,14 @@ enum RelationShipStatus {
     ItsComplicated(Option<String>),
     ItsExtremelyComplicated { car: String, cdr: String },
 }
+
+use std::collections::HashMap;
+#[allow(dead_code)]
+enum Json {
+    Null,
+    Boolean(bool),
+    Number(f64),
+    String(String),
+    Array(Vec<Json>),
+    Object(Box<HashMap<String, Json>>),
+}
