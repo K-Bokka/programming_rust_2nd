@@ -28,6 +28,25 @@ fn main() {
         radius: 1.0,
     };
     println!("{:?}", unit_sphere);
+
+    // 10.1.4
+    let jupiter_tree = NonEmpty(Box::new(TreeNode {
+        element: "Jupiter",
+        left: Empty,
+        right: Empty,
+    }));
+
+    let mercury_tree = NonEmpty(Box::new(TreeNode {
+        element: "Mercury",
+        left: Empty,
+        right: Empty,
+    }));
+    let mars_tree = NonEmpty(Box::new(TreeNode {
+        element: "Mars",
+        left: jupiter_tree,
+        right: mercury_tree,
+    }));
+    println!("{:?}", mars_tree);
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -114,4 +133,42 @@ enum RelationShipStatus {
     InARelationship,
     ItsComplicated(Option<String>),
     ItsExtremelyComplicated { car: String, cdr: String },
+}
+
+use crate::BinaryTree::{Empty, NonEmpty};
+use std::collections::HashMap;
+
+#[allow(dead_code)]
+enum Json {
+    Null,
+    Boolean(bool),
+    Number(f64),
+    String(String),
+    Array(Vec<Json>),
+    Object(Box<HashMap<String, Json>>),
+}
+
+#[allow(dead_code)]
+enum OptionT<T> {
+    Some(T),
+    None,
+}
+
+#[allow(dead_code)]
+enum ResultT<T, E> {
+    Ok(T),
+    Err(E),
+}
+#[allow(dead_code)]
+#[derive(Debug)]
+enum BinaryTree<T> {
+    Empty,
+    NonEmpty(Box<TreeNode<T>>),
+}
+#[allow(dead_code)]
+#[derive(Debug)]
+struct TreeNode<T> {
+    element: T,
+    left: BinaryTree<T>,
+    right: BinaryTree<T>,
 }
