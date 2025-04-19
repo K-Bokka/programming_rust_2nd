@@ -47,6 +47,17 @@ fn main() {
         right: mercury_tree,
     }));
     println!("{:?}", mars_tree);
+
+    // 10.2
+    let two_hours = RoughTime::InTheFuture(TimeUnit::Hours, 2);
+    println!("{}", rough_time_to_english(&two_hours));
+
+    // 10.2.2
+    let point_str = describe_point(1, 1);
+    println!("{}", point_str);
+
+    let names = ["Alice", "Bob", "Charlie"];
+    greet_person(&names);
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -171,4 +182,44 @@ struct TreeNode<T> {
     element: T,
     left: BinaryTree<T>,
     right: BinaryTree<T>,
+}
+
+fn rough_time_to_english(time: &RoughTime) -> String {
+    match time {
+        RoughTime::InThePast(unit, amount) => format!("{} {} ago", amount, unit.plural()),
+        RoughTime::JustNow => "just now".to_string(),
+        RoughTime::InTheFuture(TimeUnit::Hours, 1) => "an hour from now".to_string(),
+        RoughTime::InTheFuture(unit, 1) => format!("a {} from now", unit.plural()),
+        RoughTime::InTheFuture(unit, amount) => format!("{} {} from now", amount, unit.plural()),
+    }
+}
+
+fn describe_point(x: i32, y: i32) -> &'static str {
+    use std::cmp::Ordering::*;
+    match (x.cmp(&0), y.cmp(&0)) {
+        (Equal, Equal) => "at the origin",
+        (_, Equal) => "on the x axis",
+        (Equal, _) => "on the y axis",
+        (Greater, Greater) => "in the first quadrant",
+        (Less, Greater) => "in the second quadrant",
+        _ => "somewhere else",
+    }
+}
+
+#[allow(dead_code)]
+fn hsl_to_rgb(hsl: [u8; 3]) -> [u8; 3] {
+    match hsl {
+        [_, _, 0] => [0, 0, 0],
+        [_, _, 255] => [255, 255, 255],
+        _ => [0, 0, 0],
+    }
+}
+
+fn greet_person(names: &[&str]) {
+    match names {
+        [] => println!("Hello, nobody!"),
+        [name] => println!("Hello, {}!", name),
+        [first, second] => println!("Hello, {} and {}!", first, second),
+        [first, .., last] => println!("Hello, everyone from {} to {}!", first, last),
+    }
 }
