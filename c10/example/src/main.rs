@@ -47,6 +47,10 @@ fn main() {
         right: mercury_tree,
     }));
     println!("{:?}", mars_tree);
+
+    // 10.2
+    let two_hours = RoughTime::InTheFuture(TimeUnit::Hours, 2);
+    println!("{}", rough_time_to_english(&two_hours));
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -171,4 +175,14 @@ struct TreeNode<T> {
     element: T,
     left: BinaryTree<T>,
     right: BinaryTree<T>,
+}
+
+fn rough_time_to_english(time: &RoughTime) -> String {
+    match time {
+        RoughTime::InThePast(unit, amount) => format!("{} {} ago", amount, unit.plural()),
+        RoughTime::JustNow => "just now".to_string(),
+        RoughTime::InTheFuture(TimeUnit::Hours, 1) => "an hour from now".to_string(),
+        RoughTime::InTheFuture(unit, 1) => format!("a {} from now", unit.plural()),
+        RoughTime::InTheFuture(unit, amount) => format!("{} {} from now", amount, unit.plural()),
+    }
 }
