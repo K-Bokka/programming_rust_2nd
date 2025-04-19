@@ -51,6 +51,10 @@ fn main() {
     // 10.2
     let two_hours = RoughTime::InTheFuture(TimeUnit::Hours, 2);
     println!("{}", rough_time_to_english(&two_hours));
+
+    // 10.2.2
+    let point_str = describe_point(1, 1);
+    println!("{}", point_str);
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -184,5 +188,17 @@ fn rough_time_to_english(time: &RoughTime) -> String {
         RoughTime::InTheFuture(TimeUnit::Hours, 1) => "an hour from now".to_string(),
         RoughTime::InTheFuture(unit, 1) => format!("a {} from now", unit.plural()),
         RoughTime::InTheFuture(unit, amount) => format!("{} {} from now", amount, unit.plural()),
+    }
+}
+
+fn describe_point(x: i32, y: i32) -> &'static str {
+    use std::cmp::Ordering::*;
+    match (x.cmp(&0), y.cmp(&0)) {
+        (Equal, Equal) => "at the origin",
+        (_, Equal) => "on the x axis",
+        (Equal, _) => "on the y axis",
+        (Greater, Greater) => "in the first quadrant",
+        (Less, Greater) => "in the second quadrant",
+        _ => "somewhere else",
     }
 }
