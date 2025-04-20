@@ -58,6 +58,35 @@ fn main() {
 
     let names = ["Alice", "Bob", "Charlie"];
     greet_person(&names);
+
+    // 10.2.4
+    let account = Account {
+        name: "Alice".to_string(),
+        language: "English".to_string(),
+    };
+    // match account {
+    //     Account { name, language } => {
+    //         println!("{}, {}", name, language);
+    //         println!("{:?}", account); // error[E0382]: borrow of partially moved value: `account`
+    //     }
+    // }
+    match account {
+        Account {
+            ref name,
+            ref language,
+        } => {
+            println!("{}, {}", name, language);
+            println!("{:?}", account);
+        }
+    }
+
+    let sphere = Sphere {
+        center_point: Point3D::ORIGIN,
+        radius: 1.5,
+    };
+    match sphere.center() {
+        &Point3D(x, y, z) => println!("{}, {}, {}, {}", x, y, z, sphere.radius),
+    }
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -221,5 +250,21 @@ fn greet_person(names: &[&str]) {
         [name] => println!("Hello, {}!", name),
         [first, second] => println!("Hello, {} and {}!", first, second),
         [first, .., last] => println!("Hello, everyone from {} to {}!", first, last),
+    }
+}
+#[derive(Debug)]
+struct Account {
+    name: String,
+    language: String,
+}
+
+struct Sphere {
+    center_point: Point3D,
+    radius: f32,
+}
+
+impl Sphere {
+    fn center(&self) -> &Point3D {
+        &self.center_point
     }
 }
