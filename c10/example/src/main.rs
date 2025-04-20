@@ -87,6 +87,12 @@ fn main() {
     match sphere.center() {
         &Point3D(x, y, z) => println!("{}, {}, {}, {}", x, y, z, sphere.radius),
     }
+    
+    // 10.2.9
+    let mut tree = BinaryTree::Empty;
+    tree.add("Mercury");
+    tree.add("Venus");
+    println!("{:?}", tree);
 }
 
 fn compare(a: i32, b: i32) -> Ordering {
@@ -205,6 +211,28 @@ enum BinaryTree<T> {
     Empty,
     NonEmpty(Box<TreeNode<T>>),
 }
+
+impl<T: Ord> BinaryTree<T> {
+    fn add(&mut self, value: T) {
+        match *self {
+            Empty => {
+                *self = NonEmpty(Box::new(TreeNode {
+                    element: value,
+                    left: Empty,
+                    right: Empty,
+                }))
+            }
+            NonEmpty(ref mut node) => {
+                if value < node.element {
+                    node.left.add(value);
+                } else {
+                    node.right.add(value);
+                }
+            }
+        }
+    }
+}
+
 #[allow(dead_code)]
 #[derive(Debug)]
 struct TreeNode<T> {
