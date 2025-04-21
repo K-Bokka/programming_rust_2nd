@@ -19,6 +19,7 @@ members = [
     "c08/ranges",
     "c09/example",
     "c10/example",
+    "c11/example",
 ]
 resolver = "3"
 
