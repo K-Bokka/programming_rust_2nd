@@ -60,3 +60,17 @@ where
 {
     println!("data: {:?}", data);
 }
+
+trait Vegetable {}
+
+// 野菜は1種類に限られる
+#[allow(dead_code)]
+struct Salad<V: Vegetable> {
+    veggies: Vec<V>,
+}
+
+// 複数の野菜を格納できる
+#[allow(dead_code)]
+struct Salad2 {
+    veggies: Vec<Box<dyn Vegetable>>,
+}
