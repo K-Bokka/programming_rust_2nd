@@ -1,3 +1,5 @@
+use std::io::Write;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Chanter 11 / trait & generics");
 
@@ -11,6 +13,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let min_i32 = min(1, 2);
     assert_eq!(min_i32, 1);
 
+    // 11.1
+    let mut buf: Vec<u8> = vec![];
+    buf.write_all(b"Hello, world!")?;
+    
     Ok(())
 }
 
