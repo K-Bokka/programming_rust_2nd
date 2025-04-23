@@ -1,3 +1,4 @@
+use std::fmt::Debug;
 use std::io::Write;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -16,15 +17,60 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 11.1
     let mut buf: Vec<u8> = vec![];
     buf.write_all(b"Hello, world!")?;
-    
+
+    let mut buf: Vec<u8> = vec![];
+    // let writer: dyn Write = buf; // error[E0277]: the size for values of type `dyn std::io::Write` cannot be known at compilation time
+    #[allow(unused_variables)]
+    let writer: &mut dyn Write = &mut buf;
+
+    say_hello2(&mut local_file)?;
+    say_hello2(&mut bytes)?;
+
+    // let v1 = (0 ..10).collect(); // error[E0283]: type annotations needed
+    let v1 = (0..10).collect::<Vec<_>>();
+    println!("{:?}", v1);
+
     Ok(())
 }
 
-fn say_hello(out: &mut dyn std::io::Write) -> std::io::Result<()> {
+fn say_hello(out: &mut dyn Write) -> std::io::Result<()> {
+    out.write_all(b"Hello, world!\n")?;
+    out.flush()
+}
+
+fn say_hello2<W: Write>(out: &mut W) -> std::io::Result<()> {
     out.write_all(b"Hello, world!\n")?;
     out.flush()
 }
 
 fn min<T: Ord>(a: T, b: T) -> T {
     if a <= b { a } else { b }
+}
+
+#[allow(dead_code)]
+fn run_query<C: Clone + Debug, D: Copy + Debug>(data: D) -> () {
+    println!("data: {:?}", data);
+}
+
+#[allow(dead_code)]
+fn run_query2<C, D>(data: D) -> ()
+where
+    C: Clone + Debug,
+    D: Copy + Debug,
+{
+    println!("data: {:?}", data);
+}
+
+trait Vegetable {}
+
+// 野菜は1種類に限られる
+#[allow(dead_code)]
+struct Salad<V: Vegetable> {
+    veggies: Vec<V>,
+}
+
+// 複数の野菜を格納できる
+#[allow(dead_code)]
+struct Salad2 {
+    veggies: Vec<Box<dyn Vegetable>>,
 }
