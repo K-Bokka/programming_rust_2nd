@@ -30,6 +30,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let v1 = (0..10).collect::<Vec<_>>();
     println!("{:?}", v1);
 
+    // 11.2.1
+    let mut out = Sink;
+    out.write_all(b"Hello, world!")?;
+
     Ok(())
 }
 
@@ -73,4 +77,16 @@ struct Salad<V: Vegetable> {
 #[allow(dead_code)]
 struct Salad2 {
     veggies: Vec<Box<dyn Vegetable>>,
+}
+
+pub struct Sink;
+
+impl Write for Sink {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        Ok(buf.len())
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        Ok(())
+    }
 }
