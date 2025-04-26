@@ -1,4 +1,6 @@
+use std::collections::HashMap;
 use std::fmt::Debug;
+use std::fs::File;
 use std::io::Write;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -33,6 +35,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 11.2.1
     let mut out = Sink;
     out.write_all(b"Hello, world!")?;
+
+    // 11.2.2
+    assert_eq!('$'.is_emoji(), false);
 
     Ok(())
 }
@@ -89,4 +94,25 @@ impl Write for Sink {
     fn flush(&mut self) -> std::io::Result<()> {
         Ok(())
     }
+}
+
+trait IsEmoji {
+    fn is_emoji(&self) -> bool;
+}
+
+impl IsEmoji for char {
+    fn is_emoji(&self) -> bool {
+        false
+    }
+}
+
+use serde::Serialize;
+use serde_json;
+
+pub fn save_config(config: &HashMap<String, String>) -> std::io::Result<()> {
+    let writer = File::create("config.json")?;
+    let mut serializer = serde_json::Serializer::new(writer);
+
+    config.serialize(&mut serializer)?;
+    Ok(())
 }
