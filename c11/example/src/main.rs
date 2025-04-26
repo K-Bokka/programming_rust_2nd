@@ -152,3 +152,21 @@ impl Spliceable for Mammoth {
 pub trait MegaSpliceable {
     fn splice(&self, other: &dyn MegaSpliceable) -> Box<dyn MegaSpliceable>;
 }
+
+pub trait StringSet {
+    fn new() -> Self
+    where
+        Self: Sized;
+
+    fn from_slice(slice: &[&str]) -> Self
+    where
+        Self: Sized;
+
+    fn contains(&self, s: &str) -> bool
+    where
+        Self: Sized;
+
+    fn add(&mut self, s: &str)
+    where
+        Self: Sized;
+}
