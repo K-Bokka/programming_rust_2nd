@@ -116,3 +116,39 @@ pub fn save_config(config: &HashMap<String, String>) -> std::io::Result<()> {
     config.serialize(&mut serializer)?;
     Ok(())
 }
+
+pub trait Spliceable {
+    fn splice(&self, other: &Self) -> Self;
+}
+
+pub struct CherryTree {
+    height: u32,
+}
+
+impl Spliceable for CherryTree {
+    fn splice(&self, other: &Self) -> Self {
+        CherryTree {
+            height: self.height + other.height,
+        }
+    }
+}
+
+pub struct Mammoth {
+    name: String,
+}
+
+impl Spliceable for Mammoth {
+    fn splice(&self, other: &Self) -> Self {
+        Mammoth {
+            name: format!("{} {}", self.name, other.name),
+        }
+    }
+}
+
+// fn splice_anything(left: &dyn Spliceable, right: &dyn Spliceable) { // error[E0038]: the trait `Spliceable` is not dyn compatible
+//     left.splice(right)
+// }
+
+pub trait MegaSpliceable {
+    fn splice(&self, other: &dyn MegaSpliceable) -> Box<dyn MegaSpliceable>;
+}
