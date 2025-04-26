@@ -1,4 +1,6 @@
+use std::collections::HashMap;
 use std::fmt::Debug;
+use std::fs::File;
 use std::io::Write;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -33,6 +35,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 11.2.1
     let mut out = Sink;
     out.write_all(b"Hello, world!")?;
+
+    // 11.2.2
+    assert_eq!('$'.is_emoji(), false);
 
     Ok(())
 }
@@ -89,4 +94,79 @@ impl Write for Sink {
     fn flush(&mut self) -> std::io::Result<()> {
         Ok(())
     }
+}
+
+trait IsEmoji {
+    fn is_emoji(&self) -> bool;
+}
+
+impl IsEmoji for char {
+    fn is_emoji(&self) -> bool {
+        false
+    }
+}
+
+use serde::Serialize;
+use serde_json;
+
+pub fn save_config(config: &HashMap<String, String>) -> std::io::Result<()> {
+    let writer = File::create("config.json")?;
+    let mut serializer = serde_json::Serializer::new(writer);
+
+    config.serialize(&mut serializer)?;
+    Ok(())
+}
+
+pub trait Spliceable {
+    fn splice(&self, other: &Self) -> Self;
+}
+
+pub struct CherryTree {
+    height: u32,
+}
+
+impl Spliceable for CherryTree {
+    fn splice(&self, other: &Self) -> Self {
+        CherryTree {
+            height: self.height + other.height,
+        }
+    }
+}
+
+pub struct Mammoth {
+    name: String,
+}
+
+impl Spliceable for Mammoth {
+    fn splice(&self, other: &Self) -> Self {
+        Mammoth {
+            name: format!("{} {}", self.name, other.name),
+        }
+    }
+}
+
+// fn splice_anything(left: &dyn Spliceable, right: &dyn Spliceable) { // error[E0038]: the trait `Spliceable` is not dyn compatible
+//     left.splice(right)
+// }
+
+pub trait MegaSpliceable {
+    fn splice(&self, other: &dyn MegaSpliceable) -> Box<dyn MegaSpliceable>;
+}
+
+pub trait StringSet {
+    fn new() -> Self
+    where
+        Self: Sized;
+
+    fn from_slice(slice: &[&str]) -> Self
+    where
+        Self: Sized;
+
+    fn contains(&self, s: &str) -> bool
+    where
+        Self: Sized;
+
+    fn add(&mut self, s: &str)
+    where
+        Self: Sized;
 }
