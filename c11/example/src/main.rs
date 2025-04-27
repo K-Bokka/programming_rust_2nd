@@ -39,6 +39,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 11.2.2
     assert_eq!('$'.is_emoji(), false);
 
+    // 11.3
+    let hello1 = "hello".to_string();
+    let hello2 = str::to_string("hello");
+    let hello3 = ToString::to_string("hello"); // 修飾メソッド呼び出し
+    let hello4 = <str as ToString>::to_string("hello"); // 完全修飾メソッド呼び出し
+    println!(
+        "hello1: {}, hello2: {}, hello3: {}, hello4: {}",
+        hello1, hello2, hello3, hello4
+    );
+
+    let zero = 0;
+    // let zero_abs = zero.abs(); // error[E0689]: can't call method `abs` on ambiguous numeric type `{integer}`
+    let zero_abs = i64::abs(zero);
+    println!("zero_abs: {}", zero_abs);
+
     Ok(())
 }
 
