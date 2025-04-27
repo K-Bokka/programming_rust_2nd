@@ -185,3 +185,64 @@ pub trait StringSet {
     where
         Self: Sized;
 }
+
+#[allow(dead_code)]
+fn collect_into_vector<I: Iterator>(iter: I) -> Vec<I::Item> {
+    let mut results = Vec::new();
+    for item in iter {
+        results.push(item);
+    }
+    results
+}
+
+// fn dump1<I>(iter: I)
+// where
+//     I: Iterator,
+// {
+//     for (index, value) in iter.enumerate() {
+//         println!("{}: {:?}", index, value); // error[E0277]: `<I as Iterator>::Item` doesn't implement `Debug`
+//     }
+// }
+
+#[allow(dead_code)]
+fn dump2<I>(iter: I)
+where
+    I: Iterator,
+    I::Item: Debug,
+{
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+fn dump3<I>(iter: I)
+where
+    I: Iterator<Item = String>,
+{
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+fn dump4(iter: &mut dyn Iterator<Item = String>) {
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+trait Pattern {
+    type Match;
+    fn search(&self, string: &str) -> Option<Self::Match>;
+}
+
+#[allow(dead_code)]
+impl Pattern for char {
+    type Match = usize;
+
+    fn search(&self, _string: &str) -> Option<Self::Match> {
+        todo!()
+    }
+}
