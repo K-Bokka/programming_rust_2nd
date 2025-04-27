@@ -39,6 +39,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 11.2.2
     assert_eq!('$'.is_emoji(), false);
 
+    // 11.3
+    let hello1 = "hello".to_string();
+    let hello2 = str::to_string("hello");
+    let hello3 = ToString::to_string("hello"); // 修飾メソッド呼び出し
+    let hello4 = <str as ToString>::to_string("hello"); // 完全修飾メソッド呼び出し
+    println!(
+        "hello1: {}, hello2: {}, hello3: {}, hello4: {}",
+        hello1, hello2, hello3, hello4
+    );
+
+    let zero = 0;
+    // let zero_abs = zero.abs(); // error[E0689]: can't call method `abs` on ambiguous numeric type `{integer}`
+    let zero_abs = i64::abs(zero);
+    println!("zero_abs: {}", zero_abs);
+
     Ok(())
 }
 
@@ -169,4 +184,65 @@ pub trait StringSet {
     fn add(&mut self, s: &str)
     where
         Self: Sized;
+}
+
+#[allow(dead_code)]
+fn collect_into_vector<I: Iterator>(iter: I) -> Vec<I::Item> {
+    let mut results = Vec::new();
+    for item in iter {
+        results.push(item);
+    }
+    results
+}
+
+// fn dump1<I>(iter: I)
+// where
+//     I: Iterator,
+// {
+//     for (index, value) in iter.enumerate() {
+//         println!("{}: {:?}", index, value); // error[E0277]: `<I as Iterator>::Item` doesn't implement `Debug`
+//     }
+// }
+
+#[allow(dead_code)]
+fn dump2<I>(iter: I)
+where
+    I: Iterator,
+    I::Item: Debug,
+{
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+fn dump3<I>(iter: I)
+where
+    I: Iterator<Item = String>,
+{
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+fn dump4(iter: &mut dyn Iterator<Item = String>) {
+    for (index, value) in iter.enumerate() {
+        println!("{}: {:?}", index, value);
+    }
+}
+
+#[allow(dead_code)]
+trait Pattern {
+    type Match;
+    fn search(&self, string: &str) -> Option<Self::Match>;
+}
+
+#[allow(dead_code)]
+impl Pattern for char {
+    type Match = usize;
+
+    fn search(&self, _string: &str) -> Option<Self::Match> {
+        todo!()
+    }
 }
