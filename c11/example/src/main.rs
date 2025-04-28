@@ -246,3 +246,21 @@ impl Pattern for char {
         todo!()
     }
 }
+
+use std::iter;
+use std::vec::IntoIter;
+
+#[allow(dead_code)]
+fn cyclical_zip(v: Vec<u8>, u: Vec<u8>) -> iter::Cycle<iter::Chain<IntoIter<u8>, IntoIter<u8>>> {
+    v.into_iter().chain(u.into_iter()).cycle()
+}
+
+#[allow(dead_code)]
+fn cyclical_zip2(v: Vec<u8>, u: Vec<u8>) -> Box<dyn Iterator<Item = u8>> {
+    Box::new(v.into_iter().chain(u.into_iter()).cycle())
+}
+
+#[allow(dead_code)]
+fn cyclical_zip3(v: Vec<u8>, u: Vec<u8>) -> impl Iterator<Item = u8> {
+    v.into_iter().chain(u.into_iter()).cycle()
+}
