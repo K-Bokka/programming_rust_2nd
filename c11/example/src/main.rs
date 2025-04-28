@@ -54,6 +54,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let zero_abs = i64::abs(zero);
     println!("zero_abs: {}", zero_abs);
 
+    // 11.4.4
+    let zero = 0.0;
+    let one = add_one(zero);
+    println!("one: {}", one);
+
     Ok(())
 }
 
@@ -248,6 +253,7 @@ impl Pattern for char {
 }
 
 use std::iter;
+use std::ops::Add;
 use std::vec::IntoIter;
 
 #[allow(dead_code)]
@@ -263,4 +269,37 @@ fn cyclical_zip2(v: Vec<u8>, u: Vec<u8>) -> Box<dyn Iterator<Item = u8>> {
 #[allow(dead_code)]
 fn cyclical_zip3(v: Vec<u8>, u: Vec<u8>) -> impl Iterator<Item = u8> {
     v.into_iter().chain(u.into_iter()).cycle()
+}
+
+#[allow(dead_code)]
+trait Greet {
+    const GREETING: &'static str = "Hello";
+    fn greet(&self) -> String;
+}
+
+trait Float {
+    const ZERO: Self;
+    const ONE: Self;
+}
+
+impl Float for f32 {
+    const ZERO: Self = 0.0;
+    const ONE: Self = 1.0;
+}
+impl Float for f64 {
+    const ZERO: Self = 0.0;
+    const ONE: Self = 1.0;
+}
+
+fn add_one<T: Float + Add<Output = T>>(n: T) -> T {
+    n + T::ONE
+}
+
+#[allow(dead_code)]
+fn fib<T: Float + Add<Output = T>>(n: usize) -> T {
+    match n {
+        0 => T::ZERO,
+        1 => T::ONE,
+        n => fib::<T>(n - 1) + fib(n - 2),
+    }
 }
