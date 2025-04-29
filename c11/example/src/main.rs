@@ -59,6 +59,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let one = add_one(zero);
     println!("one: {}", one);
 
+    // 11.5
+    let doted = dot(&[1, 2, 3, 4], &[1, 1, 1, 1]);
+    println!("doted: {}", doted);
+    let doted2 = dot2(&[1.0, 2.0, 3.0, 4.0], &[1.0, 1.0, 1.0, 1.0]);
+    println!("doted2: {}", doted2);
+    let doted3 = dot3(&[1.0, 2.0, 3.0, 4.0], &[1.0, 1.0, 1.0, 1.0]);
+    println!("doted3: {}", doted3);
+
     Ok(())
 }
 
@@ -252,8 +260,9 @@ impl Pattern for char {
     }
 }
 
+use num::Num;
 use std::iter;
-use std::ops::Add;
+use std::ops::{Add, Mul};
 use std::vec::IntoIter;
 
 #[allow(dead_code)]
@@ -302,4 +311,37 @@ fn fib<T: Float + Add<Output = T>>(n: usize) -> T {
         1 => T::ONE,
         n => fib::<T>(n - 1) + fib(n - 2),
     }
+}
+
+fn dot(v1: &[i64], v2: &[i64]) -> i64 {
+    let mut total = 0;
+    for i in 0..v1.len() {
+        total = total + v1[i] * v2[i];
+    }
+    total
+}
+
+fn dot2<N>(v1: &[N], v2: &[N]) -> N
+where
+    N: Add<Output = N> + Mul<Output = N> + Default + Copy,
+{
+    let mut total = N::default();
+    for i in 0..v1.len() {
+        total = total + v1[i] * v2[i];
+    }
+    total
+}
+
+#[test]
+fn test_dot2() {
+    assert_eq!(dot2(&[1, 2, 3, 4], &[1, 1, 1, 1]), 10);
+    assert_eq!(dot2(&[1.0, 2.0, 3.0, 4.0], &[1.0, 1.0, 1.0, 1.0]), 10.0);
+}
+
+fn dot3<N: Num + Copy>(v1: &[N], v2: &[N]) -> N {
+    let mut total = N::zero();
+    for i in 0..v1.len() {
+        total = total + v1[i] * v2[i];
+    }
+    total
 }

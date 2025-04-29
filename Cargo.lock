@@ -502,6 +502,7 @@ version = "0.1.0"
 name = "c11_example"
 version = "0.1.0"
 dependencies = [
+ "num",
  "serde",
  "serde_json",
 ]
