@@ -1,8 +1,11 @@
+use std::ops::Mul;
+use std::ops::Sub;
+
 fn main() {
     println!("Chapter 12");
 
     // 12.
-    #[derive(Debug, Copy, Clone)]
+    #[derive(Debug, Copy, Clone, Eq)]
     struct Complex<T> {
         re: T,
         im: T,
@@ -63,4 +66,44 @@ fn main() {
     let mut e = Complex { re: 1, im: 2 };
     e += c;
     println!("{:?}", e);
+
+    // 12.2
+    let x = 1;
+    let y = 1;
+
+    assert_eq!(x == y, x.eq(&y));
+    assert_eq!(x != y, x.ne(&y));
+
+    impl<T: PartialEq> PartialEq for Complex<T> {
+        fn eq(&self, other: &Self) -> bool {
+            self.re == other.re && self.im == other.im
+        }
+    }
+    assert_ne!(c, d);
+
+    impl<T> Mul for Complex<T>
+    where
+        T: Mul<Output = T> + Add<Output = T> + Sub<Output = T> + Copy,
+    {
+        type Output = Complex<T>;
+        fn mul(self, rhs: Self) -> Self::Output {
+            Complex {
+                re: (self.re * rhs.re) - (self.im * rhs.im),
+                im: (self.re * rhs.im) + (self.im * rhs.re),
+            }
+        }
+    }
+
+    let x = Complex { re: 5, im: 2 };
+    let y = Complex { re: 2, im: 5 };
+    assert_eq!(x * y, Complex { re: 0, im: 29 });
+
+    assert_ne!("ungula", "ungulate");
+    assert!("ungula".ne("ungulate"));
+
+    assert!(f64::is_nan(0.0 / 0.0));
+    assert_eq!(0.0 / 0.0 == 0.0 / 0.0, false);
+    assert_eq!(0.0 / 0.0 != 0.0 / 0.0, true);
+    assert_eq!(0.0 / 0.0 < 0.0 / 0.0, false);
+    assert_eq!(0.0 / 0.0 > 0.0 / 0.0, false);
 }
