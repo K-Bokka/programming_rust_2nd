@@ -106,4 +106,72 @@ fn main() {
     assert_eq!(0.0 / 0.0 != 0.0 / 0.0, true);
     assert_eq!(0.0 / 0.0 < 0.0 / 0.0, false);
     assert_eq!(0.0 / 0.0 > 0.0 / 0.0, false);
+
+    // 12.3
+    #[derive(Debug, PartialEq)]
+    struct Interval<T> {
+        lower: T, // Inclusive
+        upper: T, // Exclusive
+    }
+
+    use std::cmp::Ordering;
+    use std::cmp::PartialOrd;
+    impl<T: PartialOrd> PartialOrd<Interval<T>> for Interval<T> {
+        fn partial_cmp(&self, other: &Interval<T>) -> Option<Ordering> {
+            if self == other {
+                Some(Ordering::Equal)
+            } else if self.lower >= other.upper {
+                Some(Ordering::Greater)
+            } else if self.upper <= other.lower {
+                Some(Ordering::Less)
+            } else {
+                None
+            }
+        }
+    }
+
+    assert!(
+        Interval {
+            lower: 10,
+            upper: 20
+        } < Interval {
+            lower: 20,
+            upper: 40
+        }
+    );
+    assert!(Interval { lower: 7, upper: 8 } >= Interval { lower: 0, upper: 1 });
+    assert!(Interval { lower: 7, upper: 8 } <= Interval { lower: 7, upper: 8 });
+
+    let left = Interval {
+        lower: 10,
+        upper: 30,
+    };
+    let right = Interval {
+        lower: 20,
+        upper: 40,
+    };
+    assert!(!(left < right));
+    assert!(!(left > right));
+
+    let mut intervals = vec![
+        Interval {
+            lower: 10,
+            upper: 30,
+        },
+        Interval {
+            lower: 5,
+            upper: 10,
+        },
+        Interval {
+            lower: 20,
+            upper: 25,
+        },
+    ];
+    intervals.sort_by_key(|i| i.lower);
+    println!("{:?}", intervals);
+    
+    use std::cmp::Reverse;
+    intervals.sort_by_key(|i| Reverse(i.upper));
+    println!("{:?}", intervals);
+    
 }
