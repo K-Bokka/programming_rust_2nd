@@ -47,7 +47,37 @@ fn main() {
         };
         if complicated_condition() {
             p = q;
+            println!("p is {:?}", p);
         }
     }
     println!("Sproing! What was that?");
+
+    // 13.2 Sized
+    // Sizedかも
+    #[allow(dead_code)]
+    struct S<T: ?Sized> {
+        b: Box<T>,
+    }
+
+    #[derive(Debug)]
+    struct RcBox<T: ?Sized> {
+        #[allow(dead_code)]
+        ref_count: usize,
+        value: T,
+    }
+
+    let boxed_lunch: RcBox<String> = RcBox {
+        ref_count: 1,
+        value: "lunch".to_string(),
+    };
+
+    use std::fmt::Display;
+    #[allow(unused_variables)]
+    let boxed_displayable: &RcBox<dyn Display> = &boxed_lunch;
+
+    fn display(boxed: &RcBox<dyn Display>) {
+        println!("For your enjoyment: {}", &boxed.value);
+    }
+
+    display(&boxed_lunch);
 }
