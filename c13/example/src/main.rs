@@ -80,7 +80,49 @@ fn main() {
     }
 
     display(&boxed_lunch);
-    
+
     // 13.3 Clone
     // 13.4 Copy
+    // 13.5 Deref & DrefMut
+    struct Selector<T> {
+        elements: Vec<T>,
+        current: usize,
+    }
+    use std::ops::{Deref, DerefMut};
+    impl<T> Deref for Selector<T> {
+        type Target = T;
+        fn deref(&self) -> &Self::Target {
+            &self.elements[self.current]
+        }
+    }
+    impl<T> DerefMut for Selector<T> {
+        fn deref_mut(&mut self) -> &mut Self::Target {
+            &mut self.elements[self.current]
+        }
+    }
+
+    let mut s = Selector {
+        elements: vec!['x', 'y', 'z'],
+        current: 2,
+    };
+    assert_eq!(*s, 'z');
+    assert!(s.is_alphabetic());
+    *s = 'a';
+    assert_eq!(s.elements, vec!['x', 'y', 'a']);
+
+    let s = Selector {
+        elements: vec!["good", "bad", "ugly"],
+        current: 2,
+    };
+    fn show_it(thing: &str) {
+        println!("{}", thing);
+    }
+    show_it(&s);
+    
+    fn show_it_generic<T: Display>(thing: T) {
+        println!("{}", thing);
+    }
+    // show_it_generic(&s); // error[E0277]: `Selector<&str>` doesn't implement `std::fmt::Display`
+    show_it_generic(&s as &str);
+    show_it_generic(&*s);
 }
