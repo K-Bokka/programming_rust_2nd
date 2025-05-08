@@ -118,11 +118,23 @@ fn main() {
         println!("{}", thing);
     }
     show_it(&s);
-    
+
     fn show_it_generic<T: Display>(thing: T) {
         println!("{}", thing);
     }
     // show_it_generic(&s); // error[E0277]: `Selector<&str>` doesn't implement `std::fmt::Display`
     show_it_generic(&s as &str);
     show_it_generic(&*s);
+
+    // 13.6 Default
+    use std::collections::HashSet;
+    let squares = [4, 9, 16, 25, 36, 49, 64];
+    let (powers_of_two, impure): (HashSet<u32>, HashSet<u32>) =
+        squares.iter().partition(|&x| x & (x - 1) == 0);
+    assert_eq!(powers_of_two.len(), 3);
+    assert_eq!(impure.len(), 4);
+    
+    let(upper, lower): (String, String) = "Great Teacher Onizuka".chars().partition(|c| c.is_uppercase());
+    assert_eq!(upper, "GTO");
+    assert_eq!(lower, "reat eacher nizuka");
 }
