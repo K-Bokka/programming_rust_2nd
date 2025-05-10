@@ -133,8 +133,16 @@ fn main() {
         squares.iter().partition(|&x| x & (x - 1) == 0);
     assert_eq!(powers_of_two.len(), 3);
     assert_eq!(impure.len(), 4);
-    
-    let(upper, lower): (String, String) = "Great Teacher Onizuka".chars().partition(|c| c.is_uppercase());
+
+    let (upper, lower): (String, String) = "Great Teacher Onizuka"
+        .chars()
+        .partition(|c| c.is_uppercase());
     assert_eq!(upper, "GTO");
     assert_eq!(lower, "reat eacher nizuka");
+
+    // 13.7 AsRef AsMut
+    let dot_zshrc = std::fs::File::open("/Users/ak_yama/.zshrc");
+    println!("{:?}", dot_zshrc);
+
+    // 13.8 Borrow BorrowMut
 }
