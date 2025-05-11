@@ -145,4 +145,38 @@ fn main() {
     println!("{:?}", dot_zshrc);
 
     // 13.8 Borrow BorrowMut
+    // 13.9 From Into
+    use std::net::Ipv4Addr;
+    fn ping<A>(address: A) -> std::io::Result<bool>
+    where
+        A: Into<Ipv4Addr>,
+    {
+        let ipv4_address = address.into();
+        println!("Pinging {}...", ipv4_address);
+        Ok(true)
+    }
+
+    ping(Ipv4Addr::new(127, 0, 0, 1)).unwrap();
+    ping([8, 8, 8, 8]).unwrap();
+    ping(0xd076eb94_u32).unwrap();
+
+    let addr1 = Ipv4Addr::from([127, 0, 0, 1]);
+    let addr2 = Ipv4Addr::from(0xd076eb94_u32);
+    println!("addr1: {:?}", addr1);
+    println!("addr2: {:?}", addr2);
+
+    let text = "Beautiful Soup".to_string();
+    let bytes: Vec<u8> = text.into();
+    println!("bytes: {:?}", bytes);
+
+    type GenericError = Box<dyn std::error::Error + Send + Sync + 'static>;
+    type GenericResult<T> = Result<T, GenericError>;
+    #[allow(dead_code)]
+    fn parse_i32_bytes(b: &[u8]) -> GenericResult<i32> {
+        Ok(std::str::from_utf8(b)?.parse::<i32>()?)
+    }
+    
+    let huge = 2_000_000_000_000_i64;
+    let smaller = huge as i32;
+    println!("{} as i32: {}", huge, smaller);
 }
