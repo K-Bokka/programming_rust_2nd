@@ -175,8 +175,18 @@ fn main() {
     fn parse_i32_bytes(b: &[u8]) -> GenericResult<i32> {
         Ok(std::str::from_utf8(b)?.parse::<i32>()?)
     }
-    
+
     let huge = 2_000_000_000_000_i64;
     let smaller = huge as i32;
     println!("{} as i32: {}", huge, smaller);
+
+    // 13.10 TryFrom TryInto
+    let smaller = huge.try_into().unwrap_or(i32::MAX);
+    println!("{} as i32: {}", huge, smaller);
+
+    let minus_huge = -huge;
+    let smaller = minus_huge
+        .try_into()
+        .unwrap_or_else(|_| if minus_huge >= 0 { i32::MAX } else { i32::MIN });
+    println!("{} as i32: {}", minus_huge, smaller);
 }
