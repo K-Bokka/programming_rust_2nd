@@ -1,4 +1,5 @@
 use rand::random;
+use std::path::Path;
 
 fn main() {
     println!("Chapter 13");
@@ -189,4 +190,33 @@ fn main() {
         .try_into()
         .unwrap_or_else(|_| if minus_huge >= 0 { i32::MAX } else { i32::MIN });
     println!("{} as i32: {}", minus_huge, smaller);
+
+    // 13.11 ToOwned
+    // 13.12 Cow (Clone On Write)
+    #[allow(dead_code)]
+    enum MyError {
+        OutOfMemory,
+        StackOverflow,
+        MachineOnFire,
+        Unfathomable,
+        FileNotFound { path: Box<Path> },
+    }
+
+    use std::borrow::Cow;
+    fn describe(error: &MyError) -> Cow<'static, str> {
+        match *error {
+            MyError::OutOfMemory => "out of memory".into(),
+            MyError::StackOverflow => "stack overflow".into(),
+            MyError::MachineOnFire => "machine on fire".into(),
+            MyError::Unfathomable => "unfathomable".into(),
+            MyError::FileNotFound { ref path } => {
+                format!("file not found: {}", path.display()).into()
+            }
+        }
+    }
+    let mut log = Vec::new();
+    let error = MyError::OutOfMemory;
+    log.push(describe(&error).into_owned());
+    
+    println!("{:?}", log);
 }
