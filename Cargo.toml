@@ -22,6 +22,7 @@ members = [
     "c11/example",
     "c12/example",
     "c13/example",
+    "c14/example",
 ]
 resolver = "3"
 
