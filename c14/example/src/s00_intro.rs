@@ -38,13 +38,26 @@ pub fn get_chicago() -> City {
     }
 }
 
+pub fn get_funafuti() -> City {
+    City {
+        name: "funafuti".to_string(),
+        population: 6_716,
+        country: "Tuvalu".to_string(),
+        gdp: 1_000_000_000,
+    }
+}
+
 fn sort_cities(cities: &mut Vec<City>) {
     // cities.sort();
     cities.sort_by_key(city_population_descending)
 }
 
-fn city_population_descending(city: &City) -> i64 {
+pub fn city_population_descending(city: &City) -> i64 {
     -city.population
+}
+
+pub fn city_gdp_descending(city: &City) -> i64 {
+    -city.gdp
 }
 
 fn sort_cities2(cities: &mut Vec<City>) {
