@@ -22,7 +22,7 @@ pub fn run() -> () {
     #[allow(unused_variables)]
     let f = || drop(my_str); // error[E0525]: expected a closure that implements the `Fn` trait, but this closure only implements `FnOnce`
     // call_twice(f);
-    
+
     // 14.4.3 FnMut
     let mut i = 0;
     let incr = || {
@@ -37,7 +37,30 @@ pub fn run() -> () {
         closure();
         closure();
     }
-    
+
     call_twice_mut(incr);
     assert_eq!(i, 2);
+
+    // 14.4.4 Copy & Clone
+    let y = 10;
+    let add_y = |x| x + y;
+    let add_y_copy = add_y;
+    assert_eq!(add_y(add_y_copy(22)), 42);
+
+    let mut x = 0;
+    let add_x = |n| {
+        x += n;
+        x
+    };
+    let mut add_x_copy = add_x;
+    // assert_eq!(add_x(add_x_copy(1)), 2); // error[E0382]: borrow of moved value: `add_x`
+    assert_eq!(add_x_copy(1), 1);
+    
+    let mut greeting = String::from("Hello, ");
+    let greet = move |name| {
+        greeting.push_str(name);
+        println!("{}", greeting);
+    };
+    greet.clone()("Alfred");
+    greet.clone()("Bruce");
 }
