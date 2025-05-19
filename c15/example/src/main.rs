@@ -1,9 +1,14 @@
+mod s01_iterator_trait;
+
 fn main() {
     println!("Chapter 15. Iterator");
 
     let n = 10;
     println!("triangle: 1 ~ {} : {}", n, triangle(n));
     println!("triangle_fold: 1 ~ {} : {}", n, triangle_fold(n));
+    
+    println!();
+    s01_iterator_trait::run();
 }
 
 fn triangle(n: i32) -> i32 {
