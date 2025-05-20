@@ -1,4 +1,5 @@
 mod s01_iterator_trait;
+mod s02_create_iterator;
 
 fn main() {
     println!("Chapter 15. Iterator");
@@ -9,6 +10,9 @@ fn main() {
     
     println!();
     s01_iterator_trait::run();
+    
+    println!();
+    s02_create_iterator::run();
 }
 
 fn triangle(n: i32) -> i32 {
