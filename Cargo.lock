@@ -528,6 +528,10 @@ dependencies = [
 [[package]]
 name = "c15_example"
 version = "0.1.0"
+dependencies = [
+ "num",
+ "rand 0.9.1",
+]
 
 [[package]]
 name = "cc"
