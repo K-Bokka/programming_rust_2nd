@@ -81,4 +81,10 @@ pub fn run() {
         fibonacci().take(8).collect::<Vec<_>>(),
         vec![1, 1, 2, 3, 5, 8, 13, 21]
     );
+
+    // 15.2.4 drain
+    let mut outer = "Earth".to_string();
+    let inner = String::from_iter(outer.drain(1..4));
+    assert_eq!(inner, "art");
+    assert_eq!(outer, "Eh");
 }
