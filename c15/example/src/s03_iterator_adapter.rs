@@ -61,4 +61,42 @@ pub fn run() {
     for &city in countries.iter().flat_map(|country| &major_cities[country]) {
         println!("{}", city);
     }
+
+    // 15.3.3 flatten
+    use std::collections::BTreeMap;
+    let mut cities = BTreeMap::new();
+    cities.insert("Japan", vec!["Tokyo", "Osaka", "Kyoto"]);
+    cities.insert("France", vec!["Paris", "Lyon", "Marseille"]);
+    cities.insert("Germany", vec!["Berlin", "Hamburg", "Stuttgart"]);
+    let all_cities: Vec<_> = cities.values().flatten().cloned().collect();
+    assert_eq!(
+        all_cities,
+        vec![
+            "Paris",
+            "Lyon",
+            "Marseille",
+            "Berlin",
+            "Hamburg",
+            "Stuttgart",
+            "Tokyo",
+            "Osaka",
+            "Kyoto"
+        ]
+    );
+
+    let v = vec![None, Some("day"), None, Some("one")];
+    assert_eq!(
+        v.into_iter().flatten().collect::<Vec<_>>(),
+        vec!["day", "one"]
+    );
+
+    fn to_uppercase(s: &str) -> String {
+        s.chars().map(char::to_uppercase).flatten().collect()
+    }
+    assert_eq!(to_uppercase("hello world"), "HELLO WORLD");
+
+    fn to_uppercase2(s: &str) -> String {
+        s.chars().flat_map(char::to_uppercase).collect()
+    }
+    assert_eq!(to_uppercase2("hello world"), "HELLO WORLD");
 }
