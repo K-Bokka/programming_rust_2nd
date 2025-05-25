@@ -99,4 +99,14 @@ pub fn run() {
         s.chars().flat_map(char::to_uppercase).collect()
     }
     assert_eq!(to_uppercase2("hello world"), "HELLO WORLD");
+
+    // 15.3.4 take, take_while
+    let message = "To: jimb\r\n\
+                        From: superego <editor@oreilly.com>\r\n\
+                        \r\n\
+                        Hello, world!\r\n\
+                        ";
+    for header in message.lines().take_while(|line| !line.is_empty()) {
+        println!("{}", header);
+    }
 }
