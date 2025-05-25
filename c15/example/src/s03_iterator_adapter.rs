@@ -99,4 +99,70 @@ pub fn run() {
         s.chars().flat_map(char::to_uppercase).collect()
     }
     assert_eq!(to_uppercase2("hello world"), "HELLO WORLD");
+
+    // 15.3.4 take, take_while
+    let message = "To: jimb\r\n\
+                        From: superego <editor@oreilly.com>\r\n\
+                        \r\n\
+                        Hello, world!\r\n\
+                        ";
+    for header in message.lines().take_while(|line| !line.is_empty()) {
+        println!("{}", header);
+    }
+
+    // 15.3.5 skip, skip_while
+    for body in message.lines().skip_while(|line| !line.is_empty()).skip(1) {
+        println!("{}", body);
+    }
+
+    // 15.3.6 peekable
+    use std::iter::Peekable;
+
+    fn parse_number<I>(tokens: &mut Peekable<I>) -> i32
+    where
+        I: Iterator<Item = char>,
+    {
+        let mut n = 0;
+        loop {
+            match tokens.peek() {
+                Some(r) if r.is_digit(10) => {
+                    n = n * 10 + r.to_digit(10).unwrap();
+                    tokens.next();
+                }
+                _ => return n as i32,
+            }
+        }
+    }
+
+    let mut chars = "226153890,176639048".chars().peekable();
+    assert_eq!(parse_number(&mut chars), 226153890);
+    assert_eq!(chars.next(), Some(','));
+    assert_eq!(parse_number(&mut chars), 176639048);
+    assert_eq!(chars.next(), None);
+    
+    // 15.3.7 fuse
+    struct Flaky(bool);
+    impl Iterator for Flaky {
+        type Item = &'static str;
+        fn next(&mut self) -> Option<Self::Item> {
+            if self.0 {
+                self.0 = false;
+                Some("Totally the last item")
+            } else {
+                self.0 = true;
+                None
+            }
+        }
+    }
+    
+    let mut flaky = Flaky(true);
+    assert_eq!(flaky.next(), Some("Totally the last item"));
+    assert_eq!(flaky.next(), None);
+    assert_eq!(flaky.next(), Some("Totally the last item"));
+
+    let mut not_flaky = Flaky(true).fuse();
+    assert_eq!(not_flaky.next(), Some("Totally the last item"));
+    assert_eq!(not_flaky.next(), None);
+    assert_eq!(not_flaky.next(), None);
+    
 }
