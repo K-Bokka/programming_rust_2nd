@@ -109,4 +109,9 @@ pub fn run() {
     for header in message.lines().take_while(|line| !line.is_empty()) {
         println!("{}", header);
     }
+
+    // 15.3.5 skip, skip_while
+    for body in message.lines().skip_while(|line| !line.is_empty()).skip(1) {
+        println!("{}", body);
+    }
 }
