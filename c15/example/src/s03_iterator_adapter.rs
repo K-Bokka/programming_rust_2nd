@@ -139,4 +139,30 @@ pub fn run() {
     assert_eq!(chars.next(), Some(','));
     assert_eq!(parse_number(&mut chars), 176639048);
     assert_eq!(chars.next(), None);
+    
+    // 15.3.7 fuse
+    struct Flaky(bool);
+    impl Iterator for Flaky {
+        type Item = &'static str;
+        fn next(&mut self) -> Option<Self::Item> {
+            if self.0 {
+                self.0 = false;
+                Some("Totally the last item")
+            } else {
+                self.0 = true;
+                None
+            }
+        }
+    }
+    
+    let mut flaky = Flaky(true);
+    assert_eq!(flaky.next(), Some("Totally the last item"));
+    assert_eq!(flaky.next(), None);
+    assert_eq!(flaky.next(), Some("Totally the last item"));
+
+    let mut not_flaky = Flaky(true).fuse();
+    assert_eq!(not_flaky.next(), Some("Totally the last item"));
+    assert_eq!(not_flaky.next(), None);
+    assert_eq!(not_flaky.next(), None);
+    
 }
