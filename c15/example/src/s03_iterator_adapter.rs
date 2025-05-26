@@ -178,4 +178,13 @@ pub fn run() {
     assert_eq!(iter.next(), Some(&"abdomen"));
     assert_eq!(iter.next_back(), Some(&"head"));
     assert_eq!(iter.next(), Some(&"thorax"));
+
+    // 15.3.9 inspect
+    let upper_case: String = "große"
+        .chars()
+        .inspect(|c| println!("before: {:?}", c))
+        .flat_map(|c| c.to_uppercase())
+        .inspect(|c| println!("after:     {:?}", c))
+        .collect();
+    assert_eq!(upper_case, "GROSSE");
 }
