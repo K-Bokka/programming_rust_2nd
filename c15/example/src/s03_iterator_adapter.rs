@@ -193,10 +193,25 @@ pub fn run() {
     assert_eq!(v, vec![1, 2, 3, 20, 30, 40]);
     let v: Vec<i32> = (1..4).chain([20, 30, 40]).rev().collect();
     assert_eq!(v, vec![40, 30, 20, 3, 2, 1]);
-    
+
     // 15.3.11 enumerate
     // 2章を参照
     // index 付きのiterator を返す
     // https://github.com/K-Bokka/programming_rust_2nd/blob/9f815df8b9e41c504143f930f36d095997b223ed/c02/mandelbrot/src/main.rs#L30
-    
+
+    // 15.3.12 zip
+    let v: Vec<_> = (0..).zip("ABCD".chars()).collect();
+    assert_eq!(v, vec![(0, 'A'), (1, 'B'), (2, 'C'), (3, 'D')]);
+
+    use std::iter::repeat;
+    let endings = ["once", "twice", "chicken soup with rice"];
+    let rhyme: Vec<_> = repeat("going").zip(endings).collect();
+    assert_eq!(
+        rhyme,
+        vec![
+            ("going", "once"),
+            ("going", "twice"),
+            ("going", "chicken soup with rice")
+        ]
+    );
 }
