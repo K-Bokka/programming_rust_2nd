@@ -187,4 +187,10 @@ pub fn run() {
         .inspect(|c| println!("after:     {:?}", c))
         .collect();
     assert_eq!(upper_case, "GROSSE");
+
+    // 15.3.10 chain
+    let v: Vec<i32> = (1..4).chain([20, 30, 40]).collect();
+    assert_eq!(v, vec![1, 2, 3, 20, 30, 40]);
+    let v: Vec<i32> = (1..4).chain([20, 30, 40]).rev().collect();
+    assert_eq!(v, vec![40, 30, 20, 3, 2, 1]);
 }
