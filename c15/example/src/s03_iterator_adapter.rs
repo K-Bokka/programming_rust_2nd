@@ -235,4 +235,27 @@ pub fn run() {
     let a = ['1', '2', '3', '∞'];
     assert_eq!(a.iter().next(), Some(&'1'));
     assert_eq!(a.iter().cloned().next(), Some('1'));
+
+    // 15.3.15 cycle
+    let dirs = ["North", "East", "South", "West"];
+    let mut spin = dirs.iter().cycle();
+    assert_eq!(spin.next(), Some(&"North"));
+    assert_eq!(spin.next(), Some(&"East"));
+    assert_eq!(spin.next(), Some(&"South"));
+    assert_eq!(spin.next(), Some(&"West"));
+    assert_eq!(spin.next(), Some(&"North"));
+
+    use std::iter::once;
+    let fizzes = repeat("").take(2).chain(once("Fizz")).cycle();
+    let buzzes = repeat("").take(4).chain(once("Buzz")).cycle();
+    let fizzes_buzzes = fizzes.zip(buzzes);
+
+    let fizz_buzz = (1..20).zip(fizzes_buzzes).map(|tuple| match tuple {
+        (i, ("", "")) => i.to_string(),
+        (_, (fizz, buzz)) => format!("{}{}", fizz, buzz),
+    });
+
+    for line in fizz_buzz {
+        println!("{}", line);
+    }
 }
