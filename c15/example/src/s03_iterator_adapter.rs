@@ -230,4 +230,9 @@ pub fn run() {
     for body in lines {
         println!("  {}", body);
     }
+
+    // 15.3.14 cloned, copied
+    let a = ['1', '2', '3', '∞'];
+    assert_eq!(a.iter().next(), Some(&'1'));
+    assert_eq!(a.iter().cloned().next(), Some('1'));
 }
