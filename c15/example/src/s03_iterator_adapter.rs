@@ -193,4 +193,69 @@ pub fn run() {
     assert_eq!(v, vec![1, 2, 3, 20, 30, 40]);
     let v: Vec<i32> = (1..4).chain([20, 30, 40]).rev().collect();
     assert_eq!(v, vec![40, 30, 20, 3, 2, 1]);
+
+    // 15.3.11 enumerate
+    // 2章を参照
+    // index 付きのiterator を返す
+    // https://github.com/K-Bokka/programming_rust_2nd/blob/9f815df8b9e41c504143f930f36d095997b223ed/c02/mandelbrot/src/main.rs#L30
+
+    // 15.3.12 zip
+    let v: Vec<_> = (0..).zip("ABCD".chars()).collect();
+    assert_eq!(v, vec![(0, 'A'), (1, 'B'), (2, 'C'), (3, 'D')]);
+
+    use std::iter::repeat;
+    let endings = ["once", "twice", "chicken soup with rice"];
+    let rhyme: Vec<_> = repeat("going").zip(endings).collect();
+    assert_eq!(
+        rhyme,
+        vec![
+            ("going", "once"),
+            ("going", "twice"),
+            ("going", "chicken soup with rice")
+        ]
+    );
+
+    // 15.3.13 by_ref
+    let message = "To: jimb\r\n\
+                         From: id\r\n\
+                         \r\n\
+                         Oooooooh, donuts!!\r\n\
+                         ";
+    let mut lines = message.lines();
+    println!("Headers:");
+    for header in lines.by_ref().take_while(|line| !line.is_empty()) {
+        println!("  {}", header);
+    }
+    println!("\nBody:");
+    for body in lines {
+        println!("  {}", body);
+    }
+
+    // 15.3.14 cloned, copied
+    let a = ['1', '2', '3', '∞'];
+    assert_eq!(a.iter().next(), Some(&'1'));
+    assert_eq!(a.iter().cloned().next(), Some('1'));
+
+    // 15.3.15 cycle
+    let dirs = ["North", "East", "South", "West"];
+    let mut spin = dirs.iter().cycle();
+    assert_eq!(spin.next(), Some(&"North"));
+    assert_eq!(spin.next(), Some(&"East"));
+    assert_eq!(spin.next(), Some(&"South"));
+    assert_eq!(spin.next(), Some(&"West"));
+    assert_eq!(spin.next(), Some(&"North"));
+
+    use std::iter::once;
+    let fizzes = repeat("").take(2).chain(once("Fizz")).cycle();
+    let buzzes = repeat("").take(4).chain(once("Buzz")).cycle();
+    let fizzes_buzzes = fizzes.zip(buzzes);
+
+    let fizz_buzz = (1..20).zip(fizzes_buzzes).map(|tuple| match tuple {
+        (i, ("", "")) => i.to_string(),
+        (_, (fizz, buzz)) => format!("{}{}", fizz, buzz),
+    });
+
+    for line in fizz_buzz {
+        println!("{}", line);
+    }
 }
