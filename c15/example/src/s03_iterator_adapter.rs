@@ -139,7 +139,7 @@ pub fn run() {
     assert_eq!(chars.next(), Some(','));
     assert_eq!(parse_number(&mut chars), 176639048);
     assert_eq!(chars.next(), None);
-    
+
     // 15.3.7 fuse
     struct Flaky(bool);
     impl Iterator for Flaky {
@@ -154,7 +154,7 @@ pub fn run() {
             }
         }
     }
-    
+
     let mut flaky = Flaky(true);
     assert_eq!(flaky.next(), Some("Totally the last item"));
     assert_eq!(flaky.next(), None);
@@ -164,5 +164,33 @@ pub fn run() {
     assert_eq!(not_flaky.next(), Some("Totally the last item"));
     assert_eq!(not_flaky.next(), None);
     assert_eq!(not_flaky.next(), None);
-    
+
+    // 15.3.8 reversible iterator, rev
+    let bee_parts = ["head", "thorax", "abdomen"];
+    let mut iter = bee_parts.iter();
+    assert_eq!(iter.next(), Some(&"head"));
+    assert_eq!(iter.next_back(), Some(&"abdomen"));
+    assert_eq!(iter.next(), Some(&"thorax"));
+    assert_eq!(iter.next_back(), None);
+    assert_eq!(iter.next(), None);
+
+    let mut iter = bee_parts.iter().rev();
+    assert_eq!(iter.next(), Some(&"abdomen"));
+    assert_eq!(iter.next_back(), Some(&"head"));
+    assert_eq!(iter.next(), Some(&"thorax"));
+
+    // 15.3.9 inspect
+    let upper_case: String = "große"
+        .chars()
+        .inspect(|c| println!("before: {:?}", c))
+        .flat_map(|c| c.to_uppercase())
+        .inspect(|c| println!("after:     {:?}", c))
+        .collect();
+    assert_eq!(upper_case, "GROSSE");
+
+    // 15.3.10 chain
+    let v: Vec<i32> = (1..4).chain([20, 30, 40]).collect();
+    assert_eq!(v, vec![1, 2, 3, 20, 30, 40]);
+    let v: Vec<i32> = (1..4).chain([20, 30, 40]).rev().collect();
+    assert_eq!(v, vec![40, 30, 20, 3, 2, 1]);
 }
