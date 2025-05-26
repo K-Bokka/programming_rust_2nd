@@ -214,4 +214,20 @@ pub fn run() {
             ("going", "chicken soup with rice")
         ]
     );
+
+    // 15.3.13 by_ref
+    let message = "To: jimb\r\n\
+                         From: id\r\n\
+                         \r\n\
+                         Oooooooh, donuts!!\r\n\
+                         ";
+    let mut lines = message.lines();
+    println!("Headers:");
+    for header in lines.by_ref().take_while(|line| !line.is_empty()) {
+        println!("  {}", header);
+    }
+    println!("\nBody:");
+    for body in lines {
+        println!("  {}", body);
+    }
 }
