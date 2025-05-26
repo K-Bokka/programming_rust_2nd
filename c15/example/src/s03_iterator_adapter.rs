@@ -193,4 +193,10 @@ pub fn run() {
     assert_eq!(v, vec![1, 2, 3, 20, 30, 40]);
     let v: Vec<i32> = (1..4).chain([20, 30, 40]).rev().collect();
     assert_eq!(v, vec![40, 30, 20, 3, 2, 1]);
+    
+    // 15.3.11 enumerate
+    // 2章を参照
+    // index 付きのiterator を返す
+    // https://github.com/K-Bokka/programming_rust_2nd/blob/9f815df8b9e41c504143f930f36d095997b223ed/c02/mandelbrot/src/main.rs#L30
+    
 }
