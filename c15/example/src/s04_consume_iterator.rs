@@ -11,4 +11,8 @@ pub fn run() {
         (1..=n).product()
     }
     assert_eq!(factrial(10), 3628800);
+
+    // 15.4.2 max, min
+    assert_eq!([-2, 0, 1, 0, -2, -5].iter().max(), Some(&1));
+    assert_eq!([-2, 0, 1, 0, -2, -5].iter().min(), Some(&-5));
 }
