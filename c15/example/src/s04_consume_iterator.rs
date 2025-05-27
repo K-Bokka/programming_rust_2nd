@@ -15,4 +15,17 @@ pub fn run() {
     // 15.4.2 max, min
     assert_eq!([-2, 0, 1, 0, -2, -5].iter().max(), Some(&1));
     assert_eq!([-2, 0, 1, 0, -2, -5].iter().min(), Some(&-5));
+
+    // 15.4.3 max_by, min_by
+    use std::cmp::Ordering;
+    fn cmp(lhs: &f64, rhs: &f64) -> Ordering {
+        lhs.partial_cmp(rhs).unwrap()
+    }
+    let numbers = [1.0, 4.0, 2.0];
+    assert_eq!(numbers.iter().copied().max_by(cmp), Some(4.0));
+    assert_eq!(numbers.iter().copied().min_by(cmp), Some(1.0));
+
+    #[allow(unused_variables)]
+    let numbers = [1.0, 4.0, f64::NAN, 2.0];
+    // assert_eq!(numbers.iter().copied().max_by(cmp), Some(4.0)); // panic
 }
