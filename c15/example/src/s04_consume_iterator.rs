@@ -63,4 +63,14 @@ pub fn run() {
     let id = "Iterator";
     assert!(id.chars().any(char::is_uppercase));
     assert!(!id.chars().all(char::is_uppercase));
+
+    // 15.4.7 position, rposition, ExactSizeIterator
+    let text = "Xerxes";
+    assert_eq!(text.chars().position(|c| c == 'e'), Some(1));
+    assert_eq!(text.chars().position(|c| c == 'z'), None);
+    // assert_eq!(text.chars().rposition(|c| c == 'e'), Some(4)); // error[E0277]: the trait bound `Chars<'_>: ExactSizeIterator` is not satisfied
+
+    let bytes = b"Xerxes";
+    assert_eq!(bytes.iter().rposition(|&b| b == b'e'), Some(4));
+    assert_eq!(bytes.iter().position(|&b| b == b'X'), Some(0));
 }
