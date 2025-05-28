@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub fn run() {
     println!("15.4 Consume Iterator");
 
@@ -28,4 +30,21 @@ pub fn run() {
     #[allow(unused_variables)]
     let numbers = [1.0, 4.0, f64::NAN, 2.0];
     // assert_eq!(numbers.iter().copied().max_by(cmp), Some(4.0)); // panic
+
+    // 15.4.4 max_by_key, min_by_key
+    let mut populations = HashMap::new();
+    populations.insert("France", 66_000_000);
+    populations.insert("Japan", 127_000_000);
+    populations.insert("Italy", 60_000_000);
+    populations.insert("Germany", 83_000_000);
+    populations.insert("UK", 65_000_000);
+    populations.insert("US", 323_000_000);
+    assert_eq!(
+        populations.iter().max_by_key(|&(_name, pop)| pop),
+        Some((&"US", &323_000_000))
+    );
+    assert_eq!(
+        populations.iter().min_by_key(|&(_name, pop)| pop),
+        Some((&"Italy", &60_000_000))
+    );
 }
