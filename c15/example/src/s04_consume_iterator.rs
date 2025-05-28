@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub fn run() {
     println!("15.4 Consume Iterator");
 
@@ -28,4 +30,47 @@ pub fn run() {
     #[allow(unused_variables)]
     let numbers = [1.0, 4.0, f64::NAN, 2.0];
     // assert_eq!(numbers.iter().copied().max_by(cmp), Some(4.0)); // panic
+
+    // 15.4.4 max_by_key, min_by_key
+    let mut populations = HashMap::new();
+    populations.insert("France", 66_000_000);
+    populations.insert("Japan", 127_000_000);
+    populations.insert("Italy", 60_000_000);
+    populations.insert("Germany", 83_000_000);
+    populations.insert("UK", 65_000_000);
+    populations.insert("US", 323_000_000);
+    assert_eq!(
+        populations.iter().max_by_key(|&(_name, pop)| pop),
+        Some((&"US", &323_000_000))
+    );
+    assert_eq!(
+        populations.iter().min_by_key(|&(_name, pop)| pop),
+        Some((&"Italy", &60_000_000))
+    );
+
+    // 15.4.5 compare item list
+    let packed = "Helen of Troy";
+    let spaced = "Helen     of      Troy";
+    let obscure = "Helen of Sandusky";
+    assert_ne!(packed, spaced);
+    assert!(packed.split_whitespace().eq(spaced.split_whitespace()));
+    // ' ' < 'o'
+    assert!(spaced < obscure);
+    // 'Troy' > 'Sandusky'
+    assert!(spaced.split_whitespace().gt(obscure.split_whitespace()));
+
+    // 15.4.6 any, all
+    let id = "Iterator";
+    assert!(id.chars().any(char::is_uppercase));
+    assert!(!id.chars().all(char::is_uppercase));
+
+    // 15.4.7 position, rposition, ExactSizeIterator
+    let text = "Xerxes";
+    assert_eq!(text.chars().position(|c| c == 'e'), Some(1));
+    assert_eq!(text.chars().position(|c| c == 'z'), None);
+    // assert_eq!(text.chars().rposition(|c| c == 'e'), Some(4)); // error[E0277]: the trait bound `Chars<'_>: ExactSizeIterator` is not satisfied
+
+    let bytes = b"Xerxes";
+    assert_eq!(bytes.iter().rposition(|&b| b == b'e'), Some(4));
+    assert_eq!(bytes.iter().position(|&b| b == b'X'), Some(0));
 }
