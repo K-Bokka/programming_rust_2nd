@@ -58,4 +58,9 @@ pub fn run() {
     assert!(spaced < obscure);
     // 'Troy' > 'Sandusky'
     assert!(spaced.split_whitespace().gt(obscure.split_whitespace()));
+
+    // 15.4.6 any, all
+    let id = "Iterator";
+    assert!(id.chars().any(char::is_uppercase));
+    assert!(!id.chars().all(char::is_uppercase));
 }
