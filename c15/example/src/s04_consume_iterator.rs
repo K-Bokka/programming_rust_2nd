@@ -47,4 +47,15 @@ pub fn run() {
         populations.iter().min_by_key(|&(_name, pop)| pop),
         Some((&"Italy", &60_000_000))
     );
+
+    // 15.4.5 compare item list
+    let packed = "Helen of Troy";
+    let spaced = "Helen     of      Troy";
+    let obscure = "Helen of Sandusky";
+    assert_ne!(packed, spaced);
+    assert!(packed.split_whitespace().eq(spaced.split_whitespace()));
+    // ' ' < 'o'
+    assert!(spaced < obscure);
+    // 'Troy' > 'Sandusky'
+    assert!(spaced.split_whitespace().gt(obscure.split_whitespace()));
 }
