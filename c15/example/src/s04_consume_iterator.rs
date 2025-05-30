@@ -73,4 +73,20 @@ pub fn run() {
     let bytes = b"Xerxes";
     assert_eq!(bytes.iter().rposition(|&b| b == b'e'), Some(4));
     assert_eq!(bytes.iter().position(|&b| b == b'X'), Some(0));
+
+    // 15.4.8 fold, rfold
+    let numbers = [5, 6, 7, 8, 9, 10];
+    assert_eq!(numbers.iter().fold(0, |acc, _| acc + 1), 6);
+    assert_eq!(numbers.iter().fold(0, |acc, i| acc + i), 45);
+    assert_eq!(numbers.iter().fold(1, |acc, i| acc * i), 151_200);
+    assert_eq!(numbers.iter().cloned().fold(i32::MIN, std::cmp::max), 10);
+
+    let words = ["Hello", "World", "Rust"];
+    let sentence = words.iter().fold(String::new(), |acc, word| acc + word + " ");
+    assert_eq!(sentence, "Hello World Rust ");
+    let rev_sentence = words.iter().rfold(String::new(), |acc, word| acc + word + " ");
+    assert_eq!(rev_sentence, "Rust World Hello ");
+    
+    // 15.4.9 try_fold, try_rfold
+    // see: try_fold.rs
 }

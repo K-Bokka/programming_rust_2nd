@@ -25,6 +25,7 @@ members = [
     "c14/example",
     "c15/example",
     "c16/example",
+    "c15/try_fold",
 ]
 resolver = "3"
 
