@@ -86,4 +86,7 @@ pub fn run() {
     assert_eq!(sentence, "Hello World Rust ");
     let rev_sentence = words.iter().rfold(String::new(), |acc, word| acc + word + " ");
     assert_eq!(rev_sentence, "Rust World Hello ");
+    
+    // 15.4.9 try_fold, try_rfold
+    // see: try_fold.rs
 }
