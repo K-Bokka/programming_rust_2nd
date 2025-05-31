@@ -82,11 +82,22 @@ pub fn run() {
     assert_eq!(numbers.iter().cloned().fold(i32::MIN, std::cmp::max), 10);
 
     let words = ["Hello", "World", "Rust"];
-    let sentence = words.iter().fold(String::new(), |acc, word| acc + word + " ");
+    let sentence = words
+        .iter()
+        .fold(String::new(), |acc, word| acc + word + " ");
     assert_eq!(sentence, "Hello World Rust ");
-    let rev_sentence = words.iter().rfold(String::new(), |acc, word| acc + word + " ");
+    let rev_sentence = words
+        .iter()
+        .rfold(String::new(), |acc, word| acc + word + " ");
     assert_eq!(rev_sentence, "Rust World Hello ");
-    
+
     // 15.4.9 try_fold, try_rfold
     // see: try_fold.rs
+
+    // 15.4.10 nth, nth_back
+    let mut squares = (0..10).map(|i| i * i);
+    assert_eq!(squares.nth(3), Some(9));
+    assert_eq!(squares.nth(0), Some(16));
+    assert_eq!(squares.nth_back(0), Some(81));
+    assert_eq!(squares.nth(4), None);
 }
