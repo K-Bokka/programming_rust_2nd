@@ -100,4 +100,9 @@ pub fn run() {
     assert_eq!(squares.nth(0), Some(16));
     assert_eq!(squares.nth_back(0), Some(81));
     assert_eq!(squares.nth(4), None);
+
+    // 15.4.11 last
+    let squares = (0..10).map(|i| i * i);
+    assert_eq!(squares.last(), Some(81));
+    // println!("{:?}", squares); // error[E0382]: borrow of moved value: `squares`
 }
