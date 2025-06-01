@@ -105,4 +105,15 @@ pub fn run() {
     let squares = (0..10).map(|i| i * i);
     assert_eq!(squares.last(), Some(81));
     // println!("{:?}", squares); // error[E0382]: borrow of moved value: `squares`
+
+    // 15.4.12 find, rfind, find_map
+    println!("{:?}", populations); // HashMap は並び順を保持していない
+    assert_eq!(
+        populations.iter().find(|&(_name, &pop)| pop > 400_000_000),
+        None
+    );
+    assert_eq!(
+        populations.iter().find(|&(_name, &pop)| pop > 300_000_000),
+        Some((&"US", &323000000))
+    );
 }
