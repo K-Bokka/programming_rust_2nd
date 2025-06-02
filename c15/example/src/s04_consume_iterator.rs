@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub fn run() {
     println!("15.4 Consume Iterator");
 
@@ -116,4 +114,25 @@ pub fn run() {
         populations.iter().find(|&(_name, &pop)| pop > 300_000_000),
         Some((&"US", &323000000))
     );
+
+    // 15.4.13 collect, FromIterator
+    use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList};
+
+    #[allow(unused_variables)]
+    let args: Vec<String> = std::env::args().collect();
+    #[allow(unused_variables)]
+    let args: HashSet<String> = std::env::args().collect();
+    #[allow(unused_variables)]
+    let args: BTreeSet<String> = std::env::args().collect();
+    #[allow(unused_variables)]
+    let args: LinkedList<String> = std::env::args().collect();
+    #[allow(unused_variables)]
+    let args: HashMap<String, usize> = std::env::args().zip(0..).collect();
+    #[allow(unused_variables)]
+    let args: BTreeMap<String, usize> = std::env::args().zip(0..).collect();
+
+    #[allow(unused_variables)]
+    let args = std::env::args().collect::<Vec<String>>();
+    #[allow(unused_variables)]
+    let args = std::env::args().collect::<HashSet<String>>();
 }
