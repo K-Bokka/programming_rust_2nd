@@ -140,4 +140,11 @@ pub fn run() {
     let mut v = vec![1, 2, 3];
     v.extend([4, 5, 6]);
     assert_eq!(v, [1, 2, 3, 4, 5, 6]);
+
+    // 15.4.15 partition
+    let things = ["doorknob", "mushroom", "noodle", "giraffe", "grapefruit"];
+    let (living, nonliving): (Vec<&str>, Vec<&str>) =
+        things.iter().partition(|name| name.as_bytes()[0] & 1 != 0);
+    assert_eq!(living, ["mushroom", "giraffe", "grapefruit"]);
+    assert_eq!(nonliving, ["doorknob", "noodle"]);
 }
