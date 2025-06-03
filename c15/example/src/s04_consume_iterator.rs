@@ -135,4 +135,9 @@ pub fn run() {
     let args = std::env::args().collect::<Vec<String>>();
     #[allow(unused_variables)]
     let args = std::env::args().collect::<HashSet<String>>();
+
+    // 15.4.14 extend
+    let mut v = vec![1, 2, 3];
+    v.extend([4, 5, 6]);
+    assert_eq!(v, [1, 2, 3, 4, 5, 6]);
 }
