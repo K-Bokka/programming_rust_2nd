@@ -147,4 +147,25 @@ pub fn run() {
         things.iter().partition(|name| name.as_bytes()[0] & 1 != 0);
     assert_eq!(living, ["mushroom", "giraffe", "grapefruit"]);
     assert_eq!(nonliving, ["doorknob", "noodle"]);
+
+    // 15.4.16 for_each, try_for_each
+    ["doves", "hens", "birds"]
+        .iter()
+        .zip(["turtle", "french", "calling"])
+        .zip(2..5)
+        .rev()
+        .map(|((item, kind), quantity)| format!("{} {} {}", quantity, kind, item))
+        .for_each(|gift| {
+            println!("You have received: {}", gift);
+        });
+
+    for gift in ["doves", "hens", "birds"]
+        .iter()
+        .zip(["turtle", "french", "calling"])
+        .zip(2..5)
+        .rev()
+        .map(|((item, kind), quantity)| format!("{} {} {}", quantity, kind, item))
+    {
+        println!("You have received: {}", gift);
+    }
 }
