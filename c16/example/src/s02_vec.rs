@@ -59,4 +59,16 @@ pub fn run() {
     let v = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     assert_eq!(v.to_vec(), vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
     assert_eq!(v[0..6].to_vec(), vec![1, 2, 3, 4, 5, 6]);
+
+    // 16.2.2 iteration
+
+    // 16.2.3 vec extend, shrink
+    let mut byte_vec = b"Missssssssissippi".to_vec();
+    byte_vec.dedup();
+    assert_eq!(byte_vec, b"Misisipi");
+
+    let mut byte_vec = b"Missssssssissippi".to_vec();
+    let mut seen = HashSet::new();
+    byte_vec.retain(|ch| seen.insert(*ch));
+    assert_eq!(byte_vec, b"Misp");
 }
