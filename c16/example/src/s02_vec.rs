@@ -71,4 +71,38 @@ pub fn run() {
     let mut seen = HashSet::new();
     byte_vec.retain(|ch| seen.insert(*ch));
     assert_eq!(byte_vec, b"Misp");
+
+    // 16.2.4 concat, join
+    assert_eq!(
+        [[1, 2], [3, 4], [5, 6], [7, 8]].concat(),
+        vec![1, 2, 3, 4, 5, 6, 7, 8]
+    );
+
+    assert_eq!(
+        [[1, 2], [3, 4], [5, 6], [7, 8]].join(&0),
+        vec![1, 2, 0, 3, 4, 0, 5, 6, 0, 7, 8]
+    );
+
+    // 16.2.5 split
+    let i = 2;
+    let j = 3;
+    
+    let v = vec![0, 1, 2, 3];
+    let a = &v[i];
+    let b = &v[j];
+    assert_eq!(a, &2);
+    assert_eq!(b, &3);
+    
+    let mid = v.len() / 2;
+    let front_half = &v[0..mid];
+    let back_half = &v[mid..];
+    assert_eq!(front_half, [0, 1]);
+    assert_eq!(back_half, [2, 3]);
+    
+    let mut v = vec![0, 1, 2, 3];
+    let a = &mut v[i];
+    // let b = &mut v[j]; // error[E0499]: cannot borrow `v` as mutable more than once at a time
+    *a = 6;
+    // *b = 7;
+    assert_eq!(v, vec![0, 1, 6, 3]);
 }
