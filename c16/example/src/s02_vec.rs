@@ -86,23 +86,69 @@ pub fn run() {
     // 16.2.5 split
     let i = 2;
     let j = 3;
-    
+
     let v = vec![0, 1, 2, 3];
     let a = &v[i];
     let b = &v[j];
     assert_eq!(a, &2);
     assert_eq!(b, &3);
-    
+
     let mid = v.len() / 2;
     let front_half = &v[0..mid];
     let back_half = &v[mid..];
     assert_eq!(front_half, [0, 1]);
     assert_eq!(back_half, [2, 3]);
-    
+
     let mut v = vec![0, 1, 2, 3];
     let a = &mut v[i];
     // let b = &mut v[j]; // error[E0499]: cannot borrow `v` as mutable more than once at a time
     *a = 6;
     // *b = 7;
     assert_eq!(v, vec![0, 1, 6, 3]);
+
+    // 16.2.6 swap
+    // 16.2.7 fill
+    // 16.2.8 sort
+    #[derive(Debug)]
+    struct Student {
+        first_name: String,
+        last_name: String,
+        arithmetic: u16,
+        science: u16,
+        english: u16,
+    }
+
+    impl Student {
+        fn grade_point_average(&self) -> u16 {
+            (&self.arithmetic + &self.science + &self.english) / 3
+        }
+    }
+
+    let mut students = vec![];
+    students.push(Student {
+        first_name: "Mike".to_string(),
+        last_name: "Smith".to_string(),
+        arithmetic: 90,
+        science: 80,
+        english: 90,
+    });
+    students.push(Student {
+        first_name: "John".to_string(),
+        last_name: "William".to_string(),
+        arithmetic: 80,
+        science: 70,
+        english: 80,
+    });
+    students.sort_by(|a, b| a.first_name.cmp(&b.first_name));
+    println!("{:?}", students);
+
+    students.sort_by(|a, b| {
+        let a_key = (&a.last_name, &a.first_name);
+        let b_key = (&b.last_name, &b.first_name);
+        a_key.cmp(&b_key)
+    });
+    println!("{:?}", students);
+
+    students.sort_by_key(|s| s.grade_point_average());
+    println!("{:?}", students);
 }
