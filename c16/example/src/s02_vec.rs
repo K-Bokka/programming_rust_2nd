@@ -151,4 +151,9 @@ pub fn run() {
 
     students.sort_by_key(|s| s.grade_point_average());
     println!("{:?}", students);
+
+    // 16.2.9 slice compare
+    assert_eq!([1, 2, 3, 4].starts_with(&[1, 2]), true);
+    assert_eq!([1, 2, 3, 4].starts_with(&[2, 3]), false);
+    assert_eq!([1, 2, 3, 4].ends_with(&[3, 4]), true);
 }
