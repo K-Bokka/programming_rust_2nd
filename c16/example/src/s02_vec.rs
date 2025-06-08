@@ -166,4 +166,14 @@ pub fn run() {
     use rand::seq::SliceRandom;
     choices.shuffle(&mut rng);
     println!("{:?}", choices);
+
+    // 16.2.11 invalidation error
+    let mut my_vec = vec![1, 3, 5, 7, 9];
+    // for (index, &val) in my_vec.iter().enumerate() {
+    //     if val > 4 {
+    //         my_vec.remove(index); // error[E0502]: cannot borrow `my_vec` as mutable because it is also borrowed as immutable
+    //     }
+    // }
+    my_vec.retain(|&val| val <= 4);
+    println!("{:?}", my_vec);
 }
