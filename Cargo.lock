@@ -536,6 +536,9 @@ dependencies = [
 [[package]]
 name = "c16_example"
 version = "0.1.0"
+dependencies = [
+ "rand 0.9.1",
+]
 
 [[package]]
 name = "cc"

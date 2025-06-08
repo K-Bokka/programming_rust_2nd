@@ -156,4 +156,14 @@ pub fn run() {
     assert_eq!([1, 2, 3, 4].starts_with(&[1, 2]), true);
     assert_eq!([1, 2, 3, 4].starts_with(&[2, 3]), false);
     assert_eq!([1, 2, 3, 4].ends_with(&[3, 4]), true);
+
+    // 16.2.10 random
+    use rand::seq::IndexedRandom;
+    let mut choices = [1, 2, 4, 8, 16, 32];
+    let mut rng = rand::rng();
+    println!("{:?}", choices.choose(&mut rng));
+
+    use rand::seq::SliceRandom;
+    choices.shuffle(&mut rng);
+    println!("{:?}", choices);
 }
