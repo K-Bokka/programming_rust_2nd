@@ -41,4 +41,17 @@ pub fn run() {
         *count += 1;
     }
     println!("{:?}", vote_counts);
+
+    println!("16.5.2 Iteration");
+
+    let mut any_map = HashMap::new();
+    any_map.insert("a", 1);
+    any_map.insert("b", 2);
+    any_map.insert("c", 3);
+    for (key, value) in &mut any_map {
+        if *key == "a" {
+            *value = 10;
+        }
+    }
+    println!("{:?}", any_map);
 }
