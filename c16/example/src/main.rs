@@ -3,6 +3,7 @@ mod s03_vec_deque;
 mod s04_binary_heap;
 mod s05_hash_map;
 mod s06_hash_set;
+mod s07_hash;
 
 fn main() {
     println!("Chapter 16 Collection");
@@ -21,4 +22,7 @@ fn main() {
 
     println!();
     s06_hash_set::run();
+
+    println!();
+    s07_hash::run();
 }
