@@ -4,6 +4,7 @@ mod s04_binary_heap;
 mod s05_hash_map;
 mod s06_hash_set;
 mod s07_hash;
+mod s08_custom_algorithm;
 
 fn main() {
     println!("Chapter 16 Collection");
@@ -25,4 +26,7 @@ fn main() {
 
     println!();
     s07_hash::run();
+
+    println!();
+    s08_custom_algorithm::run();
 }
