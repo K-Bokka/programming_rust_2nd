@@ -28,4 +28,13 @@ pub fn run() {
     assert_eq!(lower.next(), Some('i'));
     assert_eq!(lower.next(), Some('\u{307}'));
     assert_eq!(lower.next(), None);
+
+    println!("\n17.2.4 Integer");
+    assert_eq!('B' as u32, 66);
+    assert_eq!('饂' as u8, 66);
+    assert_eq!('二' as i8, -116);
+
+    assert_eq!(char::from(66), 'B');
+    assert_eq!(char::from_u32(0x9942), Some('饂'));
+    assert_eq!(char::from_u32(0xd800), None);
 }
