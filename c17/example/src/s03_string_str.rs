@@ -44,4 +44,17 @@ pub fn run() {
     let string = "test".to_string();
     let parenthetical = "(".to_string() + &string + ")";
     assert_eq!(parenthetical, "(test)");
+
+    println!("\n17.3.4 delete, replace");
+    let mut choco = "chocolate".to_string();
+    assert_eq!(choco.drain(3..6).collect::<String>(), "col");
+    assert_eq!(choco, "choate");
+
+    let mut winston = "Churchill".to_string();
+    winston.drain(2..6);
+    assert_eq!(winston, "Chill");
+
+    let mut beverage = "a piña colada".to_string();
+    beverage.replace_range(2..7, "kahlua");
+    assert_eq!(beverage, "a kahlua colada");
 }
