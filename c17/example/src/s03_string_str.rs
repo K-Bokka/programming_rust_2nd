@@ -18,4 +18,30 @@ pub fn run() {
 
     let parenthesized = "Rust (饂)";
     assert_eq!(parenthesized[6..].chars().next(), Some('饂'));
+
+    println!("\n17.3.3 add & insert");
+    let mut also_spaceless = "con".to_string();
+    also_spaceless.extend("tri but ion".split_whitespace());
+    assert_eq!(also_spaceless, "contribution");
+
+    use std::fmt::Write;
+
+    let mut letter = String::new();
+    writeln!(letter, "Whose {} these are I think I know", "letters").unwrap();
+    writeln!(letter, "His house is in the village though").unwrap();
+    assert_eq!(
+        letter,
+        "Whose letters these are I think I know\nHis house is in the village though\n"
+    );
+
+    let left = "partners".to_string();
+    let mut right = "crime".to_string();
+    assert_eq!(left + " in " + &right, "partners in crime");
+
+    right += " doesn't pay";
+    assert_eq!(right, "crime doesn't pay");
+
+    let string = "test".to_string();
+    let parenthetical = "(".to_string() + &string + ")";
+    assert_eq!(parenthetical, "(test)");
 }
