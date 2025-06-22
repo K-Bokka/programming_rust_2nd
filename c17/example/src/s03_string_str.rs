@@ -78,4 +78,53 @@ pub fn run() {
         code.trim_start_matches(&[' ', '\t'][..]),
         "function noodle() { "
     );
+
+    println!("\n17.3.7 search & replace");
+    assert!("2017".starts_with(char::is_numeric));
+
+    let quip = "We also know there are known unknowns.";
+    assert_eq!(quip.find("know"), Some(8));
+    assert_eq!(quip.rfind("know"), Some(31));
+    assert_eq!(quip.find("ya know"), None);
+    assert_eq!(quip.rfind(char::is_uppercase), Some(0));
+
+    assert_eq!(
+        "The only thing we have to fear is fear itself.".replace("fear", "hope"),
+        "The only thing we have to hope is hope itself."
+    );
+    assert_eq!(
+        "`Borrow` and `BorrowMut`".replace(|ch: char| !ch.is_alphabetic(), ""),
+        "BorrowandBorrowMut"
+    );
+    assert_eq!("cabababababbage".replace("aba", "***"), "c***b***babbage");
+
+    println!("\n17.3.8 iterate for text");
+    assert_eq!(
+        "élan".char_indices().collect::<Vec<_>>(),
+        vec![(0, 'é'), (2, 'l'), (3, 'a'), (4, 'n')]
+    );
+    assert_eq!(
+        "élan".bytes().collect::<Vec<_>>(),
+        vec![195, 169, b'l', b'a', b'n']
+    );
+    assert_eq!(
+        "jimb:1000:Jim Brandy:".split(':').collect::<Vec<_>>(),
+        vec!["jimb", "1000", "Jim Brandy", ""]
+    );
+    assert_eq!(
+        "jimb:1000:Jim Brandy:"
+            .split_terminator(':')
+            .collect::<Vec<_>>(),
+        vec!["jimb", "1000", "Jim Brandy"]
+    );
+    let poem = "This  is  just　to say\n\
+                     I have eaten\n\
+                     the plum\n\
+                     again\n";
+    assert_eq!(
+        poem.split_whitespace().collect::<Vec<_>>(),
+        vec![
+            "This", "is", "just", "to", "say", "I", "have", "eaten", "the", "plum", "again"
+        ]
+    );
 }
