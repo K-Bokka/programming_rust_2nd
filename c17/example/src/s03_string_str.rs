@@ -78,4 +78,23 @@ pub fn run() {
         code.trim_start_matches(&[' ', '\t'][..]),
         "function noodle() { "
     );
+
+    println!("\n17.3.7 search & replace");
+    assert!("2017".starts_with(char::is_numeric));
+
+    let quip = "We also know there are known unknowns.";
+    assert_eq!(quip.find("know"), Some(8));
+    assert_eq!(quip.rfind("know"), Some(31));
+    assert_eq!(quip.find("ya know"), None);
+    assert_eq!(quip.rfind(char::is_uppercase), Some(0));
+
+    assert_eq!(
+        "The only thing we have to fear is fear itself.".replace("fear", "hope"),
+        "The only thing we have to hope is hope itself."
+    );
+    assert_eq!(
+        "`Borrow` and `BorrowMut`".replace(|ch: char| !ch.is_alphabetic(), ""),
+        "BorrowandBorrowMut"
+    );
+    assert_eq!("cabababababbage".replace("aba", "***"), "c***b***babbage");
 }
