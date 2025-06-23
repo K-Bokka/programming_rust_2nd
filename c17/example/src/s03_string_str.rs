@@ -127,4 +127,18 @@ pub fn run() {
             "This", "is", "just", "to", "say", "I", "have", "eaten", "the", "plum", "again"
         ]
     );
+
+    println!("\n17.3.9 trimming");
+    assert_eq!("\t*.rs  ".trim(), "*.rs");
+    assert_eq!("\t*.rs  ".trim_start(), "*.rs  ");
+    assert_eq!("\t*.rs  ".trim_end(), "\t*.rs");
+
+    assert_eq!("001990".trim_start_matches('0'), "1990");
+
+    let slice = "banana";
+    assert_eq!(slice.strip_suffix("na"), Some("bana"));
+    
+    println!("\n17.3.10 convert upper case or lower case");
+    assert_eq!("Hello".to_uppercase(), "HELLO");
+    assert_eq!("Hello".to_lowercase(), "hello");
 }
