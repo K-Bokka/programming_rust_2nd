@@ -137,8 +137,25 @@ pub fn run() {
 
     let slice = "banana";
     assert_eq!(slice.strip_suffix("na"), Some("bana"));
-    
+
     println!("\n17.3.10 convert upper case or lower case");
     assert_eq!("Hello".to_uppercase(), "HELLO");
     assert_eq!("Hello".to_lowercase(), "hello");
+
+    use std::str::FromStr;
+    println!("\n17.3.11 parse");
+    assert_eq!(usize::from_str("12345"), Ok(12345));
+    assert_eq!(f64::from_str("12345.6789"), Ok(12345.6789));
+    assert_eq!(bool::from_str("true"), Ok(true));
+    assert!(f64::from_str("not a float at all").is_err());
+    assert!(bool::from_str("TRUE").is_err());
+    assert_eq!(char::from_str("a"), Ok('a'));
+    assert!(char::from_str("abc").is_err());
+
+    use std::net::IpAddr;
+    let address = IpAddr::from_str("fe80::0000:3ea9:f4ff:fe34:7a50").unwrap();
+    assert_eq!(
+        address,
+        IpAddr::from([0xfe80, 0, 0, 0, 0x3ea9, 0xf4ff, 0xfe34, 0x7a50])
+    );
 }
