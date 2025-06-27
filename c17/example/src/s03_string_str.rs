@@ -158,4 +158,21 @@ pub fn run() {
         address,
         IpAddr::from([0xfe80, 0, 0, 0, 0x3ea9, 0xf4ff, 0xfe34, 0x7a50])
     );
+
+    println!("\n17.3.12 convert to String");
+    assert_eq!(format!("{}, wow", "doge"), "doge, wow");
+    assert_eq!(format!("{}", true), "true");
+    assert_eq!(
+        format!("({:.3}, {:.3})", 0.5, f64::sqrt(3.0) / 2.0),
+        "(0.500, 0.866)"
+    );
+    let formatted_addr: String = format!("{}", address);
+    assert_eq!(formatted_addr, "fe80::3ea9:f4ff:fe34:7a50");
+    assert_eq!(address.to_string(), "fe80::3ea9:f4ff:fe34:7a50");
+
+    let addresses = vec![address, IpAddr::from_str("192.168.0.1").unwrap()];
+    assert_eq!(
+        format!("{:?}", addresses),
+        "[fe80::3ea9:f4ff:fe34:7a50, 192.168.0.1]"
+    );
 }
