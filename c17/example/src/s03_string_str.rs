@@ -216,21 +216,23 @@ pub fn run() {
         name.to_mut().push_str(title);
     }
     println!("Greetings, {}", name);
-    
+
     fn get_name3() -> Cow<'static, str> {
         std::env::var("USER")
             .map(|v| v.into())
             .unwrap_or(Cow::Borrowed("whoever you are"))
     }
-    
+
     let mut name = get_name3();
-    
+
     if let Some(title) = get_title() {
         name += ", ";
         name += title;
     }
-    
+
     if let Some(title) = get_title() {
         write!(name.to_mut(), "{}", title).unwrap();
     }
+
+    println!("17.3.17 string as general collection");
 }
