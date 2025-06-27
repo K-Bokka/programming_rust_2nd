@@ -187,5 +187,50 @@ pub fn run() {
     let bad_utf8: Vec<u8> = vec![0x9f, 0xf0, 0xa6, 0x80];
     let result = String::from_utf8(bad_utf8);
     assert!(result.is_err());
-    assert_eq!(result.unwrap_err().into_bytes(), vec![0x9f, 0xf0, 0xa6, 0x80]);
+    assert_eq!(
+        result.unwrap_err().into_bytes(),
+        vec![0x9f, 0xf0, 0xa6, 0x80]
+    );
+
+    println!("\n17.3.16 lazy heap");
+    fn get_name() -> String {
+        std::env::var("USER").unwrap_or("whoever you are".to_string())
+    }
+    println!("{}", get_name());
+
+    use std::borrow::Cow;
+    fn get_name2() -> Cow<'static, str> {
+        std::env::var("USER")
+            .map(|v| Cow::Owned(v))
+            .unwrap_or(Cow::Borrowed("whoever you are"))
+    }
+
+    println!("{}", get_name2());
+
+    fn get_title() -> Option<&'static str> {
+        Some("Esq.")
+    }
+    let mut name = get_name2();
+    if let Some(title) = get_title() {
+        name.to_mut().push_str(", ");
+        name.to_mut().push_str(title);
+    }
+    println!("Greetings, {}", name);
+    
+    fn get_name3() -> Cow<'static, str> {
+        std::env::var("USER")
+            .map(|v| v.into())
+            .unwrap_or(Cow::Borrowed("whoever you are"))
+    }
+    
+    let mut name = get_name3();
+    
+    if let Some(title) = get_title() {
+        name += ", ";
+        name += title;
+    }
+    
+    if let Some(title) = get_title() {
+        write!(name.to_mut(), "{}", title).unwrap();
+    }
 }
