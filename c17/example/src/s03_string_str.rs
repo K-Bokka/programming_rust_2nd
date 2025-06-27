@@ -158,4 +158,81 @@ pub fn run() {
         address,
         IpAddr::from([0xfe80, 0, 0, 0, 0x3ea9, 0xf4ff, 0xfe34, 0x7a50])
     );
+
+    println!("\n17.3.12 convert to String");
+    assert_eq!(format!("{}, wow", "doge"), "doge, wow");
+    assert_eq!(format!("{}", true), "true");
+    assert_eq!(
+        format!("({:.3}, {:.3})", 0.5, f64::sqrt(3.0) / 2.0),
+        "(0.500, 0.866)"
+    );
+    let formatted_addr: String = format!("{}", address);
+    assert_eq!(formatted_addr, "fe80::3ea9:f4ff:fe34:7a50");
+    assert_eq!(address.to_string(), "fe80::3ea9:f4ff:fe34:7a50");
+
+    let addresses = vec![address, IpAddr::from_str("192.168.0.1").unwrap()];
+    assert_eq!(
+        format!("{:?}", addresses),
+        "[fe80::3ea9:f4ff:fe34:7a50, 192.168.0.1]"
+    );
+
+    println!("\n17.3.13 borrowing");
+
+    println!("\n17.3.14 access as utf-8");
+
+    println!("\n17.3.15 create from utf-8");
+    let good_utf8: Vec<u8> = vec![0xe9, 0x8c, 0x86];
+    assert_eq!(String::from_utf8(good_utf8).ok(), Some("錆".to_string()));
+
+    let bad_utf8: Vec<u8> = vec![0x9f, 0xf0, 0xa6, 0x80];
+    let result = String::from_utf8(bad_utf8);
+    assert!(result.is_err());
+    assert_eq!(
+        result.unwrap_err().into_bytes(),
+        vec![0x9f, 0xf0, 0xa6, 0x80]
+    );
+
+    println!("\n17.3.16 lazy heap");
+    fn get_name() -> String {
+        std::env::var("USER").unwrap_or("whoever you are".to_string())
+    }
+    println!("{}", get_name());
+
+    use std::borrow::Cow;
+    fn get_name2() -> Cow<'static, str> {
+        std::env::var("USER")
+            .map(|v| Cow::Owned(v))
+            .unwrap_or(Cow::Borrowed("whoever you are"))
+    }
+
+    println!("{}", get_name2());
+
+    fn get_title() -> Option<&'static str> {
+        Some("Esq.")
+    }
+    let mut name = get_name2();
+    if let Some(title) = get_title() {
+        name.to_mut().push_str(", ");
+        name.to_mut().push_str(title);
+    }
+    println!("Greetings, {}", name);
+
+    fn get_name3() -> Cow<'static, str> {
+        std::env::var("USER")
+            .map(|v| v.into())
+            .unwrap_or(Cow::Borrowed("whoever you are"))
+    }
+
+    let mut name = get_name3();
+
+    if let Some(title) = get_title() {
+        name += ", ";
+        name += title;
+    }
+
+    if let Some(title) = get_title() {
+        write!(name.to_mut(), "{}", title).unwrap();
+    }
+
+    println!("17.3.17 string as general collection");
 }
