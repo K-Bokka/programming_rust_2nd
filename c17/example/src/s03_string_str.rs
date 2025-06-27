@@ -175,4 +175,17 @@ pub fn run() {
         format!("{:?}", addresses),
         "[fe80::3ea9:f4ff:fe34:7a50, 192.168.0.1]"
     );
+
+    println!("\n17.3.13 borrowing");
+
+    println!("\n17.3.14 access as utf-8");
+
+    println!("\n17.3.15 create from utf-8");
+    let good_utf8: Vec<u8> = vec![0xe9, 0x8c, 0x86];
+    assert_eq!(String::from_utf8(good_utf8).ok(), Some("錆".to_string()));
+
+    let bad_utf8: Vec<u8> = vec![0x9f, 0xf0, 0xa6, 0x80];
+    let result = String::from_utf8(bad_utf8);
+    assert!(result.is_err());
+    assert_eq!(result.unwrap_err().into_bytes(), vec![0x9f, 0xf0, 0xa6, 0x80]);
 }
