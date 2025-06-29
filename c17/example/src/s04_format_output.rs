@@ -19,4 +19,18 @@ pub fn run() {
         msb = 42
     );
     assert_eq!(format!("{{a, c}} ⊂ {{a, b, c}}"), "{a, c} ⊂ {a, b, c}");
+    
+    println!("17.4.1 formatting text");
+    let bookend = "bookend";
+    println!("{}", bookend);
+    println!("{:4}", bookend);
+    println!("{:.12}", bookend);
+    println!("{:12.20}", bookend);
+    println!("{:^12}", bookend);
+    println!("{:>12.20}", bookend);
+    println!("{:=^12}", bookend);
+    println!("{:*>12.4}", bookend);
+    
+    assert_eq!(format!("{:4}", "th\u{e9}"), "th\u{e9} ");
+    assert_eq!(format!("{:4}", "th\u{301}"), "th\u{301} ");
 }
