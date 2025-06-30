@@ -20,7 +20,7 @@ pub fn run() {
     );
     assert_eq!(format!("{{a, c}} ⊂ {{a, b, c}}"), "{a, c} ⊂ {a, b, c}");
     
-    println!("17.4.1 formatting text");
+    println!("\n17.4.1 formatting text");
     let bookend = "bookend";
     println!("{}", bookend);
     println!("{:4}", bookend);
@@ -33,4 +33,42 @@ pub fn run() {
     
     assert_eq!(format!("{:4}", "th\u{e9}"), "th\u{e9} ");
     assert_eq!(format!("{:4}", "th\u{301}"), "th\u{301} ");
+
+    println!("\n17.4.2 formatting numbers");
+    let num = 1234_i32;
+    println!("{}", num);
+    println!("{:+}", num);
+    println!("{:12}", num);
+    println!("{:2}", num);
+    println!("{:+12}", num);
+    println!("{:012}", num);
+    println!("{:+012}", num);
+    println!("{:<12}", num);
+    println!("{:^12}", num);
+    println!("{:>12}", num);
+    println!("{:<+12}", num);
+    println!("{:^+12}", num);
+    println!("{:>+12}", num);
+    println!("{:=^12}", num);
+    println!("{:b}", num);
+    println!("{:12o}", num);
+    println!("{:+12x}", num);
+    println!("{:+12X}", num);
+    println!("{:+#12X}", num);
+    println!("{:+#012X}", num);
+    println!("{:+#06X}", num);
+
+    let float = 1234.5678;
+    println!("{}", float);
+    println!("{:.2}", float);
+    println!("{:.6}", float);
+    println!("{:12}", float);
+    println!("{:12.2}", float);
+    println!("{:12.6}", float);
+    println!("{:012.6}", float);
+    println!("{:e}", float);
+    println!("{:.3e}", float);
+    println!("{:12.3e}", float);
+    println!("{:12.3E}", float);
+
 }
