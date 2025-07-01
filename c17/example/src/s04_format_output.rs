@@ -19,7 +19,7 @@ pub fn run() {
         msb = 42
     );
     assert_eq!(format!("{{a, c}} ⊂ {{a, b, c}}"), "{a, c} ⊂ {a, b, c}");
-    
+
     println!("\n17.4.1 formatting text");
     let bookend = "bookend";
     println!("{}", bookend);
@@ -30,7 +30,7 @@ pub fn run() {
     println!("{:>12.20}", bookend);
     println!("{:=^12}", bookend);
     println!("{:*>12.4}", bookend);
-    
+
     assert_eq!(format!("{:4}", "th\u{e9}"), "th\u{e9} ");
     assert_eq!(format!("{:4}", "th\u{301}"), "th\u{301} ");
 
@@ -71,4 +71,28 @@ pub fn run() {
     println!("{:12.3e}", float);
     println!("{:12.3E}", float);
 
+    println!("\n17.4.3 other format");
+
+    println!("\n17.4.4 debug format");
+    let mut map = std::collections::HashMap::new();
+    map.insert("Portland", (45.5237606, -122.6819273));
+    map.insert("Taipei", (25.0375167, 121.5637));
+    println!("{:?}", map);
+    println!("{:#?}", map);
+
+    println!("ordinary: {:02?}", [9, 15, 240]);
+    println!("hex: {:02x?}", [9, 15, 240]);
+
+    #[allow(dead_code)]
+    #[derive(Debug, Copy, Clone)]
+    struct Complex {
+        re: f64,
+        im: f64,
+    }
+
+    let third = Complex {
+        re: -0.5,
+        im: f64::sqrt(0.75),
+    };
+    println!("{:?}", third);
 }
