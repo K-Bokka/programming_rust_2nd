@@ -132,4 +132,31 @@ pub fn run() {
         ),
         "flying purple people eater"
     );
+
+    println!("\n17.4.7 dynamic field width");
+
+    let content = "hello";
+    fn get_width() -> usize {
+        10
+    }
+    fn get_limit() -> usize {
+        3
+    }
+
+    assert_eq!(format!("{:>20}", content), "               hello");
+    assert_eq!(format!("{:>1$}", content, get_width()), "     hello");
+    assert_eq!(
+        format!("{:>width$}", content, width = get_width()),
+        "     hello"
+    );
+    assert_eq!(
+        format!(
+            "{:>width$.limit$}",
+            content,
+            width = get_width(),
+            limit = get_limit()
+        ),
+        "       hel"
+    );
+    assert_eq!(format!("{:.*}", get_limit(), content), "hel")
 }
