@@ -103,4 +103,33 @@ pub fn run() {
     let imposter = Rc::new("mazurka".to_string());
     println!("text:     {}, {}, {}", original, cloned, imposter);
     println!("pointers: {:p}, {:p}, {:p}", original, cloned, imposter);
+
+    println!("\n17.4.6 referencing args by index or name");
+    assert_eq!(
+        format!("{1}, {0}, {2}", "zeroth", "first", "second"),
+        "first, zeroth, second"
+    );
+    assert_eq!(
+        format!("{2:#06x},{1:b},{0:=>10}", "first", 10, 100),
+        "0x0064,1010,=====first"
+    );
+    assert_eq!(
+        format!(
+            "{description:.<25}{quantity:2} @ {price:5.2}",
+            price = 3.25,
+            quantity = 3,
+            description = "Maple Turmeric Latte"
+        ),
+        "Maple Turmeric Latte..... 3 @  3.25"
+    );
+    assert_eq!(
+        format!(
+            "{mode} {2} {} {}",
+            "people",
+            "eater",
+            "purple",
+            mode = "flying"
+        ),
+        "flying purple people eater"
+    );
 }
