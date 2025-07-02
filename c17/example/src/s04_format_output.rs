@@ -95,4 +95,12 @@ pub fn run() {
         im: f64::sqrt(0.75),
     };
     println!("{:?}", third);
+
+    println!("\n17.4.5 pointer format");
+    use std::rc::Rc;
+    let original = Rc::new("mazurka".to_string());
+    let cloned = original.clone();
+    let imposter = Rc::new("mazurka".to_string());
+    println!("text:     {}, {}, {}", original, cloned, imposter);
+    println!("pointers: {:p}, {:p}, {:p}", original, cloned, imposter);
 }
