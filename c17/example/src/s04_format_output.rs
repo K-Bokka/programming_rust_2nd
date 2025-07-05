@@ -1,3 +1,6 @@
+use std::fs::OpenOptions;
+use std::io::Write;
+
 pub fn run() {
     println!("17.4 formating output");
 
@@ -191,4 +194,35 @@ pub fn run() {
     let ninety = Complex { re: 0.0, im: 2.0 };
     assert_eq!(format!("{}", ninety), "0 + 2i");
     assert_eq!(format!("{:#}", ninety), "2 < 90°");
+
+    println!("\n17.4.9 using user code to format arguments");
+
+    fn logging_enabled() -> bool {
+        true
+    }
+
+    fn write_log_entry(entry: std::fmt::Arguments) {
+        if logging_enabled() {
+            let mut log_file = OpenOptions::new()
+                .append(true)
+                .create(true)
+                .open("log-file-name")
+                .expect("failed to open log file");
+            log_file
+                .write_fmt(entry)
+                .expect("failed to write log entry");
+        }
+    }
+
+    let mysterious_value = 42;
+    write_log_entry(format_args!("Hark! {} \n", mysterious_value));
+
+    macro_rules! log {
+        ($format:tt, $($arg:expr),*) => (write_log_entry(format_args!($format, $($arg),*)));
+    }
+
+    log!(
+        "O day and night, but this is wondrous strange! {}\n",
+        mysterious_value
+    );
 }
