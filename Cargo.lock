@@ -543,6 +543,9 @@ dependencies = [
 [[package]]
 name = "c17_example"
 version = "0.1.0"
+dependencies = [
+ "regex",
+]
 
 [[package]]
 name = "cc"
