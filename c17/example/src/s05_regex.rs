@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use regex::Regex;
 
 pub fn run() {
@@ -31,4 +32,18 @@ pub fn run() {
         .map(|match_| match_.as_str())
         .collect();
     assert_eq!(matches, ["1.0.0", "1.0.1-beta", "1.2.4"]);
+
+    println!("\n17.5.2 lazy create");
+    lazy_static! {
+        static ref SEMVER: Regex =
+            Regex::new(r"(\d+)\.(\d+)\.(\d+)(-[-.a-zA-Z0-9]*)?").expect("error parsing regex");
+    }
+
+    // let stdin = std::io::stdin();
+    // for line_result in stdin.lock().lines() {
+    //     let line = line_result.unwrap();
+    //     if let Some(match_) = SEMVER.find(&line) {
+    //         println!("{}", match_.as_str())
+    //     }
+    // }
 }
