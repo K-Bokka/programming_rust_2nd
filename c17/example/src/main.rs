@@ -3,6 +3,7 @@ mod s02_char;
 mod s03_string_str;
 mod s04_format_output;
 mod s05_regex;
+mod s06_normalize;
 
 fn main() {
     println!("Chapter 17 String, Text");
@@ -21,4 +22,7 @@ fn main() {
 
     println!();
     s05_regex::run();
+
+    println!();
+    s06_normalize::run();
 }
