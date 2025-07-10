@@ -25,4 +25,8 @@ pub fn run() {
             written += len as u64;
         }
     }
+
+    println!("\n18.1.1 Reader");
+
+    println!("\n18.1.2 Reader with buffer");
 }
