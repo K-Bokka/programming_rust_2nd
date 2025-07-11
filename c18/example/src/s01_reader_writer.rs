@@ -1,4 +1,4 @@
-use std::io::{self, ErrorKind, Read, Write};
+use std::io::{self, BufRead, ErrorKind, Read, Write};
 
 pub fn run() {
     println!("18.1 Reader & Writer");
@@ -29,4 +29,32 @@ pub fn run() {
     println!("\n18.1.1 Reader");
 
     println!("\n18.1.2 Reader with buffer");
+
+    println!("\n18.1.3 Read line");
+
+    #[allow(dead_code)]
+    fn grep(target: &str) -> io::Result<()> {
+        let stdin = io::stdin();
+        for line_result in stdin.lock().lines() {
+            let line = line_result?;
+            if line.contains(target) {
+                println!("{}", line);
+            }
+        }
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    fn grep_gen<R>(target: &str, reader: R) -> io::Result<()>
+    where
+        R: BufRead,
+    {
+        for line_result in reader.lines() {
+            let line = line_result?;
+            if line.contains(target) {
+                println!("{}", line);
+            }
+        }
+        Ok(())
+    }
 }
