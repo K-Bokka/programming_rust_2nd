@@ -28,6 +28,7 @@ members = [
     "c15/try_fold",
     "c17/example",
     "c18/example",
+    "c18/grep",
 ]
 resolver = "3"
 
