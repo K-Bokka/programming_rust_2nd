@@ -1,3 +1,4 @@
+use std::fs::OpenOptions;
 use std::io::{self, BufRead, ErrorKind, Read, Write};
 
 pub fn run() {
@@ -57,4 +58,18 @@ pub fn run() {
         }
         Ok(())
     }
+
+    println!("\n18.1.4 collect for line");
+
+    println!("\n18.1.5 writer");
+
+    println!("\n18.1.6 file");
+
+    #[allow(unused_variables)]
+    let log = OpenOptions::new().append(true).open("server.log");
+    #[allow(unused_variables)]
+    let file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("new_file.txt");
 }
