@@ -72,4 +72,11 @@ pub fn run() {
         .write(true)
         .create(true)
         .open("new_file.txt");
+
+    println!("\n18.1.7 Seek");
+
+    println!("\n18.1.8 Other reader, writer");
+    let stdin = io::stdin();
+    #[allow(unused_variables)]
+    let lines = stdin.lock().lines();
 }
