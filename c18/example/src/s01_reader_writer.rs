@@ -1,3 +1,6 @@
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::fs::OpenOptions;
 use std::io::{self, BufRead, ErrorKind, Read, Write};
 
 pub fn run() {
@@ -57,4 +60,60 @@ pub fn run() {
         }
         Ok(())
     }
+
+    println!("\n18.1.4 collect for line");
+
+    println!("\n18.1.5 writer");
+
+    println!("\n18.1.6 file");
+
+    #[allow(unused_variables)]
+    let log = OpenOptions::new().append(true).open("server.log");
+    #[allow(unused_variables)]
+    let file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("new_file.txt");
+
+    println!("\n18.1.7 Seek");
+
+    println!("\n18.1.8 Other reader, writer");
+    let stdin = io::stdin();
+    #[allow(unused_variables)]
+    let lines = stdin.lock().lines();
+
+    println!("\n18.1.9 Binary data, compress, serialize");
+    type RoomId = String;
+    type RoomExits = Vec<(char, RoomId)>;
+    type RoomMap = HashMap<RoomId, RoomExits>;
+
+    let mut map = RoomMap::new();
+    map.insert(
+        "Cobble Crawl".to_string(),
+        vec![('W', "Debris Room".to_string())],
+    );
+    map.insert(
+        "Debris Room".to_string(),
+        vec![
+            ('E', "Cobble Crawl".to_string()),
+            ('W', "Sloping Canyon".to_string()),
+        ],
+    );
+    serde_json::to_writer(io::stdout(), &map).unwrap();
+    println!();
+
+    #[derive(Serialize, Deserialize)]
+    struct Player {
+        location: String,
+        items: Vec<String>,
+        health: u32,
+    }
+
+    let player = Player {
+        location: "Cobble Crawl".to_string(),
+        items: vec!["sword".to_string()],
+        health: 100,
+    };
+    serde_json::to_writer(io::stdout(), &player).unwrap();
+    println!();
 }
