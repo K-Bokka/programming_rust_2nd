@@ -1,4 +1,6 @@
 use std::ffi::OsStr;
+use std::fs;
+use std::io;
 use std::path::Path;
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -36,6 +38,43 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(file_str) = file.to_str() {
         println!("file_str: {}", file_str);
+    }
+
+    println!("\n18.2.3 File system access function");
+    println!("\n18.2.4 Read directory");
+
+    let path = Path::new("/Users/ak_yama/git/");
+
+    for entry_result in path.read_dir()? {
+        let entry = entry_result?;
+        println!("{:?}", entry.file_name().to_string_lossy());
+    }
+    #[allow(dead_code)]
+    fn copy_dir_to(src: &Path, dst: &Path) -> io::Result<()> {
+        if !dst.is_dir() {
+            fs::create_dir(dst)?;
+        }
+        for entry_result in src.read_dir()? {
+            let entry = entry_result?;
+            let file_type = entry.file_type()?;
+            copy_to(&entry.path(), &file_type, &dst.join(entry.file_name()))?
+        }
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    fn copy_to(src: &Path, src_type: &fs::FileType, dst: &Path) -> io::Result<()> {
+        if src_type.is_file() {
+            fs::copy(src, dst)?;
+        } else if src_type.is_dir() {
+            copy_dir_to(src, dst)?;
+        } else {
+            return Err(io::Error::new(
+                io::ErrorKind::Other,
+                format!("don't know how to copy: {}", src.display()),
+            ));
+        }
+        Ok(())
     }
 
     Ok(())
