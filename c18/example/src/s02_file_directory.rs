@@ -5,6 +5,14 @@ use std::io;
 use std::os::unix::fs::symlink;
 use std::path::Path;
 
+#[cfg(not(unix))]
+fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, _dst: Q) -> io::Result<()> {
+    Err(io::Error::new(
+        io::ErrorKind::Other,
+        format!("can't copy symbolic link: {}", src.as_ref().display()),
+    ))
+}
+
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("18.2 File and Directory");
 
@@ -62,14 +70,6 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             copy_to(&entry.path(), &file_type, &dst.join(entry.file_name()))?
         }
         Ok(())
-    }
-
-    #[cfg(not(unix))]
-    fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, _dst: Q) -> io::Result<()> {
-        Err(io::Error::new(
-            io::ErrorKind::Other,
-            format!("can't copy symbolic link: {}", src.as_ref().display()),
-        ))
     }
 
     #[allow(dead_code)]
