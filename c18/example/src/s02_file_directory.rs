@@ -1,6 +1,8 @@
 use std::ffi::OsStr;
 use std::fs;
 use std::io;
+#[cfg(unix)]
+use std::os::unix::fs::symlink;
 use std::path::Path;
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -62,12 +64,23 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         Ok(())
     }
 
+    #[cfg(not(unix))]
+    fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(src: P, _dst: Q) -> io::Result<()> {
+        Err(io::Error::new(
+            io::ErrorKind::Other,
+            format!("can't copy symbolic link: {}", src.as_ref().display()),
+        ))
+    }
+
     #[allow(dead_code)]
     fn copy_to(src: &Path, src_type: &fs::FileType, dst: &Path) -> io::Result<()> {
         if src_type.is_file() {
             fs::copy(src, dst)?;
         } else if src_type.is_dir() {
             copy_dir_to(src, dst)?;
+        } else if src_type.is_symlink() {
+            let target = fs::read_link(src)?;
+            symlink(target, dst)?;
         } else {
             return Err(io::Error::new(
                 io::ErrorKind::Other,
@@ -76,6 +89,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         }
         Ok(())
     }
+
+    println!("\n18.2.5 platform specific");
 
     Ok(())
 }
