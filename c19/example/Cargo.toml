@@ -1,0 +1,6 @@
+[package]
+name = "c19_example"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
