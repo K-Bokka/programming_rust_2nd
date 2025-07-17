@@ -28,7 +28,7 @@ members = [
     "c15/try_fold",
     "c17/example",
     "c18/example",
-    "c18/grep",
+    "c18/grep", "c18/echo", "c18/reqwest_server",
 ]
 resolver = "3"
 
