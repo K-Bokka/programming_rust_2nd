@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, thread};
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("19.1 fork, join parallel");
@@ -25,6 +25,12 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         // save text to doc
         Ok(())
     }
+
+    println!("19.1.1 spawn & join");
+    let handle = thread::spawn(|| {
+        println!("Hello from the spawned thread!");
+    });
+    handle.join().unwrap();
 
     Ok(())
 }
