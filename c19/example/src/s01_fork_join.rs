@@ -106,5 +106,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             .unwrap_or(Ok(()))
     }
 
+    println!("19.1.5 mandelbrot returns");
+
     Ok(())
 }
