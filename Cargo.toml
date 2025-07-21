@@ -31,7 +31,8 @@ members = [
     "c18/grep",
     "c18/echo",
     "c18/reqwest_server",
-    "c19/example", "c19/mandelbrot_rayon",
+    "c19/example",
+    "c19/mandelbrot_rayon",
 ]
 resolver = "3"
 
