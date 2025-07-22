@@ -1,3 +1,6 @@
+mod index;
+
+use index::InMemoryIndex;
 use std::io;
 use std::path::PathBuf;
 use std::sync::mpsc;
@@ -20,6 +23,22 @@ fn start_file_reader_thread(
             }
         }
         Ok(())
+    });
+    (receiver, handle)
+}
+
+#[allow(dead_code)]
+fn start_file_indexing_thread(
+    texts: mpsc::Receiver<String>,
+) -> (mpsc::Receiver<InMemoryIndex>, thread::JoinHandle<()>) {
+    let (sender, receiver) = mpsc::channel();
+    let handle = thread::spawn(move || {
+        for (doc_id, text) in texts.into_iter().enumerate() {
+            let index = InMemoryIndex::from_single_document(doc_id, text);
+            if sender.send(index).is_err() {
+                break;
+            }
+        }
     });
     (receiver, handle)
 }

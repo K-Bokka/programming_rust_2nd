@@ -3,5 +3,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n19.2.1 send value");
 
+    println!("\n19.2.2 receive value");
+
     Ok(())
 }
