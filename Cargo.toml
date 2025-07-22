@@ -33,6 +33,7 @@ members = [
     "c18/reqwest_server",
     "c19/example",
     "c19/mandelbrot_rayon",
+    "c19/fingertips",
 ]
 resolver = "3"
 
