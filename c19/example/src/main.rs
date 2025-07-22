@@ -1,5 +1,3 @@
-use std::fmt::Debug;
-
 mod s01_fork_join;
 mod s02_channel;
 
