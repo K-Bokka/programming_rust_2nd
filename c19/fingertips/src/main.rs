@@ -4,6 +4,7 @@ use index::InMemoryIndex;
 use std::io;
 use std::path::PathBuf;
 use std::sync::mpsc;
+use std::sync::mpsc::channel;
 use std::{fs, thread};
 
 fn main() {
@@ -40,5 +41,30 @@ fn start_file_indexing_thread(
             }
         }
     });
+    (receiver, handle)
+}
+
+#[allow(dead_code)]
+fn start_in_memory_merge_thread(
+    file_indices: mpsc::Receiver<InMemoryIndex>,
+) -> (mpsc::Receiver<InMemoryIndex>, thread::JoinHandle<()>) {
+    let (sender, receiver) = channel();
+
+    let handle = thread::spawn(move || {
+        let mut accumulated_index = InMemoryIndex::new();
+        for fi in file_indices {
+            accumulated_index.merge(fi);
+            if accumulated_index.is_large() {
+                if sender.send(accumulated_index).is_err() {
+                    return;
+                }
+                accumulated_index = InMemoryIndex::new();
+            }
+        }
+        if !accumulated_index.is_empty() {
+            let _ = sender.send(accumulated_index);
+        }
+    });
+
     (receiver, handle)
 }

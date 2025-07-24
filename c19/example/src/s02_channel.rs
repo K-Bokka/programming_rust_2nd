@@ -5,5 +5,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n19.2.2 receive value");
 
+    println!("\n19.2.3 exec pipeline");
+
     Ok(())
 }
