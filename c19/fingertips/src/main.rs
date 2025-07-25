@@ -1,8 +1,12 @@
 mod index;
+mod tmp;
+mod write;
 
+use crate::tmp::Tmpdir;
+use crate::write::write_index_to_tmp_file;
 use index::InMemoryIndex;
 use std::io;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::mpsc;
 use std::sync::mpsc::channel;
 use std::{fs, thread};
@@ -64,6 +68,27 @@ fn start_in_memory_merge_thread(
         if !accumulated_index.is_empty() {
             let _ = sender.send(accumulated_index);
         }
+    });
+
+    (receiver, handle)
+}
+
+#[allow(dead_code)]
+fn start_index_writer_thread(
+    big_indexes: mpsc::Receiver<InMemoryIndex>,
+    output_dir: &Path,
+) -> (mpsc::Receiver<PathBuf>, thread::JoinHandle<io::Result<()>>) {
+    let (sender, receiver) = channel();
+
+    let mut tmp_dir = Tmpdir::new(output_dir);
+    let handle = thread::spawn(move || {
+        for index in big_indexes {
+            let file = write_index_to_tmp_file(index, &mut tmp_dir)?;
+            if sender.send(file).is_err() {
+                break;
+            }
+        }
+        Ok(())
     });
 
     (receiver, handle)
