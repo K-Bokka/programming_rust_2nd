@@ -2,14 +2,14 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
-pub struct Tmpdir {
+pub struct TmpDir {
     dir: PathBuf,
     n: usize,
 }
 
-impl Tmpdir {
-    pub fn new<P: AsRef<Path>>(dir: P) -> Tmpdir {
-        Tmpdir {
+impl TmpDir {
+    pub fn new<P: AsRef<Path>>(dir: P) -> TmpDir {
+        TmpDir {
             dir: dir.as_ref().to_owned(),
             n: 0,
         }
