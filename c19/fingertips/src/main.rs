@@ -1,8 +1,11 @@
 mod index;
+mod merge;
+mod read;
 mod tmp;
 mod write;
 
-use crate::tmp::Tmpdir;
+use crate::merge::FileMerge;
+use crate::tmp::TmpDir;
 use crate::write::write_index_to_tmp_file;
 use index::InMemoryIndex;
 use std::io;
@@ -80,7 +83,7 @@ fn start_index_writer_thread(
 ) -> (mpsc::Receiver<PathBuf>, thread::JoinHandle<io::Result<()>>) {
     let (sender, receiver) = channel();
 
-    let mut tmp_dir = Tmpdir::new(output_dir);
+    let mut tmp_dir = TmpDir::new(output_dir);
     let handle = thread::spawn(move || {
         for index in big_indexes {
             let file = write_index_to_tmp_file(index, &mut tmp_dir)?;
@@ -92,4 +95,13 @@ fn start_index_writer_thread(
     });
 
     (receiver, handle)
+}
+
+#[allow(dead_code)]
+fn merge_index_files(files: mpsc::Receiver<PathBuf>, output_dir: &Path) -> io::Result<()> {
+    let mut merge = FileMerge::new(output_dir);
+    for file in files {
+        merge.add_file(file)?;
+    }
+    merge.finish()
 }
