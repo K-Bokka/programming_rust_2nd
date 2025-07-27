@@ -13,6 +13,7 @@ pub struct IndexFileReader {
 pub struct Entry {
     pub term: String,
     pub df: u32,
+    #[allow(dead_code)]
     pub offset: u64,
     pub nbytes: u64,
 }
