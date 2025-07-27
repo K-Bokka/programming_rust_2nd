@@ -18,7 +18,6 @@ fn main() {
     println!("https://github.com/ProgrammingRust/fingertips");
 }
 
-#[allow(dead_code)]
 fn start_file_reader_thread(
     documents: Vec<PathBuf>,
 ) -> (mpsc::Receiver<String>, thread::JoinHandle<io::Result<()>>) {
@@ -35,7 +34,6 @@ fn start_file_reader_thread(
     (receiver, handle)
 }
 
-#[allow(dead_code)]
 fn start_file_indexing_thread(
     texts: mpsc::Receiver<String>,
 ) -> (mpsc::Receiver<InMemoryIndex>, thread::JoinHandle<()>) {
@@ -51,7 +49,6 @@ fn start_file_indexing_thread(
     (receiver, handle)
 }
 
-#[allow(dead_code)]
 fn start_in_memory_merge_thread(
     file_indices: mpsc::Receiver<InMemoryIndex>,
 ) -> (mpsc::Receiver<InMemoryIndex>, thread::JoinHandle<()>) {
@@ -76,7 +73,6 @@ fn start_in_memory_merge_thread(
     (receiver, handle)
 }
 
-#[allow(dead_code)]
 fn start_index_writer_thread(
     big_indexes: mpsc::Receiver<InMemoryIndex>,
     output_dir: &Path,
@@ -97,11 +93,27 @@ fn start_index_writer_thread(
     (receiver, handle)
 }
 
-#[allow(dead_code)]
 fn merge_index_files(files: mpsc::Receiver<PathBuf>, output_dir: &Path) -> io::Result<()> {
     let mut merge = FileMerge::new(output_dir);
     for file in files {
         merge.add_file(file)?;
     }
     merge.finish()
+}
+
+#[allow(dead_code)]
+fn run_pipeline(documents: Vec<PathBuf>, output_dir: PathBuf) -> io::Result<()> {
+    let (texts, h1) = start_file_reader_thread(documents);
+    let (pints, h2) = start_file_indexing_thread(texts);
+    let (gallons, h3) = start_in_memory_merge_thread(pints);
+    let (files, h4) = start_index_writer_thread(gallons, &output_dir);
+    let result = merge_index_files(files, &output_dir);
+
+    let r1 = h1.join().unwrap();
+    h2.join().unwrap();
+    h3.join().unwrap();
+    let r4 = h4.join().unwrap();
+    r1?;
+    r4?;
+    result
 }
