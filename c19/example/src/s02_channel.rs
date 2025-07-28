@@ -7,5 +7,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n19.2.3 exec pipeline");
 
+    println!("\n19.2.4 channel function & performance");
+
     Ok(())
 }
