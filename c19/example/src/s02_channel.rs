@@ -18,5 +18,34 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // });
     // rc1.clone();
 
+    println!("\n19.2.6 connect iterator");
+
+    use std::sync::mpsc;
+    #[allow(dead_code)]
+    pub trait OffThreadExt: Iterator {
+        fn off_thread<T>(self) -> mpsc::IntoIter<Self::Item>;
+    }
+
+    use std::thread;
+    impl<T> OffThreadExt for T
+    where
+        T: Iterator + Send + 'static,
+        T::Item: Send + 'static,
+    {
+        fn off_thread<U>(self) -> mpsc::IntoIter<Self::Item> {
+            let (sender, receiver) = mpsc::sync_channel(1024);
+            thread::spawn(move || {
+                for item in self {
+                    if sender.send(item).is_err() {
+                        break;
+                    }
+                }
+            });
+            receiver.into_iter()
+        }
+    }
+
+    println!("\n19.2.7 usage channel without pipeline");
+
     Ok(())
 }
