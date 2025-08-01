@@ -3,5 +3,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n19.3.1 What is exclusive lock?");
 
+    println!("\n19.3.2 Mut<T>");
+
     Ok(())
 }

@@ -34,6 +34,7 @@ members = [
     "c19/example",
     "c19/mandelbrot_rayon",
     "c19/fingertips",
+    "c19/fern_empire",
 ]
 resolver = "3"
 
