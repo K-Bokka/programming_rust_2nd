@@ -15,6 +15,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n19.3.7 multi consumers channel");
 
+    println!("\n19.3.8 RwLock<T>");
+
     Ok(())
 }
 
