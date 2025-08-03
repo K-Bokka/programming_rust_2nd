@@ -1,4 +1,6 @@
-use std::sync::{Arc, Mutex};
+use std::collections::HashMap;
+use std::iter::Map;
+use std::sync::{Arc, Mutex, RwLock};
 
 fn main() {
     println!("Fern empire");
@@ -6,6 +8,7 @@ fn main() {
     #[allow(unused_variables)]
     let app = Arc::new(FernEmpireApp {
         waiting_list: Mutex::new(vec![]),
+        config: RwLock::new(HashMap::new()),
     });
 }
 
@@ -15,8 +18,12 @@ const GAME_SIZE: usize = 8;
 
 type WaitingList = Vec<PlayerId>;
 
+type AppConfig = HashMap<String, String>;
+
 struct FernEmpireApp {
     waiting_list: Mutex<WaitingList>,
+    #[allow(dead_code)]
+    config: RwLock<AppConfig>,
 }
 
 #[allow(dead_code)]

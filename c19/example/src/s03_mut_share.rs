@@ -1,3 +1,7 @@
+use lazy_static::lazy_static;
+use std::sync::atomic::{AtomicBool, AtomicIsize, AtomicUsize};
+use std::sync::{Arc, Mutex};
+
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("19.3 Sharing mutable state");
 
@@ -14,6 +18,49 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("\n19.3.6 Poisoned exclusive lock");
 
     println!("\n19.3.7 multi consumers channel");
+
+    println!("\n19.3.8 RwLock<T>");
+
+    println!("\n19.3.9 Condvar");
+
+    println!("\n19.3.10 Atomic var");
+
+    let atom = AtomicIsize::new(0);
+    atom.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+
+    let cancel_flag = Arc::new(AtomicBool::new(false));
+    let _worker_cancel_flag = cancel_flag.clone();
+
+    println!("\n19.3.11 Global var");
+
+    static PACKETS_SERVED: AtomicUsize = AtomicUsize::new(0);
+
+    PACKETS_SERVED.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+
+    #[allow(dead_code)]
+    struct Color {
+        red: u8,
+        green: u8,
+        blue: u8,
+        alpha: u8,
+    }
+
+    const fn mono_to_rgba(level: u8) -> Color {
+        Color {
+            red: level,
+            green: level,
+            blue: level,
+            alpha: 0xFF,
+        }
+    }
+    #[allow(dead_code)]
+    const WHITE: Color = mono_to_rgba(0xFF);
+    #[allow(dead_code)]
+    const BLACK: Color = mono_to_rgba(0x00);
+
+    lazy_static! {
+        static ref HOSTNAME: Mutex<String> = Mutex::new(String::new());
+    }
 
     Ok(())
 }
