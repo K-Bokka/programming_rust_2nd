@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::iter::Map;
 use std::sync::{Arc, Mutex, RwLock};
 
 fn main() {
