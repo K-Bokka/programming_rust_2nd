@@ -4,4 +4,4 @@ version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
-async-std = "1.13.1"
+async-std = { version = "1.13.1", features = ["unstable"] }
