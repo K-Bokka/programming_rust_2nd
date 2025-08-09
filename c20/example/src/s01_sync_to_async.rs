@@ -1,3 +1,4 @@
+use async_std::io::prelude::*;
 use std::io::{Read, Write};
 use std::pin::Pin;
 use std::task::Context;
@@ -6,6 +7,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("20.1 Sync programming to Async programming");
 
     println!("20.1.1 Future");
+
+    println!("20.1.2 async/await");
 
     Ok(())
 }
@@ -20,6 +23,20 @@ fn cheapo_request(host: &str, port: u16, path: &str) -> std::io::Result<String> 
 
     let mut response = String::new();
     socket.read_to_string(&mut response)?;
+
+    Ok(response)
+}
+
+#[allow(dead_code)]
+async fn async_cheapo_request(host: &str, port: u16, path: &str) -> std::io::Result<String> {
+    let mut socket = async_std::net::TcpStream::connect((host, port)).await?;
+
+    let request = format!("GET {} HTTP/1.1\r\nHost: {}\r\n\r\n", path, host);
+    socket.write_all(request.as_bytes()).await?;
+    socket.shutdown(std::net::Shutdown::Write)?;
+
+    let mut response = String::new();
+    socket.read_to_string(&mut response).await?;
 
     Ok(response)
 }
