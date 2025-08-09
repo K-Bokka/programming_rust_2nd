@@ -10,6 +10,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("20.1.2 async/await");
 
+    println!("20.1.3 async fn call from sync code");
+    // cheapo_request_sync()?;
+
     Ok(())
 }
 
@@ -39,6 +42,15 @@ async fn async_cheapo_request(host: &str, port: u16, path: &str) -> std::io::Res
     socket.read_to_string(&mut response).await?;
 
     Ok(response)
+}
+
+#[allow(dead_code)]
+fn cheapo_request_sync() -> std::io::Result<()> {
+    use async_std::task;
+    let response = task::block_on(async_cheapo_request("example.com", 80, "/"))?;
+    println!("{}", response);
+
+    Ok(())
 }
 
 #[allow(dead_code)]
