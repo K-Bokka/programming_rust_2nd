@@ -15,6 +15,20 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("20.1.4 async task exec");
 
+    println!("20.1.5 async block");
+
+    let input = async_std::io::stdin();
+    #[allow(unused_variables)]
+    let future = async {
+        let mut line = String::new();
+        input.read_line(&mut line).await?;
+
+        println!("You entered: {}", line);
+
+        // Ok(line) // error[E0282]: type annotations needed
+        Ok::<(), std::io::Error>(())
+    };
+
     Ok(())
 }
 
@@ -33,7 +47,7 @@ fn cheapo_request(host: &str, port: u16, path: &str) -> std::io::Result<String> 
 }
 
 #[allow(dead_code)]
-async fn async_cheapo_request(host: &str, port: u16, path: &str) -> std::io::Result<String> {
+async fn cheapo_request_async(host: &str, port: u16, path: &str) -> std::io::Result<String> {
     let mut socket = async_std::net::TcpStream::connect((host, port)).await?;
 
     let request = format!("GET {} HTTP/1.1\r\nHost: {}\r\n\r\n", path, host);
@@ -49,7 +63,7 @@ async fn async_cheapo_request(host: &str, port: u16, path: &str) -> std::io::Res
 #[allow(dead_code)]
 fn cheapo_request_sync() -> std::io::Result<()> {
     use async_std::task;
-    let response = task::block_on(async_cheapo_request("example.com", 80, "/"))?;
+    let response = task::block_on(cheapo_request_async("example.com", 80, "/"))?;
     println!("{}", response);
 
     Ok(())
@@ -84,7 +98,7 @@ async fn many_requests(requests: Vec<(String, u16, String)>) -> Vec<std::io::Res
 }
 
 async fn cheapo_owing_request(host: String, port: u16, path: String) -> std::io::Result<String> {
-    async_cheapo_request(&host, port, &path).await
+    cheapo_request_async(&host, port, &path).await
 }
 
 #[allow(dead_code)]
@@ -103,4 +117,23 @@ fn cheapo_request_many() {
             Err(e) => println!("Error: {}", e),
         }
     }
+}
+
+#[allow(dead_code)]
+async fn many_requests_block(requests: Vec<(String, u16, String)>) -> Vec<std::io::Result<String>> {
+    use async_std::task;
+
+    let mut handles = vec![];
+    for (host, port, path) in requests {
+        handles.push(task::spawn_local(async move {
+            cheapo_request_async(&host, port, &path).await
+        }));
+    }
+
+    let mut results = vec![];
+    for handle in handles {
+        results.push(handle.await);
+    }
+
+    results
 }
