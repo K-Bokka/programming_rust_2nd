@@ -29,6 +29,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         Ok::<(), std::io::Error>(())
     };
 
+    println!("20.1.6 async function using async block");
+
     Ok(())
 }
 
@@ -136,4 +138,46 @@ async fn many_requests_block(requests: Vec<(String, u16, String)>) -> Vec<std::i
     }
 
     results
+}
+
+#[allow(dead_code)]
+fn cheapo_request_async_block<'a>(
+    host: &'a str,
+    port: u16,
+    path: &'a str,
+) -> impl std::future::Future<Output = std::io::Result<String>> + 'a {
+    async move {
+        let mut socket = async_std::net::TcpStream::connect((host, port)).await?;
+
+        let request = format!("GET {} HTTP/1.1\r\nHost: {}\r\n\r\n", path, host);
+        socket.write_all(request.as_bytes()).await?;
+        socket.shutdown(std::net::Shutdown::Write)?;
+
+        let mut response = String::new();
+        socket.read_to_string(&mut response).await?;
+
+        Ok(response)
+    }
+}
+
+#[allow(dead_code)]
+fn cheapo_request_2(
+    host: &str,
+    port: u16,
+    path: &str,
+) -> impl std::future::Future<Output = std::io::Result<String>> {
+    let host = host.to_string();
+    let path = path.to_string();
+    async move {
+        let mut socket = async_std::net::TcpStream::connect((&*host, port)).await?;
+
+        let request = format!("GET {} HTTP/1.1\r\nHost: {}\r\n\r\n", path, host);
+        socket.write_all(request.as_bytes()).await?;
+        socket.shutdown(std::net::Shutdown::Write)?;
+
+        let mut response = String::new();
+        socket.read_to_string(&mut response).await?;
+
+        Ok(response)
+    }
 }
