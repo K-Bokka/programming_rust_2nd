@@ -31,6 +31,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("20.1.6 async function using async block");
 
+    println!("20.1.7 async task in thread pool");
+
     Ok(())
 }
 
@@ -88,7 +90,7 @@ async fn many_requests(requests: Vec<(String, u16, String)>) -> Vec<std::io::Res
 
     let mut handles = vec![];
     for (host, port, path) in requests {
-        handles.push(task::spawn_local(cheapo_owing_request(host, port, path)));
+        handles.push(task::spawn(cheapo_owing_request(host, port, path)));
     }
 
     let mut results = vec![];
@@ -127,7 +129,7 @@ async fn many_requests_block(requests: Vec<(String, u16, String)>) -> Vec<std::i
 
     let mut handles = vec![];
     for (host, port, path) in requests {
-        handles.push(task::spawn_local(async move {
+        handles.push(task::spawn(async move {
             cheapo_request_async(&host, port, &path).await
         }));
     }
