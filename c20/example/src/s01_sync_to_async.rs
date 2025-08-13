@@ -1,6 +1,7 @@
 use async_std::io::prelude::*;
 use std::io::{Read, Write};
 use std::pin::Pin;
+use std::rc::Rc;
 use std::task::Context;
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -32,6 +33,56 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("20.1.6 async function using async block");
 
     println!("20.1.7 async task in thread pool");
+
+    println!("20.1.8 implemented this Future Send?");
+
+    async fn some_async_fn() {
+        let _ = cheapo_request_async("example.com", 80, "/");
+    }
+
+    #[allow(dead_code)]
+    async fn reluctant() -> String {
+        let string = Rc::new("ref-counted string".to_string());
+
+        some_async_fn().await;
+
+        format!("You splendid string: {}", string)
+    }
+
+    // async_std::task::spawn(reluctant()); // error: future cannot be sent between threads safely
+
+    async fn reluctant_2() -> String {
+        let return_value = {
+            let string = Rc::new("ref-counted string".to_string());
+            format!("You splendid string: {}", string)
+        };
+
+        some_async_fn().await;
+
+        return_value
+    }
+    async_std::task::spawn(reluctant_2());
+
+    type GenericError = Box<dyn std::error::Error>;
+    type GenericResult<T> = Result<T, GenericError>;
+
+    fn some_failing_fn() -> GenericResult<i32> {
+        Err("error".into())
+    }
+
+    async fn use_output(v: i32) {
+        println!("value: {}", v);
+    }
+
+    #[allow(dead_code)]
+    async fn unfortunate() {
+        match some_failing_fn() {
+            Ok(value) => use_output(value).await,
+            Err(error) => println!("error: {}", error),
+        }
+    }
+
+    // async_std::task::spawn(unfortunate()); // error: future cannot be sent between threads safely
 
     Ok(())
 }
