@@ -84,6 +84,12 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     // async_std::task::spawn(unfortunate()); // error: future cannot be sent between threads safely
 
+    println!("20.1.9 long calculation");
+
+    println!("20.1.10 design async system");
+
+    println!("20.1.11 async http client");
+
     Ok(())
 }
 
@@ -232,5 +238,57 @@ fn cheapo_request_2(
         socket.read_to_string(&mut response).await?;
 
         Ok(response)
+    }
+}
+
+#[allow(dead_code)]
+async fn verify_password(
+    password: &str,
+    hash: &str,
+    key: &str,
+) -> Result<bool, argonautica::Error> {
+    let password = password.to_string();
+    let hash = hash.to_string();
+    let key = key.to_string();
+
+    async_std::task::spawn_blocking(move || {
+        argonautica::Verifier::default()
+            .with_hash(hash)
+            .with_password(password)
+            .with_secret_key(key)
+            .verify()
+    })
+    .await
+}
+
+async fn many_requests_surf(urls: &[String]) -> Vec<Result<String, surf::Error>> {
+    let client = surf::Client::new();
+    let mut handles = vec![];
+    for url in urls {
+        let request = client.get(url).recv_string();
+        handles.push(async_std::task::spawn(request));
+    }
+    let mut results = vec![];
+    for handle in handles {
+        results.push(handle.await);
+    }
+    results
+}
+
+#[allow(dead_code)]
+fn surf_run() {
+    let requests = &[
+        "https://example.com".to_string(),
+        "https://www.red-bean.com".to_string(),
+        "https://www.rust-lang.org".to_string(),
+    ];
+
+    let results = async_std::task::block_on(many_requests_surf(requests));
+
+    for result in results {
+        match result {
+            Ok(response) => println!("{}", response),
+            Err(e) => println!("Error: {}", e),
+        }
     }
 }
