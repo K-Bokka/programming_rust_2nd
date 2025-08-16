@@ -10,3 +10,6 @@
   - 途中まで写経して、実際に組むことにしたので終わり
 
 今度こそ完走する
+
+## ソース元
+https://github.com/ProgrammingRust
