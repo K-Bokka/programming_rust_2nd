@@ -7,5 +7,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("20.2.3 User input");
 
+    println!("20.2.4 Send packet");
+
     Ok(())
 }
