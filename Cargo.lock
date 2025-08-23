@@ -931,7 +931,10 @@ version = "0.1.0"
 dependencies = [
  "argonautica",
  "async-std",
+ "crossbeam",
+ "futures-lite 2.6.1",
  "surf",
+ "waker-fn",
 ]
 
 [[package]]
