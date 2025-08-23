@@ -7,3 +7,6 @@ edition.workspace = true
 async-std = { version = "1.13.1", features = ["unstable"] }
 argonautica = "0.2.0"
 surf = "2.3.2"
+waker-fn = "1.2.0"
+futures-lite = "2.6.1"
+crossbeam = "0.8.4"
