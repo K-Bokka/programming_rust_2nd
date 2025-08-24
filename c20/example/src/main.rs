@@ -1,6 +1,7 @@
 mod s01_sync_to_async;
 mod s02_async_client_server;
 mod s03_future_executor;
+mod s04_pinned;
 
 fn main() {
     println!("Chapter 20 async programming");
@@ -13,4 +14,7 @@ fn main() {
 
     println!();
     s03_future_executor::run().unwrap();
+
+    println!();
+    s04_pinned::run().unwrap();
 }
