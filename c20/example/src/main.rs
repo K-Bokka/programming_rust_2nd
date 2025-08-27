@@ -17,4 +17,7 @@ fn main() {
 
     println!();
     s04_pinned::run().unwrap();
+
+    println!();
+    println!("20.5 When to use asynchronous code?");
 }
