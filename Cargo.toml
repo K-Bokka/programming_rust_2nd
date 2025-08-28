@@ -37,6 +37,7 @@ members = [
     "c19/fern_empire",
     "c20/example",
     "c20/async-chat",
+    "c21/example",
 ]
 resolver = "3"
 
