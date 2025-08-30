@@ -224,7 +224,7 @@ pub fn run() {
     }
 
     impl<T> BinaryTree<T> {
-        fn iter(&self) -> TreeIter<T> {
+        fn iter(&self) -> TreeIter<'_, T> {
             let mut iter = TreeIter {
                 unvisited: Vec::new(),
             };
