@@ -285,7 +285,7 @@ struct Extrema<'elt> {
     least: &'elt i32,
 }
 
-fn find_extrema(slice: &[i32]) -> Extrema {
+fn find_extrema(slice: &[i32]) -> Extrema<'_> {
     let mut greatest = &slice[0];
     let mut least = &slice[0];
 
