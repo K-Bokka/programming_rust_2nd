@@ -1,6 +1,7 @@
 mod s01_macro_basics;
 mod s02_built_in_macro;
 mod s03_debugging_macro;
+mod s04_json_macro;
 
 fn main() {
     println!("Chapter 21 Macro");
@@ -13,4 +14,7 @@ fn main() {
 
     println!();
     s03_debugging_macro::run().unwrap();
+
+    println!();
+    s04_json_macro::run().unwrap();
 }
