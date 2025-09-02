@@ -1,5 +1,14 @@
 use std::collections::HashMap;
 
+macro_rules! json {
+    (null) => { Json::Null };
+}
+
+#[test]
+fn json_null() {
+    assert_eq!(json!(null), Json::Null);
+}
+
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("21.4 JSON Macro");
 
@@ -31,6 +40,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     ]);
 
     println!("{:?}", students);
+
+    println!("21.4.1 Fragment type");
 
     Ok(())
 }
