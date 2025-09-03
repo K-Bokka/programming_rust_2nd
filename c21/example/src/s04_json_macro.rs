@@ -1,12 +1,40 @@
 use std::collections::HashMap;
 
 macro_rules! json {
-    (null) => { Json::Null };
+    (null) => {
+        Json::Null
+    };
+    ( [ $( $element:tt ),* ] ) => {
+        Json::Array(vec![ $( json!($element) ),* ])
+    };
+    ( { $( $key:tt : $value:tt ),* } ) => {
+        Json::Object(Box::new(
+            vec![ $( ( $key.to_string(), json!($value) ), )* ]
+            .into_iter()
+            .collect(),
+        ))
+    };
 }
 
 #[test]
 fn json_null() {
     assert_eq!(json!(null), Json::Null);
+}
+
+#[test]
+fn json_array() {
+    assert_eq!(json!([]), Json::Array(vec![]))
+}
+
+#[test]
+fn json_object() {
+    assert_eq!(json!({}), Json::Object(Box::new(HashMap::new())));
+    assert_eq!(
+        json!({ "name": null }),
+        Json::Object(Box::new(
+            vec![("name".to_string(), Json::Null)].into_iter().collect(),
+        ))
+    );
 }
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -42,6 +70,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("{:?}", students);
 
     println!("21.4.1 Fragment type");
+
+    println!("21.4.2 Recursion in macro");
 
     Ok(())
 }
