@@ -22,11 +22,11 @@ macro_rules! json {
         Json::Array(vec![ $( json!($element) ),* ])
     };
     ( { $( $key:tt : $value:tt ),* } ) => {
-        Json::Object(Box::new(
-            vec![ $( ( $key.to_string(), json!($value) ), )* ]
-            .into_iter()
-            .collect(),
-        ))
+        {
+            let mut fiealds = Box::new(HashMap::new());
+            $( fiealds.insert($key.to_string(), json!($value)); )*
+            Json::Object(fiealds)
+        }
     };
     ( $other:tt ) => {
         Json::from($other)
@@ -107,6 +107,15 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         "height": (width * 9.0 / 4.0)
     });
     println!("{:?}", desc);
+
+    println!("21.4.4 Scope & Hygienic macro");
+
+    let fields = "Fields, W.C.";
+    let role = json!({
+        "name": "Larson E. Whipsnade",
+        "actor": fields
+    });
+    println!("{:?}", role);
 
     Ok(())
 }
