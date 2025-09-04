@@ -12,9 +12,11 @@ macro_rules! json {
     };
     ( { $( $key:tt : $value:tt ),* } ) => {
         {
-            let mut fiealds = $crate::macros::Box::new($crate::macros::HashMap::new());
-            $( fiealds.insert($crate::macros::ToString::to_string($key), json!($value)); )*
-            $crate::Json::Object(fiealds)
+            let mut fields = $crate::macros::Box::new($crate::macros::HashMap::new());
+            $(
+                fields.insert($crate::macros::ToString::to_string($key), json!($value));
+            )*
+            $crate::Json::Object(fields)
         }
     };
     ( $other:tt ) => {
@@ -25,7 +27,6 @@ macro_rules! json {
 #[cfg(test)]
 mod test {
     use crate::Json;
-    use std::collections::HashMap;
 
     #[test]
     fn json_null() {
@@ -43,7 +44,10 @@ mod test {
 
     #[test]
     fn json_object() {
-        assert_eq!(json!({}), Json::Object(Box::new(HashMap::new())));
+        assert_eq!(
+            json!({}),
+            Json::Object(Box::new(vec![].into_iter().collect()))
+        );
         assert_eq!(
             json!({ "name": null, "age": 10 }),
             Json::Object(Box::new(
