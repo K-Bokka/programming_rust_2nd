@@ -2,6 +2,7 @@ mod s01_macro_basics;
 mod s02_built_in_macro;
 mod s03_debugging_macro;
 mod s04_json_macro;
+mod s05_avoid_syntax_errors;
 
 fn main() {
     println!("Chapter 21 Macro");
@@ -17,4 +18,10 @@ fn main() {
 
     println!();
     s04_json_macro::run().unwrap();
+
+    println!();
+    s05_avoid_syntax_errors::run();
+
+    println!();
+    println!("21.5 More complicated macro");
 }
