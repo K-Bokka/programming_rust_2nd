@@ -21,4 +21,7 @@ fn main() {
 
     println!();
     s05_avoid_syntax_errors::run();
+
+    println!();
+    println!("21.5 More complicated macro");
 }
