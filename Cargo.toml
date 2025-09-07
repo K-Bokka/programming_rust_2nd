@@ -39,6 +39,7 @@ members = [
     "c20/async-chat",
     "c21/example",
     "c21/json_macro",
+    "c22/example",
 ]
 resolver = "3"
 
