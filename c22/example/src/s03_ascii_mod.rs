@@ -25,6 +25,10 @@ mod my_ascii {
             }
             Ok(Ascii(bytes))
         }
+
+        pub unsafe fn from_bytes_unchecked(bytes: Vec<u8>) -> Ascii {
+            Ascii(bytes)
+        }
     }
 
     impl From<Ascii> for String {
