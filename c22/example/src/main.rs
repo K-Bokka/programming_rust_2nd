@@ -1,6 +1,7 @@
 mod s01_what_unsafe;
 mod s02_unsafe_block;
 mod s03_ascii_mod;
+mod s04_unsafe_fn;
 
 fn main() {
     println!("Chapter 22. unsafe code");
@@ -13,4 +14,7 @@ fn main() {
 
     println!();
     s03_ascii_mod::run().unwrap();
+
+    println!();
+    s04_unsafe_fn::run().unwrap();
 }
