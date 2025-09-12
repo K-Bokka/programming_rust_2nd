@@ -17,4 +17,6 @@ fn main() {
 
     println!();
     s04_unsafe_fn::run().unwrap();
+
+    println!("\n22.5 unsafe block or function");
 }
