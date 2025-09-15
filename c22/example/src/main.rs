@@ -4,6 +4,7 @@ mod s03_ascii_mod;
 mod s04_unsafe_fn;
 mod s06_undefined_behavior;
 mod s07_unsafe_trait;
+mod s08_raw_pointer;
 
 fn main() {
     println!("Chapter 22. unsafe code");
@@ -27,4 +28,7 @@ fn main() {
 
     println!();
     s07_unsafe_trait::run().unwrap();
+
+    println!();
+    s08_raw_pointer::run().unwrap();
 }
