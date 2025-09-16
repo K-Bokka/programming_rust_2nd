@@ -24,6 +24,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     // &vec![42_u8] as *const String; // error[E0606]: casting `&Vec<u8>` as `*const String` is invalid
     &vec![42_u8] as *const Vec<u8> as *const String;
 
+    println!("22.8.1 How to safely dereference raw pointers");
+
     Ok(())
 }
 
