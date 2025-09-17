@@ -33,6 +33,24 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(flagged.get_ref()[1], 20);
     assert_eq!(flagged.get_flag(), true);
 
+    println!("22.8.3 Nullable pointers");
+
+    println!("22.8.4 Type size & alignment");
+    assert_eq!(size_of::<i64>(), 8);
+    assert_eq!(align_of::<(i32, i32)>(), 4);
+
+    let slice: &[i32] = &[1, 3, 9, 27, 81];
+    assert_eq!(size_of_val(slice), 20);
+
+    let text: &str = "alligator";
+    assert_eq!(size_of_val(text), 9);
+
+    use std::fmt::Display;
+    let unmarkable: &dyn Display = &193_u8;
+    let remarkable: &dyn Display = &0.0072973525664;
+    assert_eq!(size_of_val(unmarkable), 1);
+    assert_eq!(size_of_val(remarkable), 8);
+
     Ok(())
 }
 
