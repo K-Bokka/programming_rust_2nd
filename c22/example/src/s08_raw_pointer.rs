@@ -51,6 +51,18 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(size_of_val(unmarkable), 1);
     assert_eq!(size_of_val(remarkable), 8);
 
+    println!("22.8.5 pointer arithmetic");
+
+    #[allow(unused)]
+    fn offset<T>(ptr: *const T, count: isize) -> *const T
+    where
+        T: Sized,
+    {
+        let bytes_per_element = std::mem::size_of::<T>() as isize;
+        let bytes_offset = count * bytes_per_element;
+        (ptr as isize).checked_add(bytes_offset).unwrap() as *const T
+    }
+
     Ok(())
 }
 
