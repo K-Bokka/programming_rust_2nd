@@ -1,3 +1,5 @@
+use crate::gap_buffer::GapBuffer;
+
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("22.8 raw pointer");
 
@@ -64,6 +66,15 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!("22.8.6 Move to, from memory");
+
+    println!("22.8.7 GapBuffer");
+
+    let mut buf = GapBuffer::new();
+    buf.insert_iter("Load if the Rings".chars());
+    buf.set_position(12);
+    println!("{:?}", buf);
+    buf.insert_iter("Onion".chars());
+    println!("{:?}", buf);
 
     Ok(())
 }
