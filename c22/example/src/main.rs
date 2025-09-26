@@ -5,6 +5,7 @@ mod s04_unsafe_fn;
 mod s06_undefined_behavior;
 mod s07_unsafe_trait;
 mod s08_raw_pointer;
+mod gap_buffer;
 
 fn main() {
     println!("Chapter 22. unsafe code");
