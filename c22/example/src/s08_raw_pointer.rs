@@ -76,6 +76,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     buf.insert_iter("Onion".chars());
     println!("{:?}", buf);
 
+    println!("22.8.8 panic safety for unsafe code");
+
     Ok(())
 }
 
