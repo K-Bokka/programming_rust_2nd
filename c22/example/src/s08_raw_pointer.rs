@@ -78,6 +78,65 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("22.8.8 panic safety for unsafe code");
 
+    println!("22.8.9 memory reinterpretation using union");
+
+    union FloatOrInt {
+        f: f32,
+        i: i32,
+    }
+    let mut one = FloatOrInt { i: 1 };
+    assert_eq!(unsafe { one.i }, 0x00_00_00_01);
+    one.f = 1.0;
+    assert_eq!(unsafe { one.i }, 0x3F_80_00_00);
+
+    union SmallOrLarge {
+        s: bool,
+        l: u64,
+    }
+    let u = SmallOrLarge { l: 1337 };
+    assert_eq!(unsafe { u.l }, 1337);
+    assert_eq!(unsafe { u.s }, true);
+
+    let float = FloatOrInt { f: 31337.0 };
+    println!("{:b}", unsafe { float.i });
+
+    #[repr(C)]
+    union SignExtractor {
+        value: i64,
+        bytes: [u8; 8],
+    }
+
+    fn sign(int: i64) -> bool {
+        let se = SignExtractor { value: int };
+        println!("{:b} ({:?})", unsafe { se.value }, unsafe { se.bytes });
+        unsafe { se.bytes[7] >= 0b1000_0000 }
+    }
+
+    assert_eq!(sign(-1), true);
+    assert_eq!(sign(1), false);
+    assert_eq!(sign(i64::MAX), false);
+    assert_eq!(sign(i64::MIN), true);
+
+    println!("22.8.10 match for union");
+
+    unsafe {
+        match u {
+            SmallOrLarge { s: true } => println!("boolean true"),
+            SmallOrLarge { l: 2 } => println!("integer 2"),
+            _ => println!("something else"),
+        }
+    }
+
+    unsafe {
+        match float {
+            FloatOrInt { f } => println!("float {}", f),
+            #[allow(unreachable_patterns)]
+            FloatOrInt { i } => println!("int {}", i),
+        }
+    }
+
+    println!("22.8.11 borrowing union");
+
     Ok(())
 }
 
