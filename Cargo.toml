@@ -40,6 +40,7 @@ members = [
     "c21/example",
     "c21/json_macro",
     "c22/example",
+    "c23/example",
 ]
 resolver = "3"
 
